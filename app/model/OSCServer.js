@@ -60,6 +60,7 @@ class OSCServer{
      */
     listen(){
         this.server.open();
+        console.log(this.localPort + "listening");
     }
 
     /**
@@ -67,6 +68,17 @@ class OSCServer{
      */
     close(){
         this.server.close();
+    }
+
+    
+    get getLocalPort(){ return this.localPort }
+    get getLocalAddr(){ return this.localAddress }
+    set setLocalPort(localPort){
+        this.localPort = localPort;
+        this.server = new osc.UDPPort({
+            localAddress: this.localAddress,
+            localPort: this.localPort
+        });
     }
 }
 module.exports = OSCServer;
