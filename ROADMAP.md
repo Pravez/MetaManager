@@ -18,6 +18,6 @@
 * Create simple Electron app
 * Create communication with i-score
 * Create communication with metabots (and bots in general)
-* Print in app results of communication
+* Print in app results of communication (interaction with RiotJS)
 * Do a some tests for the communication
 

@@ -1,23 +1,9 @@
-var osc = require('osc');
 var Metabot = require('../app/model/Metabot');
+var OSCServer = require('../app/model/OSCServer');
 
-var truc = new Metabot("prout");
-
-var udpPort = new osc.UDPPort({
-    localAddress: "127.0.0.1",
-    localPort: 9996
-});
-
-udpPort.on("ready", function(){
-    console.log("listening...");
-});
-
-udpPort.on("message", function (oscMessage) {
-    console.log(oscMessage);
-});
-
-udpPort.on("error", function (err) {
-    console.log(err);
-});
-
-udpPort.open();
+var server1 = new OSCServer('localhost', 9998);
+var server2 = new OSCServer('localhost', 9999);
+server1.listen();
+server2.listen();
+server2.send('/s_new', ["default", 100], "localhost", 9998);
+server1.send('/s_delete', ["default", 100], "localhost", 9999);

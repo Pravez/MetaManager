@@ -7,3 +7,5 @@ Electron application to control many metabots (and bots) simultaneously. It inte
 
 
 To run the app : `npm install && npm start`
+
+Be careful, problem with node OSC. Line 72 osc-transport.js, need to convert the Uint8Array to Buffer.
