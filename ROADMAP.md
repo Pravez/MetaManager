@@ -1,7 +1,3 @@
-# MetaManager 
-##### An app to rule them all
-
-***
 
 ## Roadmap
 
