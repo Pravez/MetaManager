@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * An object containing a map and an array (map for mapping enabled server to port,
  * array for each wrong other server).
@@ -47,10 +49,11 @@ class ServerManager {
      * Function to change port of a server. If 'port' parameter is not given, seeks for the first
      * next available port.
      * @param server
-     * @param port optionnal
+     * @param opt
+     * @returns {*}
      */
-    static changeServerPort(server, port){
-        var newPort = port || -1;
+    static changeServerPort(server, opt){
+        var newPort = opt ? opt.port || -1 : -1;
         if(newPort === -1){
             do {
                 newPort = server.getLocalPort + 1;
@@ -58,6 +61,8 @@ class ServerManager {
         }
 
         server.setLocalPort = newPort;
+        if(opt && opt.remove && opt.remove === true)
+            return this.removeServer(server);
         return server;
     }
 
@@ -72,6 +77,8 @@ class ServerManager {
         } else {
             throw "Error : one server is already running on this port."
         }
+
+        return server;
     }
 
     /**
@@ -84,28 +91,6 @@ class ServerManager {
         console.log('disabled server ' + server);
     }
 
-    /**
-     *
-     * @returns {Map}
-     */
-    static getEnabledServers(){
-        return servers.enabled;
-    }
-
-    /**
-     *
-     * @returns {Map}
-     */
-    static getDisabledServers(){
-        return servers.disabled;
-    }
-
-    /**
-     * Getter of servers
-     * @returns {{enabled: Map, disabled: Map}}
-     */
-    static getServers(){
-        return servers;
-    }
+    static get getServers() { return servers }
 }
 module.exports = ServerManager;

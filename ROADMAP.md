@@ -3,6 +3,7 @@
 
 ##### Version 0.1.1
 * Do the graphics of the app
+* Also integrate elements (server manager ...) in UI
 
 ###### Version 0.0.3 - Communication
 * With new class diagram, automate communication with bots and i-score

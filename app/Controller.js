@@ -1,19 +1,24 @@
-var Metabot = require('../app/model/Metabot');
-var OSCServer = require('../app/model/OSCServer');
-var ServerManager = require('../app/model/ServerManager');
+'use strict';
+
+var Bot = require('../app/model/Bot');
+var LogicalBot = require('../app/model/LogicalBot');
+
+var bots = [];
 
 
 
-var server1 = new OSCServer('localhost', 9997);
-var server2 = new OSCServer('localhost', 9997);
- ServerManager.addServer(server1);
+bots.push(new LogicalBot(new Bot({position:{x:2, y:2}}), 'localhost', 9997).setUp());
+bots.push(new LogicalBot(new Bot({position:{x:2, y:2, z:3}}), 'localhost', 9997).setUp());
 
-try {
-    ServerManager.addServer(server2);
-} catch (error) {
-    ServerManager.enableServer(ServerManager.changeServerPort(server2));
+//bot1.oscServer.send("/s_new", ["default", 100], bot2.oscServer.getLocalAddr, bot2.oscServer.getLocalPort);
+
+class Controller {
+    static getBots(){
+        return bots;
+    }
+
+    static addBot(bot){
+        bots.push(bot);
+    }
 }
-
-server1.listen();
-server2.listen();
-server2.send("/s_new", ["default", 100], server1.getLocalAddr, server1.getLocalPort);
+module.exports = Controller;

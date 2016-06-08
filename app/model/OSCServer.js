@@ -70,15 +70,30 @@ class OSCServer{
         this.server.close();
     }
 
-    
+    /**
+     * Getter of localPort
+     * @returns {*}
+     */
     get getLocalPort(){ return this.localPort }
+
+    /**
+     * Getter of localAddress
+     * @returns {*}
+     */
     get getLocalAddr(){ return this.localAddress }
+
+    /**
+     * Setter of localPort, and generates a new osc.UDPPort each time
+     * the localPort value is changed.
+     * @param localPort
+     */
     set setLocalPort(localPort){
         this.localPort = localPort;
         this.server = new osc.UDPPort({
             localAddress: this.localAddress,
             localPort: this.localPort
         });
+        this.setListener();
     }
 }
 module.exports = OSCServer;
