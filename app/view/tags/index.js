@@ -7,6 +7,7 @@ require('./connections.tag');
 require('./menubar.tag');
 require('./scene.tag');
 require('./sceneCanvas.tag');
+require('./contextMenus.tag');
 
 //Windows are a map of windows composing the app
 var windows = new Map();

@@ -11,7 +11,7 @@
                     <th>Listening Port</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="bots">
                 <tr each={ bots }>
                     <td>{bot.name}</td>
                     <td>{oscServer.getLocalPort}</td>
@@ -19,6 +19,8 @@
             </tbody>
         </table>
     </div>
+
+
 
     <script>
         'use strict';
