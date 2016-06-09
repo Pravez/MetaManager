@@ -13,8 +13,9 @@
     "electron": "latest"
   },
   "dependencies": {
+    "bluetooth-serial-port": "^1.2.6",
+    "canvas": "latest",
     "osc": "^2.1.0",
-    "riot": "^2.4.1",
-    "canvas": "latest"
+    "riot": "^2.4.1"
   }
 }

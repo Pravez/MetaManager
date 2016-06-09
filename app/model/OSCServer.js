@@ -14,14 +14,6 @@ class OSCServer{
     constructor(localAddress, localPort){
         this.localAddress = localAddress;
         this.localPort = localPort;
-
-        this.server = new osc.UDPPort({
-            localAddress: this.localAddress,
-            localPort: this.localPort
-        });
-
-
-        this.setListener();
     }
 
     /**
@@ -31,6 +23,10 @@ class OSCServer{
         /*this.server.on("ready", function(){
             console.log("Listening...")
         });*/
+        this.server = new osc.UDPPort({
+            localAddress: this.localAddress,
+            localPort: this.localPort
+        });
 
         this.server.on("message", function (oscMessage) {
             console.log(oscMessage);
@@ -39,6 +35,8 @@ class OSCServer{
         this.server.on("error", function (err) {
             console.log(err);
         });
+
+        return this;
     }
 
     /**

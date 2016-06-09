@@ -3,13 +3,22 @@
     Create bot : <input type="text" name="name"> <br>
     <input type="button" onclick= { submit } value="Submit">
 
-    <table>
-        <tbody>
-            <tr each={bots}>
-                <td>{bot.name}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="pane">
+        <table class="table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Listening Port</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr each={ bots }>
+                    <td>{bot.name}</td>
+                    <td>{oscServer.getLocalPort}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <script>
         'use strict';

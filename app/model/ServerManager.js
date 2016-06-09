@@ -1,5 +1,5 @@
 "use strict";
-
+var OSCServer = require('../model/OSCServer');
 /**
  * An object containing a map and an array (map for mapping enabled server to port,
  * array for each wrong other server).
@@ -88,9 +88,46 @@ class ServerManager {
     static disableServer(server){
         this.removeServer(server);
         servers.disabled.push(server);
-        console.log('disabled server ' + server);
+    }
+
+    /**
+     * Function to handle an error
+     * @param log
+     */
+    static handleServerError(log) {
+
+        //Find the port
+        var address = log.match(/\d+\.\d+\.\d+\.\d+:\d+/gi);
+
+        //Disable server listening on the port
+        address.forEach(function (e) {
+            var port = e.split(':')[1];
+            if (servers.enabled.has(parseInt(port))) {
+                ServerManager.disableServer(servers.enabled.get(parseInt(port)));
+                servers.enabled.set(parseInt(port), new OSCServer(e.split(':')[0], parseInt(port)));
+            }
+        });
+
+
+        servers.disabled.forEach(function (e) {
+            ServerManager.enableServer(ServerManager.changeServerPort(e));
+        });
     }
 
     static get getServers() { return servers }
 }
 module.exports = ServerManager;
+
+/**
+  * The window on error event, permits to catch any normally uncaught exception
+  */
+window.addEventListener('error', function (evt) {
+
+    console.log("Caught error [ via 'error' event ]  :'" + evt.message + "' from " + evt.filename + ":" + evt.lineno);
+
+    if(evt.message.search("EADDRINUSE") != -1){
+        ServerManager.handleServerError(evt.message);
+    }
+
+});
+

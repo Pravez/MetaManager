@@ -12,7 +12,7 @@ class LogicalBot {
 
     constructor(metabot, localAddr, localPort){
         this.bot = metabot;
-        this.oscServer = new OSCServer(localAddr, localPort);
+        this.oscServer = new OSCServer(localAddr, localPort).setListener();
         this.botServer = undefined;
     }
 
