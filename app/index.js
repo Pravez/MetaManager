@@ -5,6 +5,15 @@
 var remote = require('electron');
 var riot = require('riot');
 var Controller = require('../app/controller/Controller');
+var Renderer = require('../app/view/tags/index');
 require('../app/view/tags');
 
-riot.mount('first', {bots: Controller.getBots()});
+riot.mount('menubar', {active: "home"});
+riot.mount('home');
+riot.mount('connections', {bots: Controller.getBots()});
+riot.mount('scene', {sec: "prout"});
+
+Renderer.addWindow('home');
+Renderer.addWindow("connections");
+Renderer.addWindow("scene");
+Renderer.showWindow("home");

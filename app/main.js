@@ -21,7 +21,7 @@ function createWindow () {
   mainWindow.loadURL(`file://${__dirname}/index.html`);
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -53,32 +53,3 @@ app.on('activate', function () {
     createWindow()
   }
 });
-
-/*var btSerial = new (require('bluetooth-serial-port')).BluetoothSerialPort();
-
-btSerial.on('found', function(address, name) {
-  btSerial.findSerialPortChannel(address, function(channel) {
-    btSerial.connect(address, channel, function() {
-      console.log('connected');
-
-      btSerial.write(new Buffer('my data', 'utf-8'), function(err, bytesWritten) {
-        if (err) console.log(err);
-      });
-
-      btSerial.on('data', function(buffer) {
-        console.log(buffer.toString('utf-8'));
-      });
-    }, function () {
-      console.log('cannot connect');
-    });
-
-    // close the connection when you're ready
-    btSerial.close();
-  }, function() {
-    console.log('found nothing');
-  });
-});
-btSerial.inquire();*/
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.

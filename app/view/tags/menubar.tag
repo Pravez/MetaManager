@@ -1,21 +1,35 @@
 <menubar>
-    <!-- <div class="buttons">
-        <div class="close">
-            <a class="closebutton" onclick="quit();"></a>
-        </div>
-        <div class="minimize">
-            <a class="minimizebutton" href="#"></a>
-        </div>
-        <div class="zoom">
-            <a class="zoombutton" href="#"></a>
-        </div>
-    </div> -->
     <header class="titlebar toolbar toolbar-header">
         <h1 class="title">MetaManager</h1>
+
+        <div class="toolbar-actions">
+            <div class="btn-group">
+                <button id="home" class="btn btn-default" onclick={ show }>
+                    <span class="icon icon-home"></span>
+                </button>
+                <button id="connections" class="btn btn-default" onclick={ show } >
+                    <span class="icon icon-rss"></span>
+                </button>
+                <button id="scene" class="btn btn-default" onclick={ show }>
+                    <span class="icon icon-note-beamed"></span>
+                </button>
+            </div>
+        </div>
     </header>
 
     <script>
         const remote = require('electron').remote;
+        var renderer = require('./index');
+
+        this.active = opts.active;
+        var self = this;
+
+        this.show = function(e){
+            document.getElementById(self.active).classList.remove("active");
+            self.active = e.currentTarget.id;
+            e.currentTarget.classList.add("active");
+            renderer.showWindow(e.currentTarget.id);
+        };
 
         function quit(){
             console.log("prout")

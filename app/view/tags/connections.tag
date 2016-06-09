@@ -1,4 +1,4 @@
-<first>
+<connections>
     <h1>My Name is: {text}</h1>
     Create bot : <input type="text" name="name"> <br>
     <input type="button" onclick= { submit } value="Submit">
@@ -27,7 +27,6 @@
         var Controller = require('../../controller/Controller');
         var Bot = require('../../model/Bot');
 
-
         this.text="Sandeep";
         var self = this;
         this.bots = opts.bots;
@@ -39,4 +38,4 @@
         };
     </script>
 
-</first>
+</connections>
