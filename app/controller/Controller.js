@@ -1,7 +1,7 @@
 'use strict';
 
-var Bot = require('../app/model/Bot');
-var LogicalBot = require('../app/model/LogicalBot');
+var Bot = require('../model/Bot');
+var LogicalBot = require('../model/LogicalBot');
 
 var bots = [];
 

@@ -4,6 +4,7 @@
 
 var remote = require('electron');
 var riot = require('riot');
-var Controller = require('./Controller');
+var Controller = require('../app/controller/Controller');
 require('../app/view/tags');
+
 riot.mount('first', {bots: Controller.getBots()});
