@@ -53,10 +53,10 @@ class ServerManager {
      * @returns {*}
      */
     static changeServerPort(server, opt){
-        var newPort = opt ? opt.port || -1 : -1;
-        if(newPort === -1){
+        var newPort = opt ? opt.port || server.getLocalPort : server.getLocalPort;
+        if(newPort === server.getLocalPort){
             do {
-                newPort = server.getLocalPort + 1;
+                newPort = newPort + 1;
             }while(servers.enabled.has(newPort));
         }
 

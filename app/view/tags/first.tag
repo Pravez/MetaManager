@@ -6,7 +6,7 @@
     <table>
         <tbody>
             <tr each={bots}>
-                <td>{name}</td>
+                <td>{bot.name}</td>
             </tr>
         </tbody>
     </table>
@@ -28,9 +28,6 @@
             self.bots = Controller.getBots();
             self.update();
         };
-
-        this.on('update', function(data){
-        })
     </script>
 
 </first>
