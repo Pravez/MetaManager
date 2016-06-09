@@ -8,6 +8,7 @@ require('./menubar.tag');
 require('./scene.tag');
 require('./sceneCanvas.tag');
 
+//Windows are a map of windows composing the app
 var windows = new Map();
 
 class Renderer {
