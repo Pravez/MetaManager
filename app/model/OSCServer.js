@@ -1,5 +1,6 @@
 "use strict";
 var osc = require('osc');
+var Server = require('../model/Server');
 
 /**
  * Little override of the osc.UDPPort from osc library (node).
@@ -19,20 +20,18 @@ class OSCServer{
     /**
      * Function used by the constructor to set up the listener (on ready, message and error)
      */
-    setListener(){
-        /*this.server.on("ready", function(){
-            console.log("Listening...")
-        });*/
-        this.server = new osc.UDPPort({
+    setListener(onMessageReceived){
+
+        this.oscServer = new osc.UDPPort({
             localAddress: this.localAddress,
             localPort: this.localPort
         });
 
-        this.server.on("message", function (oscMessage) {
-            console.log(oscMessage);
+        this.oscServer.on("message", function (oscMessage) {
+            self.onMessageReceived(oscMessage);
         });
 
-        this.server.on("error", function (err) {
+        this.oscServer.on("error", function (err) {
             console.log(err);
         });
 
@@ -47,7 +46,7 @@ class OSCServer{
      * @param remotePort
      */
     send(address, args, remoteAddr, remotePort){
-        this.server.send({
+        this.oscServer.send({
             address: address,
             args: args
         }, remoteAddr, remotePort);
@@ -57,7 +56,7 @@ class OSCServer{
      * Make the listener listen
      */
     listen(){
-        this.server.open();
+        this.oscServer.open();
         console.log(this.localPort + "listening");
     }
 
@@ -65,7 +64,7 @@ class OSCServer{
      * Make the listener stop listening
      */
     close(){
-        this.server.close();
+        this.oscServer.close();
     }
 
     /**
@@ -87,7 +86,7 @@ class OSCServer{
      */
     set setLocalPort(localPort){
         this.localPort = localPort;
-        this.server = new osc.UDPPort({
+        this.oscServer = new osc.UDPPort({
             localAddress: this.localAddress,
             localPort: this.localPort
         });
