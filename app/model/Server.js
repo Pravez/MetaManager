@@ -9,4 +9,4 @@ class Server{
         this.remotePort = remotePort || 0;
     }
 
-    }
+}
