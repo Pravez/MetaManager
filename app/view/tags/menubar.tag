@@ -50,7 +50,7 @@
     <script>
         const {BrowserWindow} = require('electron').remote;
         var renderer = require('./index');
-        var BluetoothServer = require('../../../model/BluetoothServer');
+        var BluetoothServer = require('../../model/BluetoothServer');
 
         //options
         this.active = opts.active;

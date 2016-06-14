@@ -5,10 +5,10 @@
 //var remote = require('electron');
 var riot = require('riot');
 var Controller = require('../app/controller/Controller');
-var Renderer = require('../app/view/tags/main/index');
-var ContextMenu = require('../app/view/tags/main/ContextMenu');
+var Renderer = require('../app/view/tags/index');
+var ContextMenu = require('../app/view/js/ContextMenu');
 var BluetoothServer = require('../app/model/BluetoothServer');
-require('../app/view/tags/main');
+require('../app/view/tags');
 
 //register the root of the app
 var path = require('path');

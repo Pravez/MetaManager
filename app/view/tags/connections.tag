@@ -23,9 +23,9 @@
     <script>
         'use strict';
 
-        var LogicalBot = require('../../../model/LogicalBot');
-        var Controller = require('../../../controller/Controller');
-        var Bot = require('../../../model/Bot');
+        var LogicalBot = require('../../model/LogicalBot');
+        var Controller = require('../../controller/Controller');
+        var Bot = require('../../model/Bot');
 
         this.text="Sandeep";
         var self = this;
