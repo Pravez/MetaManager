@@ -2,9 +2,23 @@
 
 var BluetoothSerial = require('bluetooth-serial-port');
 
+/**
+ * Set of all devices found
+ * @type {Set}
+ */
 var connectedDevices = new Set();
+
+/**
+ * Main Bluetooth serial port used by the static class and to discover.
+ * @type {*|BluetoothSerialPort}
+ */
 var mainSerial = new BluetoothSerial.BluetoothSerialPort();
 
+/**
+ * Function to find a device in an array (O(n))
+ * @param address
+ * @returns {*}
+ */
 function findDevice(address){
     for(let device of connectedDevices){
         if(device.bAddress === address){
@@ -13,8 +27,17 @@ function findDevice(address){
     }
 }
 
+/**
+ * Each connection to a device is a BluetoothDevice instance. This class is
+ * used to create and manage a connection to a bluetooth device.
+ */
 class BluetoothDevice{
 
+    /**
+     * Constructor
+     * @param address
+     * @param name
+     */
     constructor(address, name){
         this.bAddress = address;
         this.bName= name;
@@ -25,6 +48,10 @@ class BluetoothDevice{
         this.tries = 0;
     }
 
+    /**
+     * Method to initialize listeners and serial port
+     * @returns {BluetoothDevice}
+     */
     setUp(){
         this.bSerial = new BluetoothSerial.BluetoothSerialPort();
 
@@ -39,10 +66,17 @@ class BluetoothDevice{
         return this;
     }
 
+    /**
+     * Method to remove the device from a set of devices
+     */
     removeDevice(){
         connectedDevices.delete(this);
     }
 
+    /**
+     * Method to try finding a channel to connect, and if so, to try
+     * connecting the device through the found channel.
+     */
     findChannel(){
         this.tries +=1;
         var self = this;
@@ -58,12 +92,17 @@ class BluetoothDevice{
             }
         });
 
+        //TODO rework message to the view
         setTimeout(function(){
             self.connecting = false;
             document.dispatchEvent(new Event("devicesUpdate"));
         }, 1000);
     }
 
+    /**
+     * Method to connect to a device.
+     * Needs an address and a channel
+     */
     connect(){
         var self = this;
         try {
@@ -78,6 +117,10 @@ class BluetoothDevice{
         }
     }
 
+    /**
+     * Function to write data to a device
+     * @param data
+     */
     write(data){
         this.bSerial.write(new Buffer(data + "\n", 'utf-8'), function (err, bytesWritten) {
             if (err) console.log(err);
@@ -85,12 +128,21 @@ class BluetoothDevice{
     }
 }
 
+/**
+ * Static class to manages devices and discovery
+ */
 class BluetoothServer{
 
+    /**
+     * Function to discover network and find bluetooth devices
+     */
     static startDiscovery(){
         mainSerial.inquire();
     }
 
+    /**
+     * Setup function to add listener
+     */
     static setupBluetooth(){
         mainSerial.on('found', function(address, name){
             var newDevice = new BluetoothDevice(address, name);
@@ -100,10 +152,18 @@ class BluetoothServer{
         });
     }
 
+    /**
+     * Getter of the set of devices
+     * @returns {Set}
+     */
     static getDevices(){
         return connectedDevices;
     };
 
+    /**
+     * Returns an array containing connected devices
+     * @returns {Array}
+     */
     static getConnectedDevices(){
         var connected = [];
         for(let device of connectedDevices){
@@ -115,6 +175,11 @@ class BluetoothServer{
         return connected;
     }
 
+    /**
+     * Function to ask a BluetoothDevice to connect
+     * @param address
+     * @returns {*}
+     */
     static connectDevice(address){
         var device = findDevice(address);
         if(device){
@@ -126,4 +191,6 @@ class BluetoothServer{
 }
 module.exports = BluetoothServer;
 
+
+//FOR DEBUG
 connectedDevices.add(new BluetoothDevice("B8:63:BC:00:46:ED", "ROBOTIS BT-210").setUp());
