@@ -1,8 +1,9 @@
 "use strict";
 
-var BluetoothSerial = new (require('bluetooth-serial-port')).BluetoothSerialPort();
+var BluetoothSerial = require('bluetooth-serial-port');
 
 var connectedDevices = new Set();
+var mainSerial = new BluetoothSerial.BluetoothSerialPort();
 
 function findDevice(address){
     for(let device of connectedDevices){
@@ -12,14 +13,6 @@ function findDevice(address){
     }
 }
 
-var lebon = require('lebon');
-
-lebon.on('discover', function(device) {
-    console.log('New device discovered! ' + device.name);
-});
-
-
-
 class BluetoothDevice{
 
     constructor(address, name){
@@ -28,92 +21,109 @@ class BluetoothDevice{
         this.bChannel = 0;
 
         this.connected = false;
+        this.connecting = false;
+        this.tries = 0;
+    }
+
+    setUp(){
+        this.bSerial = new BluetoothSerial.BluetoothSerialPort();
+
+        this.bSerial.on('data', function(buffer) {
+            console.log(buffer.toString('utf-8'));
+        });
+
+        this.bSerial.on('finished', function() {
+            console.log('scan did finish');
+        });
+
+        return this;
     }
 
     removeDevice(){
         connectedDevices.delete(this);
     }
 
-    connect(){
+    findChannel(){
+        this.tries +=1;
         var self = this;
+        console.log("Searching");
+        this.connecting = true;
 
-        BluetoothSerial.findSerialPortChannel(this.bAddress, function(channel){
+        this.bSerial.findSerialPortChannel(this.bAddress, function(channel){
             self.bChannel = channel;
+            console.log("Channel found !" + channel);
+
+            if(self.bChannel !== 0){
+                self.connect();
+            }
         });
 
+        setTimeout(function(){
+            self.connecting = false;
+            document.dispatchEvent(new Event("devicesUpdate"));
+        }, 1000);
+    }
+
+    connect(){
+        var self = this;
         try {
-            BluetoothSerial.connect(this.bAddress, this.bChannel, function () {
+            this.bSerial.connect(this.bAddress, this.bChannel, function () {
                 console.log('connected');
-
-                BluetoothSerial.write(new Buffer('1234', 'utf-8'), function (err, bytesWritten) {
-                    if (err) console.log(err);
-                });
-
-                BluetoothSerial.on('data', function (buffer) {
-                    console.log(buffer.toString('utf-8'));
-                });
+                self.connected = true;
             }, function () {
                 console.log('cannot connect');
             });
         } catch(error){
             console.log(error);
         }
+    }
 
-        console.log(this.bChannel);
+    write(data){
+        this.bSerial.write(new Buffer(data + "\n", 'utf-8'), function (err, bytesWritten) {
+            if (err) console.log(err);
+        });
     }
 }
 
 class BluetoothServer{
 
     static startDiscovery(){
-        BluetoothSerial.inquire();
+        mainSerial.inquire();
     }
 
     static setupBluetooth(){
-        BluetoothSerial.on('found', function(address, name){
+        mainSerial.on('found', function(address, name){
             var newDevice = new BluetoothDevice(address, name);
-            connectedDevices.add(newDevice);
-            document.dispatchEvent(new Event("BTdevice"));
+            if(!findDevice(address))
+                connectedDevices.add(newDevice.setUp());
             console.log("Device found !" + address + " " + name);
         });
     }
 
     static getDevices(){
         return connectedDevices;
+    };
+
+    static getConnectedDevices(){
+        var connected = [];
+        for(let device of connectedDevices){
+            if(device.connected === true){
+                connected.push(device);
+            }
+        }
+
+        return connected;
     }
 
     static connectDevice(address){
         var device = findDevice(address);
         if(device){
-            device.connect();
+            device.findChannel();
         }
+
+        return device;
     }
-
-    //static write
 }
-
 module.exports = BluetoothServer;
 
-/*BluetoothSerial.on('found', function(address, name) {
-    BluetoothSerial.findSerialPortChannel(address, function(channel) {
-        BluetoothSerial.connect(address, channel, function() {
-            console.log('connected');
-
-            BluetoothSerial.write(new Buffer('my data', 'utf-8'), function(err, bytesWritten) {
-                if (err) console.log(err);
-            });
-
-            BluetoothSerial.on('data', function(buffer) {
-                console.log(buffer.toString('utf-8'));
-            });
-        }, function () {
-            console.log('cannot connect');
-        });
-
-        // close the connection when you're ready
-        BluetoothSerial.close();
-    }, function() {
-        console.log('found nothing');
-    });
-});
-BluetoothSerial.inquire();*/
+connectedDevices.add(new BluetoothDevice("B8:63:BC:00:46:ED", "ROBOTIS BT-210").setUp());

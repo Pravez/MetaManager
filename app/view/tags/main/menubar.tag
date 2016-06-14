@@ -21,26 +21,28 @@
                 <button class="btn btn-default btn-dropdown" onclick={ showbt }>
                     <span class="icon icon-megaphone"></span>
                 </button>
-                <table id="bt-dropdown" class="table-striped dropdown-content">
-                    <tbody>
+                <div id="bt-dropdown" class="dropdown-content">
+                    <table class="table-striped">
+                        <tbody>
                         <tr id="scanning">
-                            <td>Scanning for devices ...</td>
-                            <td></td>
-                            <td><img id="1" style="height:19px;width:19px;" src="view/resources/ring.gif"></td>
+                            <td onclick={ searchBT }>Click to scan for devices ...</td>
                         </tr>
                         <tr each={ devices } onclick={ select }>
                             <td>{bName}</td>
                             <td>{bAddress}</td>
-                            <td><img style="height:19px;width:19px;" src="view/resources/spin.gif"></td>
+                            <td>
+                                <div style="width:19px;height:15px;text-align:center;">
+                                    <span if={tries > 0 && connected && !connecting} class='icon icon-check'></span>
+                                    <span if={tries > 0 && !connected && !connecting} class='icon icon-cancel'></span>
+                                    <img if={connecting} style='height:15px;width:19px;' src='view/resources/spin.gif'>
+                                </div>
+                            </td>
                         </tr>
-                    </tbody>
-                </table>
-            </div>
+                        </tbody>
+                    </table>
+                </div>
 
-            <button class="btn btn-default" onclick= { searchBT }>
-                <span class="icon icon-home icon-text"></span>
-                BT Search
-            </button>
+            </div>
         </div>
 
     </header>
@@ -73,14 +75,15 @@
             BluetoothServer.startDiscovery();
         };
 
-        document.addEventListener('BTdevice', function(e){
+        document.addEventListener('devicesUpdate', function(e){
             self.update({devices: Array.from(BluetoothServer.getDevices())});
         });
 
         this.select = function(e){
             var address = e.currentTarget.children[1].innerHTML;
             BluetoothServer.connectDevice(address);
-        }
+            self.update({devices: Array.from(BluetoothServer.getDevices())});
+        };
     </script>
 
     <style>
@@ -101,8 +104,8 @@
             display: none;
             position: absolute;
             background-color: #f9f9f9;
-            min-width: 160px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            border:1px solid black;
         }
 
         .dropdown {
