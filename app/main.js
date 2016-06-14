@@ -54,7 +54,7 @@ app.on('activate', function () {
   }
 });
 
-var btSerial = new (require('bluetooth-serial-port')).BluetoothSerialPort();
+/*var btSerial = new (require('bluetooth-serial-port')).BluetoothSerialPort();
 
 btSerial.on('found', function(address, name) {
   btSerial.findSerialPortChannel(address, function(channel) {
@@ -78,7 +78,7 @@ btSerial.on('found', function(address, name) {
     console.log('found nothing');
   });
 });
-btSerial.inquire();
+btSerial.inquire();*/
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

@@ -4,17 +4,19 @@
   "description": "Projet for metabots",
   "main": "app/main.js",
   "scripts": {
-    "start": "electron app/main.js"
+    "start": "electron app/main.js",
+    "package": "electron-packager ./ MetaManager --all --out ./dist/MetaManager --overwrite --platform=darwin"
   },
   "author": "Pravez",
   "devDependencies": {
     "devtron": "^1.2.0",
-    "electron-prebuilt": "^1.2.0",
-    "electron": "latest"
+    "electron": "latest",
+    "electron-packager": "^7.0.3",
+    "electron-prebuilt": "^1.2.0"
   },
   "dependencies": {
     "bluetooth-serial-port": "^1.2.6",
-    "canvas": "latest",
+    "lebon": "^0.1.0",
     "osc": "^2.1.0",
     "riot": "^2.4.1"
   }

@@ -20,14 +20,12 @@
         </table>
     </div>
 
-
-
     <script>
         'use strict';
 
-        var LogicalBot = require('../../model/LogicalBot');
-        var Controller = require('../../controller/Controller');
-        var Bot = require('../../model/Bot');
+        var LogicalBot = require('../../../model/LogicalBot');
+        var Controller = require('../../../controller/Controller');
+        var Bot = require('../../../model/Bot');
 
         this.text="Sandeep";
         var self = this;
@@ -35,8 +33,7 @@
 
         this.submit = function(e){
             Controller.addBot(new LogicalBot(new Bot({name :this.name.value, position:{x:1, y:2}}), 'localhost', 10500).setUp());
-            self.bots = Controller.getBots();
-            self.update();
+            self.update({bots: Controller.getBots()});
         };
     </script>
 
