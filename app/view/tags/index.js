@@ -2,20 +2,28 @@
 
 var riot = module.parent.require('riot');
 
-require('./home.tag');
-require('./connections.tag');
-require('./menubar.tag');
-require('./scene.tag');
-require('./sceneCanvas.tag');
-require('./contextMenus.tag');
+require('./home/home.tag');
+require('./creation/creation.tag');
+require('./creation/add.tag');
+require('./creation/edit.tag');
+require('./misc/menubar.tag');
+require('./scene/scene.tag');
+require('./scene/sceneCanvas.tag');
+require('./misc/contextMenus.tag');
+require('./misc/wfooter.tag');
 
 //Windows are a map of windows composing the app
 var windows = new Map();
+var currentWindow;
 
 class Renderer {
 
     static addWindow(windowName, element){
         windows.set(windowName, document.getElementsByTagName(windowName || element)[0]);
+    }
+
+    static currentWindow(){
+        return currentWindow;
     }
 
     static showWindow(windowName){
@@ -26,6 +34,8 @@ class Renderer {
 
         //shows only the concerned
         windows.get(windowName).style.display = '';
+        currentWindow = windowName;
+        document.dispatchEvent(new Event("windowChanged"));
     }
 }
 module.exports = Renderer;

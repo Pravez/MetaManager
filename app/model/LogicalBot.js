@@ -3,6 +3,7 @@
 var Bot = require('../model/Bot');
 var OSCServer = require('../model/OSCServer');
 var ServerManager = require('../model/ServerManager');
+var Bluetooth = require('../model/BluetoothServer');
 var Server = require('../model/Server');
 
 /**
@@ -11,10 +12,10 @@ var Server = require('../model/Server');
  */
 class LogicalBot {
 
-    constructor(metabot, localAddr, localPort){
+    constructor(metabot, localAddr, localPort, bluetoothDevice){
         this.bot = metabot;
         this.oscServer = new OSCServer(localAddr, localPort);
-        this.botServer = undefined;
+        this.device = bluetoothDevice;
 
         this.onOSCMessage = Server.onOSCMessage;
     }

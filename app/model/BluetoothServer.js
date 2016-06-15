@@ -21,7 +21,7 @@ var mainSerial = new BluetoothSerial.BluetoothSerialPort();
  */
 function findDevice(address){
     for(let device of connectedDevices){
-        if(device.bAddress === address){
+        if(device.bAddress === address || device.bName === address){
             return device;
         }
     }
@@ -86,7 +86,6 @@ class BluetoothDevice{
         this.bSerial.findSerialPortChannel(this.bAddress, function(channel){
             self.bChannel = channel;
             console.log("Channel found !" + channel);
-
             if(self.bChannel !== 0){
                 self.connect();
             }
@@ -96,7 +95,7 @@ class BluetoothDevice{
         setTimeout(function(){
             self.connecting = false;
             document.dispatchEvent(new Event("devicesUpdate"));
-        }, 1000);
+        }, 5000);
     }
 
     /**
@@ -187,6 +186,10 @@ class BluetoothServer{
         }
 
         return device;
+    }
+
+    static getFromName(name){
+        return findDevice(name);
     }
 }
 module.exports = BluetoothServer;

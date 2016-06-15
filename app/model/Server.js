@@ -20,5 +20,11 @@ class Server{
 
     get bots(){ return this.logicalBots; }
 
+    findByName(name) {
+        for(let bot of this.logicalBots){
+            if(bot.bot.name === name)
+                return bot;
+        }
+    }
 }
 module.exports = Server;

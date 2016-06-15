@@ -1,15 +1,20 @@
 <menubar>
     <header class="titlebar toolbar toolbar-header">
+        <div id="act-btns" style="float:left; position:absolute;left:10px;font-size:16px;">
+            <a id="btn-close" onclick={ toggleAction }><span class="icon icon-record main-btn"></span></a>
+            <a id="btn-reduce" onclick={ toggleAction }><span class="icon icon-record main-btn" onclick={ toggleAction }></span></a>
+            <a id="btn-max" onclick={ toggleAction }><span class="icon icon-record main-btn" ></span></a>
+        </div>
         <h1 class="title">MetaManager</h1>
 
         <!-- Actions to change windows -->
-        <div class="toolbar-actions">
+        <div class="toolbar-actions" style="margin-left:20%;">
             <div class="btn-group">
-                <button id="home" class="btn btn-default" onclick={ show }>
+                <button id="home" class="btn btn-default active" onclick={ show }>
                     <span class="icon icon-home"></span>
                 </button>
-                <button id="connections" class="btn btn-default" onclick={ show } >
-                    <span class="icon icon-rss"></span>
+                <button id="creation" class="btn btn-default" onclick={ show } >
+                    <span class="icon icon-network"></span>
                 </button>
                 <button id="scene" class="btn btn-default" onclick={ show }>
                     <span class="icon icon-note-beamed"></span>
@@ -48,14 +53,34 @@
     </header>
 
     <script>
-        const {BrowserWindow} = require('electron').remote;
-        var renderer = require('./index');
-        var BluetoothServer = require('../../model/BluetoothServer');
+        const remote = require('electron').remote;
+        var renderer = require('./../index');
+        var BluetoothServer = require('../../../model/BluetoothServer');
 
         //options
         this.active = opts.active;
         this.devices = opts.devices;
         var self = this;
+
+
+        this.toggleAction = function(e){
+            var window = remote.getCurrentWindow();
+            switch(e.currentTarget.id){
+                case "btn-close":
+                    window.close();
+                    break;
+                case "btn-reduce":
+                    window.minimize();
+                    break;
+                case "btn-max":
+                    if (!window.isMaximized()) {
+                        window.maximize();
+                    } else {
+                        window.unmaximize();
+                    }
+                    break;
+            }
+        };
 
         //Functions for buttons
         this.show = function(e){
@@ -88,9 +113,43 @@
 
     <style>
 
+        #btn-close span{
+            color:#fc605b;
+        }
+
+        #btn-reduce span{
+            color:#fdbc40;
+        }
+
+        #btn-max span{
+            color:#34c84a;
+        }
+
+        #btn-close:hover span{
+            color:#C15A56;
+        }
+
+        #btn-reduce:hover span{
+            color:#CC8C3F;
+        }
+
+        #btn-max:hover span{
+            color:#339D49;
+        }
+
+        .main-btn{
+            margin-left:3px;
+        }
+
         img{
             -webkit-user-select: none;
             pointer-events: none;
+        }
+
+        #act-btns{
+            -webkit-user-select: none;
+            -webkit-app-region: no-drag;
+            z-index:2;
         }
 
         .titlebar {
@@ -117,6 +176,9 @@
             display:block;
         }
 
-        .show {display:block;}
+        .show {
+            display:block;
+            z-index:50;
+        }
     </style>
 </menubar>

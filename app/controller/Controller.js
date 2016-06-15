@@ -22,5 +22,9 @@ class Controller {
     static addBot(bot){
         MetaServer.addLogicalBot(bot);
     }
+
+    static findByName(name){
+        return MetaServer.findByName(name);
+    }
 }
 module.exports = Controller;
