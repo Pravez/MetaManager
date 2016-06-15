@@ -46,16 +46,22 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
+
+            <!-- Specific buttons -->
+            <div if={ Renderer.currentWindow() === "creation" } class="pull-right" style="margin-right:150px;">
+                <button class="btn btn-primary bottom-right" onclick="Creation.changePane('addBot');">Add a bot</button>
+            </div>
+
         </div>
 
     </header>
 
     <script>
         const remote = require('electron').remote;
-        var renderer = require('./../index');
+        var Renderer = require('./../index');
         var BluetoothServer = require('../../../model/BluetoothServer');
+        var Creation = require('../../js/Creation');
 
         //options
         this.active = opts.active;
@@ -87,7 +93,7 @@
             document.getElementById(self.active).classList.remove("active");
             self.active = e.currentTarget.id;
             e.currentTarget.classList.add("active");
-            renderer.showWindow(e.currentTarget.id);
+            Renderer.showWindow(e.currentTarget.id);
         };
 
         this.showbt = function(e){

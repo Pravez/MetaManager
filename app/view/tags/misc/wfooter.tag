@@ -1,6 +1,8 @@
 <wfooter>
     <footer class="toolbar toolbar-footer">
-        <h1 class="title">{ name }</h1>
+        <div class="toolbar-actions">
+            <h1 class="title">{ name }</h1>
+        </div>
     </footer>
 
     <script>
@@ -13,4 +15,7 @@
             self.update({name: Renderer.currentWindow()});
         })
     </script>
+
+    <style>
+    </style>
 </wfooter>

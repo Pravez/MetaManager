@@ -1,8 +1,14 @@
 <add>
     <form class="padded-less">
-        <div class="form-group">
-            <label>Email address</label>
-            <input type="email" class="form-control" placeholder="Email">
+        <div class="form-group col-md-6">
+            <label>Name of the bot</label>
+            <input type="text" class="form-control" placeholder="Name">
+            <label>Starting position (x, y, z)</label>
+            <input type="number" class="form-control" placeholder="x">
+            <input type="number" class="form-control" placeholder="y">
+            <input type="number" class="form-control" placeholder="z">
+            <label>Name of the bot</label>
+            <input type="text" class="form-control" placeholder="Name">
         </div>
         <div class="form-group">
             <label>Password</label>
@@ -49,4 +55,8 @@
             <button type="submit" class="btn btn-form btn-primary">OK</button>
         </div>
     </form>
+
+    <script>
+        var Controller = require('../../../controller/Controller');
+    </script>
 </add>
