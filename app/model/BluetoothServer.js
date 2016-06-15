@@ -94,8 +94,11 @@ class BluetoothDevice{
         //TODO rework message to the view
         setTimeout(function(){
             self.connecting = false;
-            document.dispatchEvent(new Event("devicesUpdate"));
-        }, 5000);
+            if(self.connected === false) {
+                document.dispatchEvent(new Event("devicesUpdate"));
+                console.log("Timed out to connect");
+            }
+        }, 7500);
     }
 
     /**
@@ -108,6 +111,8 @@ class BluetoothDevice{
             this.bSerial.connect(this.bAddress, this.bChannel, function () {
                 console.log('connected');
                 self.connected = true;
+                self.connecting = false;
+                document.dispatchEvent(new Event("devicesUpdate"));
             }, function () {
                 console.log('cannot connect');
             });
@@ -188,7 +193,7 @@ class BluetoothServer{
         return device;
     }
 
-    static getFromName(name){
+    static getFromNameOrAddress(name){
         return findDevice(name);
     }
 }

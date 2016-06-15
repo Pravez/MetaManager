@@ -106,8 +106,10 @@
 
         this.select = function(e){
             var address = e.currentTarget.children[1].innerHTML;
-            BluetoothServer.connectDevice(address);
-            self.update({devices: Array.from(BluetoothServer.getDevices())});
+            if(BluetoothServer.getFromNameOrAddress(address).connected === false) {
+                BluetoothServer.connectDevice(address);
+                self.update({devices: Array.from(BluetoothServer.getDevices())});
+            }
         };
     </script>
 

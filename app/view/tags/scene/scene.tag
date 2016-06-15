@@ -16,7 +16,7 @@
 
         var self = this;
         this.sendCmd = function(e){
-            var device = Bluetooth.getFromName(self.dname.value);
+            var device = Bluetooth.getFromNameOrAddress(self.dname.value);
             device.write(self.cmd.value);
             return false;
         };
