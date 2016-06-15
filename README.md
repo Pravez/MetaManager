@@ -10,3 +10,4 @@ First be sure to have NodeJS and Npm installed on your computer : `sudo apt-get 
 To run the app : `npm install && npm start`
 
 If you want to send OSC Messages, be careful : problem with node OSC. Line 72 osc-transport.js, need to convert the Uint8Array to Buffer.
+Concerning bluetooth, the version 1.2.x of Electron-prebuilt is making serial-port library a nightmare. So you can't use version 1.2.x until it is fixed.
