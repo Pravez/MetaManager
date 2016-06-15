@@ -3,7 +3,7 @@
         <div class="pane pane-sm sidebar">
             <ul class="list-group">
                 <li class="list-group-header">
-                    <input class="form-control" type="text" placeholder="Search for someone">
+                    <input name="search" class="form-control" type="search" placeholder="Search for someone" oninput={ searchBot }>
                 </li>
                 <li class="list-group-item" each={ bots } onclick={ selectItem }>
                     <div class="media-body">
@@ -40,6 +40,10 @@
         var self = this;
         this.bots = opts.bots;
 
+        this.searchBot = function (e){
+            self.update({bots: Creation.searchByNameOrAddress(self.search.value)});
+        };
+
         this.submit = function(e){
             Controller.addBot(new LogicalBot(new Bot({name :this.name.value, position:{x:1, y:2}}), 'localhost', 10500).setUp());
             self.update({bots: Controller.getBots()});
@@ -47,8 +51,7 @@
 
         this.selectItem = function(e){
             var bot = Controller.findByName(e.currentTarget.children[0].children[0].innerHTML);
-            this.bot_detail = bot.bot.name;
-            self.editTag._tag.update();
+            self.editTag._tag.update({bot: bot});
             Creation.changePane("editBot");
         }
     </script>
