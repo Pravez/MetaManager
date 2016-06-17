@@ -59,8 +59,7 @@
     <script>
         var Controller = require('../../../controller/Controller');
         var Bluetooth = require('../../../model/BluetoothManager');
-        var Bot = require('../../../model/Entity');
-        var OSCServer = require('../../../model/OSCManager');
+        var Creation = require('../../js/Creation');
         const {shell} = require('electron');
         var self = this;
 
@@ -73,9 +72,31 @@
                 alert('Port already taken');
             }*/
 
-            var newBot = new Bot({name: this.name, size: this.size, circumference: this.circumference, legs: this.legs, position: {x: this.x, y:this.y, z: this.z}});
-            /*var deviceAddress =
-            Controller.addBot(new LogicalBot(newBot, this.address, this.port, this.bDevice.value.split('-')))*/
+            var options = {
+                robot:{
+                    name: self.name,
+                    size: self.size,
+                    legs: self.legs,
+                    circumference: self.circumference,
+                    position:{
+                        x: self.x,
+                        y: self.y,
+                        z: self.z
+                    }
+                },
+                osc:{
+                    address: self.address,
+                    port: self.port
+                },
+                bluetooth:{
+                    bluetoothDevice: Bluetooth.getFromNameOrAddress(self.bDevice)
+                }
+            };
+
+            Controller.addEntity(options);
+            self.createBot.reset();
+            self.update();
+            document.dispatchEvent(new Event('addedEntity'));
         };
 
         this.openInBrowser = function(e) {

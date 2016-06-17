@@ -4,12 +4,9 @@
         <div class="col-md-6">
             <ul class="bot-data">
                 <li>
-                    <strong>Name</strong>:
-                    <span>{bot.bot.name}</span>
-                </li>
-                <li>
-                    <strong>Size</strong>:
-                    <span>{bot.bot.size}</span>
+                    <label> Name
+                        <input name="name" type="text">
+                    </label>
                 </li>
             </ul>
 
@@ -18,7 +15,6 @@
 
     <script>
         var Controller = require('../../../controller/Controller');
-        var $ = require('jquery');
 
         var self = this;
 
@@ -37,6 +33,13 @@
             e.currentTarget.parentNode.replaceChild(span, e.currentTarget);
             span.addEventListener("click", self.switchToInput);
         };
+
+        this.on('update', function(e){
+            if(e){
+                self.name.value = e.entity.robot.name;
+
+            }
+        });
     </script>
 
     <style>

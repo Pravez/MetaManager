@@ -24,7 +24,7 @@ class Controller{
     }
 
     static getEntity(id){
-        MetaManager.getEntity(id);
+        return MetaManager.getEntity(id);
     }
     
     static enableEntityDevice(id){

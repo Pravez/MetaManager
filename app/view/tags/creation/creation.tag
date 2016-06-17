@@ -44,10 +44,13 @@
         };
 
         this.selectItem = function(e){
-            var bot = Controller.findByName(e.currentTarget.children[0].children[0].innerHTML);
-            self.editTag._tag.update({bot: bot});
+            self.editTag._tag.update({entity: Controller.getEntity(this.id)});
             Creation.changePane("editBot");
         }
+
+        document.addEventListener("addedEntity", function(e){
+            self.update({entities: Controller.getEntities()});
+        })
     </script>
 
     <style>
