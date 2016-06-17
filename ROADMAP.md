@@ -17,7 +17,7 @@
 
 ###### Version 0.2.0 - Communication with Bots 
 * Create communication with metabots (and bots in general)
-* Do a some tests for the communication
+* Do some tests for the communication
 * Print in app results of communication (interaction with RiotJS)
 
 ###### Version 0.1.0 - Electron app and communication with i-score
