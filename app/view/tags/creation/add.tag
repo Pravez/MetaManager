@@ -58,10 +58,9 @@
 
     <script>
         var Controller = require('../../../controller/Controller');
-        var Bluetooth = require('../../../model/BluetoothServer');
-        var Bot = require('../../../model/Bot');
-        var OSCServer = require('../../../model/OSCServer');
-        var LogicalBot = require('../../../model/LogicalBot');
+        var Bluetooth = require('../../../model/BluetoothManager');
+        var Bot = require('../../../model/Entity');
+        var OSCServer = require('../../../model/OSCManager');
         const {shell} = require('electron');
         var self = this;
 
@@ -70,9 +69,9 @@
 
         this.verify = function(e){
             //TODO something with lastValue
-            if(self.port <= 1024 || (Controller.isPortTaken(self.port))){
+            /*if(self.port <= 1024 || (Controller.isPortTaken(self.port))){
                 alert('Port already taken');
-            }
+            }*/
 
             var newBot = new Bot({name: this.name, size: this.size, circumference: this.circumference, legs: this.legs, position: {x: this.x, y:this.y, z: this.z}});
             /*var deviceAddress =

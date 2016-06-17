@@ -39,16 +39,7 @@ class Creation{
     }
 
     static searchByNameOrAddress(value){
-        var devices = Controller.getBots();
-        var found = [];
-        var re = new RegExp(value, "i");
-        for(let device of devices){
-            //TODO end this with mac address
-            if(device.bot.name.match(re))
-                found.push(device);
-        }
-
-        return found.sort();
+        return Controller.findDevicesByRegexp(new RegExp(value, "i"));
     }
 
 }

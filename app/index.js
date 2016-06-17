@@ -7,7 +7,6 @@ var riot = require('riot');
 var Controller = require('../app/controller/Controller');
 var Renderer = require('../app/view/tags/index');
 var ContextMenu = require('../app/view/js/ContextMenu');
-var BluetoothServer = require('../app/model/BluetoothServer');
 var Creation = require('../app/view/js/Creation');
 require('../app/view/tags');
 
@@ -15,10 +14,12 @@ require('../app/view/tags');
 var path = require('path');
 global.appRoot = path.resolve(__dirname);
 
+console.log(Controller.getEntities());
+
 //Here we mount every single tag
 riot.mount('menubar', {active: "home"});
 riot.mount('home');
-riot.mount('creation', {bots: Controller.getBots(), devices: []});
+riot.mount('creation', {entities: Controller.getEntities(), devices: []});
 riot.mount('scene', {sec: "prout"});
 riot.mount('contextMenus');
 riot.mount('wfooter');

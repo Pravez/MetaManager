@@ -14,7 +14,7 @@
     </form>
 
     <script>
-        var Bluetooth = require('../../../model/BluetoothServer');
+        var Bluetooth = require('../../../model/BluetoothManager');
 
         var devices = new Map();
 
@@ -22,16 +22,16 @@
 
         this.sendCmd = function(e){
             for(let d of devices.keys()){
-                Bluetooth.getFromNameOrAddress(devices.get(d)).write(self.cmd.value);
+                Bluetooth.getFromNameOrAddress(devices.get(d)).send(self.cmd.value);
             }
             return false;
         };
 
         toggle(e) {
-            if(devices.has(e.item.bAddress) === false){
-                devices.set(e.item.bAddress, e.item.bName);
+            if(devices.has(e.item.address) === false){
+                devices.set(e.item.address, e.item.name);
             }else{
-                devices.delete(e.item.bAddress);
+                devices.delete(e.item.address);
             }
         }
 

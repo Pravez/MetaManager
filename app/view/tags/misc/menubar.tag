@@ -33,8 +33,8 @@
                             <td onclick={ searchBT }>Click to scan for devices ...</td>
                         </tr>
                         <tr each={ devices } onclick={ select }>
-                            <td>{bName}</td>
-                            <td>{bAddress}</td>
+                            <td>{name}</td>
+                            <td>{address}</td>
                             <td>
                                 <div style="width:19px;height:15px;text-align:center;">
                                     <span if={tries > 0 && connected && !connecting} class='icon icon-check'></span>
@@ -60,7 +60,7 @@
     <script>
         const remote = require('electron').remote;
         var Renderer = require('./../index');
-        var BluetoothServer = require('../../../model/BluetoothServer');
+        var BluetoothManager = require('../../../model/BluetoothManager');
         var Creation = require('../../js/Creation');
 
         //options
@@ -97,24 +97,24 @@
         };
 
         this.showbt = function(e){
-            self.update({devices: Array.from(BluetoothServer.getDevices())});
+            self.update({devices: Array.from(BluetoothManager.getDevices())});
             document.getElementById("bt-dropdown").classList.toggle("show");
             document.getElementById("scanning").classList.toggle("show");
         };
 
         this.searchBT = function(e){
-            BluetoothServer.startDiscovery();
+            BluetoothManager.startDiscovery();
         };
 
         document.addEventListener('devicesUpdate', function(e){
-            self.update({devices: Array.from(BluetoothServer.getDevices())});
+            self.update({devices: Array.from(BluetoothManager.getDevices())});
         });
 
         this.select = function(e){
             var address = e.currentTarget.children[1].innerHTML;
-            if(BluetoothServer.getFromNameOrAddress(address).connected === false) {
-                BluetoothServer.connectDevice(address);
-                self.update({devices: Array.from(BluetoothServer.getDevices())});
+            if(BluetoothManager.getFromNameOrAddress(address).connected === false) {
+                BluetoothManager.connectDevice(address);
+                self.update({devices: Array.from(BluetoothManager.getDevices())});
             }
         };
     </script>

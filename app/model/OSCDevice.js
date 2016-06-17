@@ -1,34 +1,49 @@
 "use strict";
+
 var osc = require('osc');
-var Server = require('../model/Server');
 
 /**
  * Little override of the osc.UDPPort from osc library (node).
  */
-class OSCServer{
+class OSCDevice{
 
     /**
-     * Constructs the listener (UDPPort)
-     * @param localAddress Where it will be listening
-     * @param localPort the port of the listener
+     * Nothing
      */
-    constructor(localAddress, localPort){
-        this.localAddress = localAddress;
-        this.localPort = localPort;
+    constructor(){
+        this.address = "127.0.0.1";
+        this.port = 9999;
+
+    }
+
+    /**
+     * To construct the OSCDevice
+     * @param options
+     * @returns {*}
+     */
+    setUp(options) {
+        if(options) {
+            this.address = options.address;
+            this.port = options.port;
+
+            return this.setListener();
+        }else{
+            return undefined;
+        }
     }
 
     /**
      * Function used by the constructor to set up the listener (on ready, message and error)
      */
-    setListener(onMessageReceived){
+    setListener(){
 
         this.oscServer = new osc.UDPPort({
-            localAddress: this.localAddress,
-            localPort: this.localPort
+            localAddress: this.address,
+            localPort: this.port
         });
 
         this.oscServer.on("message", function (oscMessage) {
-            self.onMessageReceived(oscMessage);
+            console.log(oscMessage);
         });
 
         this.oscServer.on("error", function (err) {
@@ -68,23 +83,11 @@ class OSCServer{
     }
 
     /**
-     * Getter of localPort
-     * @returns {*}
-     */
-    get getLocalPort(){ return this.localPort }
-
-    /**
-     * Getter of localAddress
-     * @returns {*}
-     */
-    get getLocalAddr(){ return this.localAddress }
-
-    /**
      * Setter of localPort, and generates a new osc.UDPPort each time
      * the localPort value is changed.
      * @param localPort
      */
-    set setLocalPort(localPort){
+    setLocalPort(localPort){
         this.localPort = localPort;
         this.oscServer = new osc.UDPPort({
             localAddress: this.localAddress,
@@ -93,4 +96,4 @@ class OSCServer{
         this.setListener();
     }
 }
-module.exports = OSCServer;
+module.exports = OSCDevice;

@@ -19,15 +19,22 @@ class Vector3 {
     }
 }
 
-class Bot {
-    constructor(options) {
+class Robot{
+
+    constructor(){
+        this.name = "Jabberwockie"
+    }
+
+    setUp(options){
         if(options){
-            this.name = options.name || "A random name";
-            this.position = new Vector3(options.position);
-            this.size = options.size || 0;
-            this.circumference = options.circumference || 0;
-            this.numberOfLegs = options.numberOfLegs || 0;
+
+            this.name = options.name;
+
+            return this;
+        }else{
+            return undefined;
         }
     }
+
 }
-module.exports = Bot;
+module.exports = Robot;

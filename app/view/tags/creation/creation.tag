@@ -3,12 +3,12 @@
         <div class="pane pane-sm sidebar">
             <ul class="list-group">
                 <li class="list-group-header">
-                    <input name="search" class="form-control" type="search" placeholder="Search for someone" oninput={ searchBot }>
+                    <input name="search" class="form-control" type="search" placeholder="Search for a robot" oninput={ searchBot }>
                 </li>
-                <li class="list-group-item" each={ bots } onclick={ selectItem }>
+                <li class="list-group-item" each={ entities } onclick={ selectItem }>
                     <div class="media-body">
-                        <strong>{ bot.name }</strong>
-                        <p>{ device.bAddress }</p>
+                        <strong>{ robot.name }</strong>
+                        <p>{ device.bluetoothDevice.address }</p>
                     </div>
                 </li>
             </ul>
@@ -17,7 +17,7 @@
             <div id="nothing">
                 <div style="margin:0 auto;">
                     <p>Nothing there !</p>
-                    <button class="btn btn-large btn-default" onclick="Creation.changePane('addBot');" >Add a bot</button>
+                    <button class="btn btn-large btn-default" onclick="Creation.changePane('addBot');" >Add an Entity</button>
                 </div>
             </div>
             <div id="addBot">
@@ -32,16 +32,15 @@
     <script>
         'use strict';
 
-        var LogicalBot = require('../../../model/LogicalBot');
         var Controller = require('../../../controller/Controller');
-        var Bot = require('../../../model/Bot');
+        var Bot = require('../../../model/Entity');
         var Creation = require('../../js/Creation');
 
         var self = this;
-        this.bots = opts.bots;
+        this.entities = opts.entities;
 
         this.searchBot = function (e){
-            self.update({bots: Creation.searchByNameOrAddress(self.search.value)});
+            self.update({entities: Creation.searchByNameOrAddress(self.search.value)});
         };
 
         this.selectItem = function(e){
