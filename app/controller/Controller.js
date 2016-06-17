@@ -26,5 +26,15 @@ class Controller {
     static findByName(name){
         return MetaServer.findByName(name);
     }
+
+    static isPortTaken(port){
+        for(let bot of MetaServer.bots){
+            if(port === bot.oscServer.getLocalPort){
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
 module.exports = Controller;

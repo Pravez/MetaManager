@@ -1,3 +1,8 @@
-input{
+input, textarea, select{
     transition: 0.2s;
+}
+
+input, select{
+    width:auto;
+    height:auto;
 }

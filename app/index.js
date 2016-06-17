@@ -33,7 +33,7 @@ Renderer.showWindow("home");
 Creation.addPane(document.getElementById("addBot"), "addBot");
 Creation.addPane(document.getElementById("editBot"), "editBot");
 Creation.addPane(document.getElementById("nothing"), "nothing");
-Creation.changePane("nothing");
+Creation.setCurrentPane("nothing");
 
 //BluetoothServer.startDiscovery();
 

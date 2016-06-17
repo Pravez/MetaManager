@@ -44,11 +44,6 @@
             self.update({bots: Creation.searchByNameOrAddress(self.search.value)});
         };
 
-        this.submit = function(e){
-            Controller.addBot(new LogicalBot(new Bot({name :this.name.value, position:{x:1, y:2}}), 'localhost', 10500).setUp());
-            self.update({bots: Controller.getBots()});
-        };
-
         this.selectItem = function(e){
             var bot = Controller.findByName(e.currentTarget.children[0].children[0].innerHTML);
             self.editTag._tag.update({bot: bot});

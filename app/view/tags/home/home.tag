@@ -1,5 +1,5 @@
 <home>
-    <h1>HEY</h1>
+    <h1>This app is an app</h1>
 
     <script>
 

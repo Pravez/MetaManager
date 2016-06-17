@@ -564,6 +564,8 @@ h6 {
   margin-right: 4px;
 }
 
+/*
+
 label {
   display: inline-block;
   font-size: 13px;
@@ -636,7 +638,7 @@ textarea {
 }
 .form-actions .btn:last-child {
   margin-right: 0;
-}
+}*/
 
 .pane-group {
   position: absolute;
