@@ -7,6 +7,11 @@ var entities = new Map();
 
 class MetaManager{
 
+    /**
+     * To add an entity
+     * @param options
+     * @returns {Entity}
+     */
     static addEntity(options){
         var ent = new Entity(auto_incr_key);
         if(options.robot){
@@ -21,6 +26,11 @@ class MetaManager{
         return ent;
     }
 
+    /**
+     * To remove an entity with a certain ID
+     * @param id
+     * @returns {boolean}
+     */
     static removeEntity(id){
         var entity = entities.get(id);
         entity.stopDevices();

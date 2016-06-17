@@ -9,17 +9,30 @@ BluetoothManager.setupBluetooth();
 
 class Device{
 
+    /**
+     * Constructor
+     */
     constructor(){
         this.bluetoothDevice = undefined;
         this.oscDevice = new OSCDevice();
         //this.xbeeDevice = new XbeeDevice();
     }
 
+    /**
+     * The setter of bluetooth, to which we just give a pre-created BluetoothDevice 
+     * @param options
+     * @returns {device|{osc}|*|Device}
+     */
     setUpBluetooth(options){
         return this.bluetoothDevice = options.device;
         //return this.bluetoothDevice.setUp(options);
     }
 
+    /**
+     * Sets up OSC device, need an address and a port to listen
+     * @param options
+     * @returns {*}
+     */
     setUpOSC(options){
         return this.oscDevice.setUp(options);
     }
@@ -31,6 +44,10 @@ class Device{
 
     }
 
+    /**
+     * Function to enable a device. Cannot enable a bluetooth device because located and managed elsewhere.
+     * Tries to enable OSC device and changes the port if it's not the good one.
+     */
     enable(){
         //Enabling bluetooth device
         /*this.bluetoothDevice.findChannelAndConnect();
@@ -47,6 +64,9 @@ class Device{
         this.oscDevice.listen();
     }
 
+    /**
+     * Disconnects and closes devices
+     */
     disable(){
         this.bluetoothDevice.disconnect();
         this.oscDevice.close();

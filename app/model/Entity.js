@@ -12,10 +12,20 @@ class Entity {
         this.id = id;
     }
 
+    /**
+     * To set up a robot, needs at least a name
+     * @param options
+     * @returns {*}
+     */
     setUpRobot(options) {
         return this.robot.setUp(options);
     }
 
+    /**
+     * To set up a device, needs a BluetoothDevice for bluetooth, and an address and a port for OSCDevice
+     * @param options
+     * @returns {Device}
+     */
     setUpDevice(options) {
         if (options.bluetooth) {
             this.device.setUpBluetooth(options.bluetooth);
@@ -30,10 +40,16 @@ class Entity {
         return this.device;
     }
 
+    /**
+     * To enable a device
+     */
     enableDevice() {
         this.device.enable();
     }
 
+    /**
+     * To disable a device
+     */
     disableDevice() {
         this.device.disable();
     }

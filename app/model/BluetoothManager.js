@@ -41,10 +41,18 @@ class BluetoothManager{
         document.dispatchEvent(new Event('devicesUpdate'));
     }
 
+    /**
+     * To add a device
+     * @param device
+     */
     static addDevice(device){
         devices.add(device);
     }
 
+    /**
+     * To remove a device
+     * @param device
+     */
     static removeDevice(device){
         devices.delete(device);
     }
@@ -98,6 +106,11 @@ class BluetoothManager{
         return connected;
     }
 
+    /**
+     * To search a device when knowing its name or address
+     * @param name
+     * @returns {*}
+     */
     static getFromNameOrAddress(name){
         return findDevice(name);
     }
