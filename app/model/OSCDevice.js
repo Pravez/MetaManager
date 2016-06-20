@@ -14,6 +14,7 @@ class OSCDevice{
         this.address = "127.0.0.1";
         this.port = 9999;
 
+        this.isListening = false;
     }
 
     /**
@@ -23,8 +24,8 @@ class OSCDevice{
      */
     setUp(options) {
         if(options) {
-            this.address = options.address;
-            this.port = options.port;
+            this.address = options.address || this.address;
+            this.port = options.port || this.port;
 
             return this.setListener();
         }else{
@@ -72,7 +73,7 @@ class OSCDevice{
      */
     listen(){
         this.oscServer.open();
-        console.log(this.port + "listening");
+        this.isListening = true;
     }
 
     /**
@@ -80,6 +81,7 @@ class OSCDevice{
      */
     close(){
         this.oscServer.close();
+        this.isListening = false;
     }
 
     /**

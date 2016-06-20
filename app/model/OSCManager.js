@@ -1,5 +1,6 @@
 "use strict";
 var OSCDevice = require('../model/OSCDevice');
+
 /**
  * An object containing a map and an array (map for mapping enabled server to port,
  * array for each wrong other server).
@@ -57,7 +58,7 @@ class OSCManager {
         if(newPort === device.port){
             do {
                 newPort = newPort + 1;
-            }while(device.enabled.has(newPort));
+            }while(devices.enabled.has(newPort));
         }
 
         device.port = newPort;
@@ -87,31 +88,24 @@ class OSCManager {
      */
     static disableDevice(device){
         this.removeDevice(device);
-        device.disabled.push(device);
+        devices.disabled.push(device);
+
+        return device;
     }
 
     /**
      * Function to handle an error
-     * @param log
+     * @param address
+     * @param port
      */
-    static handleOSCError(log) {
+    static handleOSCError(address, port) {
+        if (devices.enabled.has(parseInt(port))) {
+            var device = OSCManager.disableDevice(devices.enabled.get(parseInt(port)));
+            device.isListening = false;
+            devices.enabled.set(parseInt(port), new OSCDevice(address, parseInt(port)));
+            OSCManager.enableDevice(OSCManager.changeDevicePort(device));
 
-        //Find the port
-        var address = log.match(/\d+\.\d+\.\d+\.\d+:\d+/gi);
-
-        //Disable server listening on the port
-        address.forEach(function (e) {
-            var port = e.split(':')[1];
-            if (devices.enabled.has(parseInt(port))) {
-                OSCManager.disableDevice(devices.enabled.get(parseInt(port)));
-                devices.enabled.set(parseInt(port), new OSCDevice(e.split(':')[0], parseInt(port)));
-            }
-        });
-
-
-        devices.disabled.forEach(function (e) {
-            OSCManager.enableDevice(OSCManager.changeDevicePort(e));
-        });
+        }
     }
 
     static get getServers() { return servers }
@@ -121,12 +115,12 @@ module.exports = OSCManager;
 /**
  * The window on error event, permits to catch any normally uncaught exception
  */
-window.addEventListener('error', function (evt) {
+process.on('uncaughtException', function (error) {
 
-    console.log("Caught error [ via 'error' event ]  :'" + evt.message + "' from " + evt.filename + ":" + evt.lineno);
+    console.log("Caught error : \n" + error.stack);
 
-    if(evt.message.search("EADDRINUSE") != -1){
-        OSCManager.handleOSCError(evt.message);
+    if(error.code === "EADDRINUSE"){
+        OSCManager.handleOSCError(error.address, error.port);
     }
 
 });

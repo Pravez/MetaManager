@@ -57,11 +57,15 @@ class Device{
         try{
             OSCManager.addDevice(this.oscDevice);
         }catch (error){
-            console.log("Port already taken");
             OSCManager.addDevice(OSCManager.changeDevicePort(this.oscDevice));
+            this.oscDevice.refresh();
         }
         //And making it listening
         this.oscDevice.listen();
+    }
+
+    isOSCListening(){
+        return this.oscDevice.oscServer.isListening;
     }
 
     /**
