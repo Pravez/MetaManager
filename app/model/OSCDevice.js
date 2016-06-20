@@ -72,7 +72,7 @@ class OSCDevice{
      */
     listen(){
         this.oscServer.open();
-        console.log(this.localPort + "listening");
+        console.log(this.port + "listening");
     }
 
     /**
@@ -90,10 +90,25 @@ class OSCDevice{
     setLocalPort(localPort){
         this.localPort = localPort;
         this.oscServer = new osc.UDPPort({
-            localAddress: this.localAddress,
-            localPort: this.localPort
+            localAddress: this.address,
+            localPort: this.port
         });
         this.setListener();
+    }
+
+    refresh(){
+        this.oscServer = new osc.UDPPort({
+            localAddress: this.address,
+            localPort: this.port
+        });
+        this.setListener();
+    }
+
+    modify(osc) {
+        this.address = osc.address || this.address;
+        this.port = osc.port || this.port;
+
+        this.refresh();
     }
 }
 module.exports = OSCDevice;

@@ -50,7 +50,7 @@
 
             <!-- Specific buttons -->
             <div if={ Renderer.currentWindow() === "creation" } class="pull-right" style="margin-right:150px;">
-                <button class="btn btn-primary bottom-right" onclick="Creation.changePane('addBot');">Add a bot</button>
+                <button class="btn btn-primary bottom-right" onclick="Creation.changePane('addBot');">Create an entity</button>
             </div>
 
         </div>

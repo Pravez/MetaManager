@@ -18,6 +18,10 @@ class Controller{
     static addEntity(options){
         MetaManager.addEntity(options);
     }
+
+    static modifyEntity(entity, options){
+        entity.modify(options);
+    }
     
     static getEntities(){
         return MetaManager.getEntities();

@@ -110,5 +110,10 @@ class BluetoothDevice{
             if (err) console.log(err);
         });
     }
+
+    modify(bluetooth){
+        this.serial.close();
+        this.setUp(bluetooth);
+    }
 }
 module.exports = BluetoothDevice;

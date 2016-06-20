@@ -36,5 +36,9 @@ class Robot{
         }
     }
 
+    modify(options){
+        this.name = options.name || this.name;
+    }
+
 }
 module.exports = Robot;

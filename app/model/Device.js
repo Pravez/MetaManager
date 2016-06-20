@@ -71,5 +71,14 @@ class Device{
         this.bluetoothDevice.disconnect();
         this.oscDevice.close();
     }
+
+    modify(osc, bluetooth) {
+        if(osc){
+            this.oscDevice.modify(osc);
+        }
+        if(bluetooth){
+            this.bluetoothDevice = bluetooth.bluetoothDevice || this.bluetoothDevice;
+        }
+    }
 }
 module.exports = Device;

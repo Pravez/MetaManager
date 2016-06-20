@@ -4,11 +4,11 @@
             <strong>Bot characteristics</strong>
             <div class="row">
                 <div class="col-xs-6">
-                    <label>Name of the bot</label>
+                    <label>Name of the robot</label>
                     <input name="name" type="text" class="form-control" placeholder="name" required>
                 </div>
                 <div class="col-xs-6">
-                    <label>Size of the bot</label>
+                    <label>Size of the robot</label>
                     <input name="size" type="number" class="form-control" placeholder="53, 162, 13 ..." required>
                 </div>
             </div>
@@ -40,7 +40,7 @@
         <div class="form-group col-md-5 col-md-offset-1">
             <strong>Bluetooth Communication</strong>
             <div class="row">
-                <label class="col-xs-12"> Available devices </label>
+                <label class="col-xs-12"> Available devices</label>
                 <div class="col-xs-12">
                     <select name="bDevice" class="form-control" required>
                         <option selected>none</option>
@@ -51,7 +51,7 @@
         </div>
         <div class="form-actions col-md-6 col-md-offset-2" style="text-align:center;margin-top:30px;">
             <button type="submit" class="btn btn-large btn-form btn-default" onclick={ resetForm } >Reset</button>
-            <button type="submit" class="btn btn-large btn-form btn-primary" onclick={ verify } >Create bot !</button>
+            <button type="submit" class="btn btn-large btn-form btn-primary" onclick={ verify } >Create entity !</button>
         </div>
 
     </form>
@@ -63,40 +63,44 @@
         const {shell} = require('electron');
         var self = this;
 
-        this.lastValue = -1;
         this.devices = Array.from(Bluetooth.getDevices());
+
 
         this.verify = function(e){
             //TODO something with lastValue
             /*if(self.port <= 1024 || (Controller.isPortTaken(self.port))){
                 alert('Port already taken');
             }*/
-
-            var options = {
-                robot:{
-                    name: self.name,
-                    size: self.size,
-                    legs: self.legs,
-                    circumference: self.circumference,
-                    position:{
-                        x: self.x,
-                        y: self.y,
-                        z: self.z
+            if(self.name.validity.valid){
+                var options = {
+                    robot:{
+                        name: self.name.value,
+                        size: self.size.value,
+                        legs: self.legs.value,
+                        circumference: self.circumference.value,
+                        position:{
+                            x: self.x.value,
+                            y: self.y.value,
+                            z: self.z.value
+                        }
+                    },
+                    osc:{
+                        address: self.address.value,
+                        port: self.port.value
+                    },
+                    bluetooth:{
+                        bluetoothDevice: Bluetooth.getFromNameOrAddress(self.bDevice.value)
                     }
-                },
-                osc:{
-                    address: self.address,
-                    port: self.port
-                },
-                bluetooth:{
-                    bluetoothDevice: Bluetooth.getFromNameOrAddress(self.bDevice)
-                }
-            };
+                };
 
-            Controller.addEntity(options);
-            self.createBot.reset();
-            self.update();
-            document.dispatchEvent(new Event('addedEntity'));
+                Controller.addEntity(options);
+                self.createBot.reset();
+                self.update();
+                document.dispatchEvent(new Event('addedEntity'));
+            }else{
+                self.name.focus();
+
+            }
         };
 
         this.openInBrowser = function(e) {

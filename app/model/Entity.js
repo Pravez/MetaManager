@@ -53,6 +53,15 @@ class Entity {
     disableDevice() {
         this.device.disable();
     }
+
+    modify(options){
+        if(options.robot){
+            this.robot.modify(options.robot);
+        }
+        if(options.osc || this.bluetooth){
+            this.device.modify(options.osc, options.bluetooth);
+        }
+    }
 }
 
 module.exports = Entity;
