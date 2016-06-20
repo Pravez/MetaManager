@@ -62,6 +62,10 @@ class Entity {
             this.device.modify(options.osc, options.bluetooth);
         }
     }
+
+    sendBluetoothData(data){
+        this.device.bluetoothDevice.send(data);
+    }
 }
 
 module.exports = Entity;

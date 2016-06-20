@@ -24,8 +24,8 @@ class Device{
      * @returns {device|{osc}|*|Device}
      */
     setUpBluetooth(options){
-        return this.bluetoothDevice = options.device;
-        //return this.bluetoothDevice.setUp(options);
+        this.bluetoothDevice = options.device;
+        this.bluetoothDevice.available = false;
     }
 
     /**

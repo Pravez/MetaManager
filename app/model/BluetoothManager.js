@@ -107,6 +107,21 @@ class BluetoothManager{
     }
 
     /**
+     * 
+     * @returns {Array}
+     */
+    static getAvailableDevices(){
+        var available = [];
+        for(let device of devices){
+            if(device.available === true){
+                available.push(device);
+            }
+        }
+
+        return available;
+    }
+
+    /**
      * To search a device when knowing its name or address
      * @param name
      * @returns {*}
@@ -119,4 +134,4 @@ module.exports = BluetoothManager;
 
 
 //FOR DEBUG
-//connectedDevices.add(new BluetoothDevice("B8:63:BC:00:46:ED", "ROBOTIS BT-210").setUp());
+devices.add(new BluetoothDevice().setUp({address:"B8:63:BC:00:46:ED", name:"ROBOTIS BT-210"}));

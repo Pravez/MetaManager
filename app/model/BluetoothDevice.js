@@ -1,6 +1,7 @@
 "use strict";
 
 var BluetoothSerial = require('bluetooth-serial-port');
+var MetaManager = require('./MetaManager');
 
 /**
  * Each connection to a device is a BluetoothDevice instance. This class is
@@ -15,6 +16,8 @@ class BluetoothDevice{
         this.address = undefined;
         this.name = "MEGANONAME 3000";
         this.channel = 0;
+
+        this.available = true;
 
         this.connected = false;
         this.connecting = false;
@@ -32,12 +35,14 @@ class BluetoothDevice{
 
             this.serial = new BluetoothSerial.BluetoothSerialPort();
 
+            var self = this;
+
             this.serial.on('data', function(buffer) {
-                console.log(buffer.toString('utf-8'));
+                MetaManager.bluetoothListener(self, buffer.toString('utf-8'));
             });
 
             this.serial.on('finished', function() {
-                console.log('scan did finish');
+                console.log('Scan did finish');
             });
 
             return this;

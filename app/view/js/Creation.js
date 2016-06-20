@@ -42,5 +42,15 @@ class Creation{
         return Controller.findDevicesByRegexp(new RegExp(value, "i"));
     }
 
+    static setActive(element){
+        var items = document.getElementsByClassName('entities-list');
+        for(let i=0;i<items.length;i++){
+            items[i].classList.remove("active");
+        }
+
+        if(element)
+            element.classList.add("active");
+    }
+
 }
 module.exports = Creation;

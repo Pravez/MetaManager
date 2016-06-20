@@ -1,4 +1,7 @@
 <edit>
+    <div>
+        <button class="btn btn-default btn-large padded-less" onclick="Creation.changePane('controlBot');">Back to entity review</button>
+    </div>
      <form id="editBot" class="padded-less" style="margin-top:50px;">
         <div class="form-group col-md-5">
             <strong>Bot characteristics</strong>
@@ -44,7 +47,7 @@
                 <div class="col-xs-12">
                     <select name="bDevice" class="form-control">
                         <option selected>none</option>
-                        <option each={ devices }>{ bName } - {bAddress}</option>
+                        <option each={ devices }>{ name }</option>
                     </select>
                 </div>
             </div>
@@ -61,8 +64,6 @@
         var Creation = require('../../js/Creation');
         const {shell} = require('electron');
         var self = this;
-
-        this.devices = Array.from(Bluetooth.getDevices());
 
 
         this.verify = function(e){
@@ -91,9 +92,7 @@
                         bluetoothDevice: Bluetooth.getFromNameOrAddress(self.bDevice.value)
                     }
                 };
-
-                Controller.modifyEntity(this.entity, options);
-                self.update();
+                Controller.modifyEntity(self.entity, options);
                 document.dispatchEvent(new Event("addedEntity"));
             }else{
                 self.name.focus();
@@ -105,25 +104,35 @@
         };
 
         this.resetForm = function(e){
-            self.update({entity: this.entity});
+            self.update();
         };
 
         this.on('update', function(e){
-            if(e){
-                self.name.value = e.entity.robot.name || '';
-                self.size.value = e.entity.robot.size || '';
-                self.legs.value = e.entity.robot.legs || '';
-                self.circumference.value = e.entity.robot.circumference || '';
-                self.x.value = e.entity.robot.x || '';
-                self.y.value = e.entity.robot.y || '';
-                self.z.value = e.entity.robot.z || '';
-                self.address.value = e.entity.device.oscDevice.address || '';
-                self.port.value = e.entity.device.oscDevice.port || '';
-                if(e.entity.device.bluetoothDevice)
-                    self.bluetoothDevice.value = e.entity.device.bluetoothDevice.address || '';
-
+            try{
+                var entity = Controller.getEntity(this.mixin('entity').id);
+                self.entity = entity;
+                updateValues(entity);
+            }catch(error){
+                console.log("Error: updated without mixin");
             }
+
+            this.devices = Array.from(Bluetooth.getAvailableDevices());
+
         });
+
+        function updateValues(entity){
+            self.name.value = entity.robot.name || '';
+            self.size.value = entity.robot.size || '';
+            self.legs.value = entity.robot.legs || '';
+            self.circumference.value = entity.robot.circumference || '';
+            self.x.value = entity.robot.x || '';
+            self.y.value = entity.robot.y || '';
+            self.z.value = entity.robot.z || '';
+            self.address.value = entity.device.oscDevice.address || '';
+            self.port.value = entity.device.oscDevice.port || '';
+            if (entity.device.bluetoothDevice)
+                self.bluetoothDevice.value = entity.device.bluetoothDevice.address || '';
+        }
     </script>
 
     <style>

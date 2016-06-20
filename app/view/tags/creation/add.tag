@@ -44,7 +44,7 @@
                 <div class="col-xs-12">
                     <select name="bDevice" class="form-control" required>
                         <option selected>none</option>
-                        <option each={ devices }>{ bName } - {bAddress}</option>
+                        <option each={ devices }>{ name } - { address }</option>
                     </select>
                 </div>
             </div>
@@ -62,9 +62,6 @@
         var Creation = require('../../js/Creation');
         const {shell} = require('electron');
         var self = this;
-
-        this.devices = Array.from(Bluetooth.getDevices());
-
 
         this.verify = function(e){
             //TODO something with lastValue
@@ -102,6 +99,10 @@
 
             }
         };
+
+        this.on('update', function(e){
+            this.devices = Array.from(Bluetooth.getAvailableDevices());
+        });
 
         this.openInBrowser = function(e) {
             shell.openExternal('http://i-score.org/');

@@ -6,7 +6,7 @@
     </footer>
 
     <script>
-        var Renderer = require('./../index');
+        var Renderer = require('./../Renderer');
         var self = this;
 
         this.name = opts.name;

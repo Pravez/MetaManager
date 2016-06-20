@@ -5,16 +5,13 @@
 //var remote = require('electron');
 var riot = require('riot');
 var Controller = require('../app/controller/Controller');
-var Renderer = require('../app/view/tags/index');
+var Renderer = require('../app/view/tags/Renderer');
 var ContextMenu = require('../app/view/js/ContextMenu');
 var Creation = require('../app/view/js/Creation');
-require('../app/view/tags');
 
 //register the root of the app
 var path = require('path');
 global.appRoot = path.resolve(__dirname);
-
-console.log(Controller.getEntities());
 
 //Here we mount every single tag
 riot.mount('menubar', {active: "home"});
@@ -33,10 +30,9 @@ Renderer.showWindow("home");
 
 Creation.addPane(document.getElementById("addBot"), "addBot");
 Creation.addPane(document.getElementById("editBot"), "editBot");
+Creation.addPane(document.getElementById("controlBot"), "controlBot");
 Creation.addPane(document.getElementById("nothing"), "nothing");
 Creation.setCurrentPane("nothing");
-
-//BluetoothServer.startDiscovery();
 
 //Contexts menus need to be setted up after everything is made
 //Select a className elements which will trigger the context menu, then the id of the context menu, and finally

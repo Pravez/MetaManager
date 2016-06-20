@@ -6,6 +6,7 @@ require('./home/home.tag');
 require('./creation/creation.tag');
 require('./creation/add.tag');
 require('./creation/edit.tag');
+require('./creation/control.tag');
 require('./misc/menubar.tag');
 require('./scene/scene.tag');
 require('./scene/sceneCanvas.tag');

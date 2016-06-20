@@ -28,5 +28,5 @@ testsPorts.addTest(device3.oscDevice.port, 13580);
 
 testsPorts.doTests();
 
-var testsCom = new TestsSuite("COMMUNICATION_TESTS");
+var testsCom = new MetaTests("COMMUNICATION_TESTS");
 testsCom.addTest(device.isOSCListening(), true);

@@ -5,10 +5,10 @@
                 <li class="list-group-header">
                     <input name="search" class="form-control" type="search" placeholder="Search for a robot" oninput={ searchBot }>
                 </li>
-                <li class="list-group-item" each={ entities } onclick={ selectItem }>
+                <li class="list-group-item entities-list" each={ entities } onclick={ selectItem }>
                     <div class="media-body">
                         <strong>{ robot.name }</strong>
-                        <p>{ device.bluetoothDevice.address }</p>
+                        <p>{ device.bluetoothDevice.name }</p>
                     </div>
                 </li>
             </ul>
@@ -20,6 +20,9 @@
                     <button class="btn btn-large btn-default" onclick="Creation.changePane('addBot');" >Add an Entity</button>
                 </div>
             </div>
+            <div id="controlBot">
+                <control name="controlTag" class="creation-tags"></control>
+            </div>
             <div id="addBot">
                 <add name="addTag" class="creation-tags"></add>
             </div>
@@ -29,12 +32,14 @@
         </div>
     </div>
 
+    <!--suppress ThisExpressionReferencesGlobalObjectJS -->
     <script>
         'use strict';
 
         var Controller = require('../../../controller/Controller');
         var Bot = require('../../../model/Entity');
         var Creation = require('../../js/Creation');
+        var riot = require('riot');
 
         var self = this;
         this.entities = opts.entities;
@@ -44,12 +49,26 @@
         };
 
         this.selectItem = function(e){
-            self.editTag._tag.update({entity: Controller.getEntity(this.id)});
-            Creation.changePane("editBot");
-        }
+            //Removing active class
+            Creation.setActive(e.currentTarget);
+            //Setting the selected entity as mixin
+            riot.mixin('entity', this._item);
+            //And update concerned tags
+            self.controlTag._tag.update();
+            self.editTag._tag.update();
+            Creation.changePane("controlBot");
+        };
 
         document.addEventListener("addedEntity", function(e){
             self.update({entities: Controller.getEntities()});
+            self.controlTag._tag.update();
+            self.editTag._tag.update();
+        });
+
+        document.addEventListener("devicesUpdate", function(e){
+            self.editTag._tag.update();
+            self.addTag._tag.update();
+            self.controlTag._tag.update();
         })
     </script>
 
