@@ -53,6 +53,10 @@ class Entity {
     disableDevice() {
         this.device.disable();
     }
+    
+    setUpDeviceListeners(bluetooth){
+        this.device.setUpListeners(bluetooth);
+    }
 
     modify(options){
         if(options.robot){
@@ -64,7 +68,7 @@ class Entity {
     }
 
     sendBluetoothData(data){
-        this.device.bluetoothDevice.send(data);
+        this.device.sendToBluetooth(data);
     }
 }
 

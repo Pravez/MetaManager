@@ -43,10 +43,11 @@
         <div class="form-group col-md-5 col-md-offset-1">
             <strong>Bluetooth Communication</strong>
             <div class="row">
-                <label class="col-xs-12"> Available devices</label>
+                <label class="col-xs-12">Select a device</label>
                 <div class="col-xs-12">
                     <select name="bDevice" class="form-control">
-                        <option selected>none</option>
+                        <option if={ entity.device.bluetoothDevice } selected>{entity.device.bluetoothDevice.name}</option>
+                        <option>none</option>
                         <option each={ devices }>{ name }</option>
                     </select>
                 </div>
@@ -89,6 +90,7 @@
                         port: self.port.value
                     },
                     bluetooth:{
+                        none: self.bDevice.value === "none",
                         bluetoothDevice: Bluetooth.getFromNameOrAddress(self.bDevice.value)
                     }
                 };
@@ -131,7 +133,7 @@
             self.address.value = entity.device.oscDevice.address || '';
             self.port.value = entity.device.oscDevice.port || '';
             if (entity.device.bluetoothDevice)
-                self.bluetoothDevice.value = entity.device.bluetoothDevice.address || '';
+                self.bluetoothDevice.value = entity.device.bluetoothDevice.name || '';
         }
     </script>
 

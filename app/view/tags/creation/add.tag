@@ -40,11 +40,11 @@
         <div class="form-group col-md-5 col-md-offset-1">
             <strong>Bluetooth Communication</strong>
             <div class="row">
-                <label class="col-xs-12"> Available devices</label>
+                <label class="col-xs-12">Select a device</label>
                 <div class="col-xs-12">
                     <select name="bDevice" class="form-control" required>
                         <option selected>none</option>
-                        <option each={ devices }>{ name } - { address }</option>
+                        <option each={ devices }>{ name }</option>
                     </select>
                 </div>
             </div>
@@ -81,12 +81,15 @@
                             z: self.z.value
                         }
                     },
-                    osc:{
-                        address: self.address.value,
-                        port: self.port.value
-                    },
-                    bluetooth:{
-                        bluetoothDevice: Bluetooth.getFromNameOrAddress(self.bDevice.value)
+                    device: {
+                        osc: {
+                            address: self.address.value,
+                            port: self.port.value
+                        },
+                        bluetooth: {
+                            none: self.bDevice.value === "none",
+                            bluetoothDevice: Bluetooth.getFromNameOrAddress(self.bDevice.value)
+                        }
                     }
                 };
 

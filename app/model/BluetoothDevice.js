@@ -1,7 +1,7 @@
 "use strict";
 
+var Listener = require('../model/DeviceListener');
 var BluetoothSerial = require('bluetooth-serial-port');
-var MetaManager = require('./MetaManager');
 
 /**
  * Each connection to a device is a BluetoothDevice instance. This class is
@@ -36,9 +36,10 @@ class BluetoothDevice{
             this.serial = new BluetoothSerial.BluetoothSerialPort();
 
             var self = this;
+            this.serial.bluetoothDeviceObject = this;
 
-            this.serial.on('data', function(buffer) {
-                MetaManager.bluetoothListener(self, buffer.toString('utf-8'));
+            this.serial.on('data', function(buffer){
+                console.log("BTCONNECTLOG: " + buffer.toString('utf-8'));
             });
 
             this.serial.on('finished', function() {
@@ -49,6 +50,12 @@ class BluetoothDevice{
         }else{
             return undefined;
         }
+    }
+
+    setListener(listener){
+        this.serial.on('data', function(buffer){
+            listener(buffer);
+        });
     }
 
     /**
@@ -121,4 +128,5 @@ class BluetoothDevice{
         this.setUp(bluetooth);
     }
 }
+
 module.exports = BluetoothDevice;

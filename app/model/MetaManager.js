@@ -1,8 +1,6 @@
-"use strict";
+'use strict';
 
 var Entity = require('../model/Entity');
-var BluetoothManager = require('./BluetoothManager');
-var OSCManager = require('./OSCManager');
 
 var auto_incr_key = 0;
 var entities = new Map();
@@ -22,6 +20,8 @@ class MetaManager{
         if(options.device){
             ent.setUpDevice(options.device);
         }
+        
+        ent.setUpDeviceListeners((msg) => {MetaManager.analyzeBlueResponse(msg);});
 
         entities.set(auto_incr_key, ent);
         auto_incr_key += 1;
@@ -52,12 +52,9 @@ class MetaManager{
         return array;
     }
 
-    static bluetoothListener(device, message){
-        console.log("From "+device+" " + message);
+    static analyzeBlueResponse(message){
+        console.log(message);
     }
 
-    static oscListener(device, message){
-
-    }
 }
 module.exports = MetaManager;

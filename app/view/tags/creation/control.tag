@@ -1,10 +1,41 @@
 <control>
 
-    <button class="btn btn-large btn-default" onclick={ editEntity }>Edit Entity</button>
-    <ul>
-        <li>{ entity.robot.name }</li>
-    </ul>
-    <input name="cmd" type="text" class="form-control" onblur={ sendCmd }>
+    <div class="padded-less">
+        <button class="btn btn-large btn-default" onclick={ editEntity }>Edit Entity</button>
+        <div class="form-group col-md-12">
+            <div class="col-xs-3">
+                <div class="row"><strong> Name </strong> : { entity.robot.name }</div>
+                <div class="row"><strong> Firmware version </strong>: 1.1.1</div>
+            </div>
+            <div class="col-xs-3">
+                <div class="row"><strong> Name </strong> : { entity.robot.name }</div>
+                <div class="row"><strong> Firmware version </strong>: 1.1.1</div>
+            </div>
+            <div class="col-xs-3">
+                <div class="row"><strong> Name </strong> : { entity.robot.name }</div>
+                <div class="row"><strong> Firmware version </strong>: 1.1.1</div>
+            </div>
+            <div class="col-xs-3">
+                <div class="row"><strong> Name </strong> : { entity.robot.name }</div>
+                <div class="row"><strong> Firmware version </strong>: 1.1.1</div>
+            </div>
+        </div>
+        <div class="form-group col-md-5">
+            <div class="row">
+                <label> Altitude
+                    <input type="range" min="0" max="10">
+                </label>
+            </div>
+        </div>
+        <div class="form-group col-md-5 col-md-offset-1">
+            <div class="row">
+                <label>Send command
+                    <input name="cmd" type="text" class="form-control" onblur={ sendCmd }>
+                </label>
+            </div>
+        </div>
+    </div>
+
 
 
     <script>

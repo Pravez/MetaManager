@@ -4,6 +4,7 @@ var BluetoothDevice = require('../model/BluetoothDevice');
 var BluetoothManager = require('../model/BluetoothManager');
 var OSCDevice = require('../model/OSCDevice');
 var OSCManager = require('../model/OSCManager');
+var DeviceListener = require('../model/DeviceListener');
 
 BluetoothManager.setupBluetooth();
 
@@ -16,6 +17,8 @@ class Device{
         this.bluetoothDevice = undefined;
         this.oscDevice = new OSCDevice();
         //this.xbeeDevice = new XbeeDevice();
+
+        this.listener = new DeviceListener(this);
     }
 
     /**
@@ -24,8 +27,11 @@ class Device{
      * @returns {device|{osc}|*|Device}
      */
     setUpBluetooth(options){
-        this.bluetoothDevice = options.device;
-        this.bluetoothDevice.available = false;
+        if(options.none === false){
+            this.bluetoothDevice = options.bluetoothDevice;
+            this.bluetoothDevice.available = false;
+            this.bluetoothDevice.setListener((buffer) => this.listener.bluetooth(buffer));
+        }
     }
 
     /**
@@ -81,8 +87,30 @@ class Device{
             this.oscDevice.modify(osc);
         }
         if(bluetooth){
-            this.bluetoothDevice = bluetooth.bluetoothDevice || this.bluetoothDevice;
+            //First we free last bluetoothDevice used
+            if(this.bluetoothDevice){
+                this.bluetoothDevice.available = true;
+            }
+            //Then we link the new one, or remove if none
+            if(bluetooth.none === true){
+                this.bluetoothDevice = undefined;
+            }else if(bluetooth.bluetoothDevice.available === true){
+                this.bluetoothDevice = bluetooth.bluetoothDevice || this.bluetoothDevice;
+                this.bluetoothDevice.available = false;
+                this.bluetoothDevice.setListener((buffer) => this.listener.bluetooth(buffer));
+
+            }
         }
+    }
+
+    sendToBluetooth(data){
+        if(this.bluetoothDevice){
+            this.bluetoothDevice.send(data);
+        }
+    }
+
+    setUpListeners(bluetooth){
+        this.listener.setMainAnalyzer(bluetooth);
     }
 }
 module.exports = Device;
