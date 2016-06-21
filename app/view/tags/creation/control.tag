@@ -7,24 +7,13 @@
                 <div class="row"><strong> Name </strong> : { entity.robot.name }</div>
                 <div class="row"><strong> Firmware version </strong>: 1.1.1</div>
             </div>
-            <div class="col-xs-3">
-                <div class="row"><strong> Name </strong> : { entity.robot.name }</div>
-                <div class="row"><strong> Firmware version </strong>: 1.1.1</div>
-            </div>
-            <div class="col-xs-3">
-                <div class="row"><strong> Name </strong> : { entity.robot.name }</div>
-                <div class="row"><strong> Firmware version </strong>: 1.1.1</div>
-            </div>
-            <div class="col-xs-3">
-                <div class="row"><strong> Name </strong> : { entity.robot.name }</div>
-                <div class="row"><strong> Firmware version </strong>: 1.1.1</div>
-            </div>
         </div>
         <div class="form-group col-md-5">
             <div class="row">
-                <label> Altitude
-                    <input type="range" min="0" max="10">
-                </label>
+                <div class="col-xs-8">
+                    <label for="alt">Altitude : <strong>{ this.alt.value }</strong></label>
+                    <input id="alt" name="alt" type="range" min="-200" value="0" max="150" oninput={ onRangeChange }>
+                </div>
             </div>
         </div>
         <div class="form-group col-md-5 col-md-offset-1">
@@ -52,6 +41,10 @@
 
         this.sendCmd = function(e){
             self.entity.sendBluetoothData(this.cmd.value);
+        };
+
+        this.onRangeChange = function(e){
+            self.entity.sendBluetoothData("h "+this.alt.value);
         };
 
         this.on('update', function(e){
