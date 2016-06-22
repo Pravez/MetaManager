@@ -1,9 +1,10 @@
 var Types = {
-    INT: "INTEGER",
-    FLOAT: "FLOAT",
-    BOOL: "BOOLEAN",
-    SINGLE_VALUE: "SINGLE VALUE",
-    NO_TYPE: "NO TYPE"
+    NUMBER: "number",
+    STRING: "string",
+    BOOL: "boolean",
+    SINGLE_VALUE: "number",
+    NO_TYPE: "NO TYPE",
+    UNDEFINED: "undefined"
 };
 
 module.exports = Types;
