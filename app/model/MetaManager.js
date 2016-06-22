@@ -8,7 +8,9 @@ var entities = new Map();
 class MetaManager{
 
     /**
-     * To add an entity
+     * Method to create an entity. First creates it just with an ID (which initializes Robot, Devices, DeviceListener...).
+     * Then sets up device listeners according to functions to analyze data. Then, passes options for robot and devices
+     * to set themselves up. Finally associates the newly created entity to the map of entities.
      * @param options
      * @returns {Entity}
      */
@@ -41,10 +43,19 @@ class MetaManager{
         return entities.delete(id);
     }
 
+    /**
+     * Getter
+     * @param id
+     * @returns {V}
+     */
     static getEntity(id){
         return entities.get(id);
     }
 
+    /**
+     * Getter of entities
+     * @returns {Array}
+     */
     static getEntities(){
         var array = [];
         for(let ent of entities.keys()){
@@ -54,10 +65,18 @@ class MetaManager{
         return array;
     }
 
+    /**
+     * Main function to analyze a message from bluetooth
+     * @param message
+     */
     static analyzeBlueResponse(message){
         console.log(message);
     }
 
+    /**
+     * Main function to analyze a message from OSC
+     * @param message
+     */
     static analyzeOSCResponse(message){
         console.log(message);
     }

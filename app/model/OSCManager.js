@@ -100,15 +100,15 @@ class OSCManager {
      */
     static handleOSCError(address, port) {
         if (devices.enabled.has(parseInt(port))) {
+            /*const {dialog} = require('electron');
+            dialog.showErrorBox('Error', 'Port already in use');*/
             var device = OSCManager.disableDevice(devices.enabled.get(parseInt(port)));
             device.isListening = false;
             devices.enabled.set(parseInt(port), new OSCDevice(address, parseInt(port)));
             OSCManager.enableDevice(OSCManager.changeDevicePort(device));
-
+            //alert('New port is ' + device.port);
         }
     }
-
-    static get getServers() { return servers }
 }
 module.exports = OSCManager;
 

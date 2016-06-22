@@ -17,17 +17,36 @@ class LimitedStack{
     }
 }*/
 
+/**
+ * Transitional class between Devices receiving data and messages, and the MetaManager needing to analyze
+ * these messages.
+ */
 class DeviceListener{
+
+    /**
+     * Simple constructor, needs to know which devices it is associated to
+     * @param device
+     */
     constructor(device){
         this.device = device;
         this.currentMessage = "";
     }
 
+    /**
+     * Set MetaManager's functions which will analyze datas for bluetooth and osc messages
+     * @param bluetooth
+     * @param osc
+     */
     setMainAnalyzers(bluetooth, osc){
         this.btAnalyzer = bluetooth;
         this.oscAnalyze = osc;
     }
 
+    /**
+     * When a bluetooth message is received, and until this message is not "$", it enters everything in a
+     * string, then cuts it in different parts and sends it to the MetaManager, ready to analyze
+     * @param message
+     */
     bluetooth(message){
         var translated =  String.fromCharCode.apply(null, message);
         this.currentMessage += translated;
@@ -43,10 +62,18 @@ class DeviceListener{
         }
     }
 
+    /**
+     * Cuts an OSC message and prepares it for the server.
+     * @param message
+     */
     osc(message){
         console.log(message);
     }
 
+    /**
+     * Main function to cut a bluetoothMessage
+     * @returns {{cmdSent: *, response: string}}
+     */
     getMessage(){
         var splitted = this.currentMessage.split('\r\n');
         var cmdSent = splitted[0];

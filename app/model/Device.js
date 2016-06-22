@@ -11,7 +11,7 @@ BluetoothManager.setupBluetooth();
 class Device{
 
     /**
-     * Constructor
+     * Constructor which initializes the oscDevice and the listener
      */
     constructor(){
         this.bluetoothDevice = undefined;
@@ -50,7 +50,7 @@ class Device{
     }
 
     /**
-     * Function to enable a device. Cannot enable a bluetooth device because located and managed elsewhere.
+     * Function to enable an OSCDevice.
      * Tries to enable OSC device and changes the port if it's not the good one.
      */
     enableOSC(){
@@ -63,6 +63,9 @@ class Device{
         }
     }
 
+    /**
+     * Method to switch on/off current listening state of an OSCDevice
+     */
     switchOSCState(){
         if(this.isOSCListening() === true){
             this.oscDevice.close();
@@ -73,7 +76,8 @@ class Device{
     }
 
     /**
-     *
+     * Method to set an attributed BluetoothDevice to this Device as not available for others and
+     * also forcing it to give data received to the listener given in setListener()
      */
     enableBluetooth(){
         //Changing bluetooth's listener
@@ -81,6 +85,10 @@ class Device{
         this.bluetoothDevice.setListener((buffer) => this.listener.bluetooth(buffer));
     }
 
+    /**
+     * Explicit enough
+     * @returns {boolean}
+     */
     isOSCListening(){
         return this.oscDevice.isListening;
     }
@@ -93,6 +101,11 @@ class Device{
         this.oscDevice.close();
     }
 
+    /**
+     * Modifies osc and bluetooth devices according to optionnal parameters.
+     * @param osc
+     * @param bluetooth
+     */
     modify(osc, bluetooth) {
         if(osc){
             //First we stop it and remove
@@ -118,12 +131,21 @@ class Device{
         }
     }
 
+    /**
+     * To send data to BluetoothDevice
+     * @param data
+     */
     sendToBluetooth(data){
         if(this.bluetoothDevice){
             this.bluetoothDevice.send(data);
         }
     }
 
+    /**
+     * To set up the DeviceListener according to functions it must passes the information.
+     * @param bluetooth
+     * @param osc
+     */
     setUpListeners(bluetooth, osc){
         this.listener.setMainAnalyzers(bluetooth, osc);
     }

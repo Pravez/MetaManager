@@ -6,6 +6,10 @@ var Robot = require('../model/Robot');
 
 class Entity {
 
+    /**
+     * Function to initialize by default an entity, with an id
+     * @param id
+     */
     constructor(id) {
         this.robot = new Robot();
         this.device = new Device();
@@ -41,14 +45,10 @@ class Entity {
     }
 
     /**
-     * To enable a device
+     * Method to switch an OSC server listening state
      */
     switchOSCState() {
         this.device.switchOSCState();
-    }
-
-    isOSCListening(){
-        return this.device.isOSCListening();
     }
 
     /**
@@ -57,11 +57,20 @@ class Entity {
     disableDevice() {
         this.device.disable();
     }
-    
+
+    /**
+     * Method to set deviceListeners according to functions to which will be sent datas to be analyzed
+     * @param bluetooth
+     * @param osc
+     */
     setUpDeviceListeners(bluetooth, osc){
         this.device.setUpListeners(bluetooth, osc);
     }
 
+    /**
+     * Function to modify an entity according to options
+     * @param options
+     */
     modify(options){
         if(options.robot){
             this.robot.modify(options.robot);
@@ -71,6 +80,10 @@ class Entity {
         }
     }
 
+    /**
+     * Method to send bluetooth data
+     * @param data
+     */
     sendBluetoothData(data){
         this.device.sendToBluetooth(data);
     }

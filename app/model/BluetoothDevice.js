@@ -1,6 +1,5 @@
 "use strict";
 
-var Listener = require('../model/DeviceListener');
 var BluetoothSerial = require('bluetooth-serial-port');
 
 /**
@@ -10,7 +9,7 @@ var BluetoothSerial = require('bluetooth-serial-port');
 class BluetoothDevice{
 
     /**
-     * Constructor
+     * Constructor by default
      */
     constructor(){
         this.address = undefined;
@@ -25,7 +24,7 @@ class BluetoothDevice{
     }
 
     /**
-     * Method to initialize listeners and serial port
+     * Method which will initialize by default the listeners, and will create a serial port for Bluetooth.
      * @returns {BluetoothDevice}
      */
     setUp(options){
@@ -52,6 +51,10 @@ class BluetoothDevice{
         }
     }
 
+    /**
+     * Function to set listener (function to which data will be given)
+     * @param listener
+     */
     setListener(listener){
         this.serial.on('data', function(buffer){
             listener(buffer);
@@ -87,8 +90,7 @@ class BluetoothDevice{
     }
 
     /**
-     * Method to connect to a device.
-     * Needs an address and a channel
+     * Method to connect to a device, after having found a channel.
      */
     connect(){
         var self = this;
@@ -123,6 +125,11 @@ class BluetoothDevice{
         });
     }
 
+    /**
+     * Function to modify a bluetooth device. First closes the bluetooth serial (= destroys it), and then re-creates
+     * it.
+     * @param bluetooth
+     */
     modify(bluetooth){
         this.serial.close();
         this.setUp(bluetooth);

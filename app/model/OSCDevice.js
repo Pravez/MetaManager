@@ -8,7 +8,7 @@ var osc = require('osc');
 class OSCDevice{
 
     /**
-     * Nothing
+     * A simple constructor just initializing default attributes
      */
     constructor(){
         this.address = "127.0.0.1";
@@ -18,7 +18,8 @@ class OSCDevice{
     }
 
     /**
-     * To construct the OSCDevice
+     * This will initialize attributes according to what is given in options. It creates an oscServer, ready to be added
+     * to the list of enabled oscServers.
      * @param options
      * @returns {*}
      */
@@ -39,7 +40,10 @@ class OSCDevice{
     }
 
     /**
-     * Function used by the constructor to set up the listener (on ready, message and error)
+     * Sets up listeners on error and message, according to a certain function. (will send the data to the given
+     * function)
+     * @param listener
+     * @returns {OSCDevice}
      */
     setListener(listener){
         this.oscServer.on("message", function (oscMessage) {
@@ -72,7 +76,6 @@ class OSCDevice{
      * Make the listener listen
      */
     listen(){
-        console.log("listening");
         this.oscServer.open();
         this.isListening = true;
     }
@@ -81,11 +84,15 @@ class OSCDevice{
      * Make the listener stop listening
      */
     close(){
-        console.log("closed");
         this.oscServer.close();
         this.isListening = false;
     }
 
+    /**
+     * Function to refresh an OSCDevice, with a listener. It closes the oscServer, rebuilds it and reattributes
+     * the different listeners.
+     * @param listener
+     */
     refresh(listener){
         if(this.isListening === true){
             this.close();
@@ -97,6 +104,11 @@ class OSCDevice{
         this.setListener(listener);
     }
 
+    /**
+     * To modify attributes according to an osc optional parameter. Changes will be applied on the oscServer
+     * only after calling refresh()
+     * @param osc
+     */
     modify(osc) {
         this.address = osc.address || this.address;
         this.port = osc.port || this.port;
