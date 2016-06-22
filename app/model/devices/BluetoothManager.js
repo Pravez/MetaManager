@@ -1,7 +1,7 @@
 "use strict";
 
 var BluetoothSerial = require('bluetooth-serial-port');
-var BluetoothDevice = require('../model/BluetoothDevice');
+var BluetoothDevice = require('../devices/BluetoothDevice');
 
 /**
  * Set of all devices found

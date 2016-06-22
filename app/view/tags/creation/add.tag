@@ -58,7 +58,7 @@
 
     <script>
         var Controller = require('../../../controller/Controller');
-        var Bluetooth = require('../../../model/BluetoothManager');
+        var Bluetooth = require('../../../model/devices/BluetoothManager');
         var Creation = require('../../js/Creation');
         const {shell} = require('electron');
         var self = this;

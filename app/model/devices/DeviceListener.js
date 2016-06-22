@@ -1,22 +1,5 @@
 "use strict";
 
-
-//TODO create a simple limited stack with a list
-/*
-class LimitedStack{
-    constructor(size){
-        this.size = size || 10;
-        this.elements = 0;
-        this.array = [];
-    }
-
-    add(elem){
-        if(this.elements === this.size){
-            this.array.pop();
-        }
-    }
-}*/
-
 /**
  * Transitional class between Devices receiving data and messages, and the MetaManager needing to analyze
  * these messages.
@@ -29,7 +12,8 @@ class DeviceListener{
      */
     constructor(device){
         this.device = device;
-        this.currentMessage = "";
+        this.lastBluetoothMessage = "";
+        this.lastOSCMessage = undefined;
     }
 
     /**
@@ -39,7 +23,7 @@ class DeviceListener{
      */
     setMainAnalyzers(bluetooth, osc){
         this.btAnalyzer = bluetooth;
-        this.oscAnalyze = osc;
+        this.oscAnalyzer = osc;
     }
 
     /**
@@ -49,16 +33,16 @@ class DeviceListener{
      */
     bluetooth(message){
         var translated =  String.fromCharCode.apply(null, message);
-        this.currentMessage += translated;
+        this.lastBluetoothMessage += translated;
 
         if(translated.indexOf('$') > -1){
-            var interpreted = this.getMessage();
+            var interpreted = this.buildBluetoothMessage();
             this.btAnalyzer({
                 device: this.device,
                 cmdSent: interpreted.cmdSent,
                 response: interpreted.response
             });
-            this.currentMessage = "";
+            this.lastBluetoothMessage = "";
         }
     }
 
@@ -67,21 +51,30 @@ class DeviceListener{
      * @param message
      */
     osc(message){
-        console.log(message);
+        this.lastOSCMessage = message;
+        this.oscAnalyzer(this.buildOSCMessage());
     }
 
     /**
      * Main function to cut a bluetoothMessage
      * @returns {{cmdSent: *, response: string}}
      */
-    getMessage(){
-        var splitted = this.currentMessage.split('\r\n');
+    buildBluetoothMessage(){
+        var splitted = this.lastBluetoothMessage.split('\r\n');
         var cmdSent = splitted[0];
-        var response = this.currentMessage.replace(cmdSent, '');
+        var response = this.lastBluetoothMessage.replace(cmdSent, '');
         response = response.replace(splitted[splitted.length-1], '');
         response = response.substr(response.indexOf('\r\n'), response.length);
 
         return {cmdSent, response};
+    }
+
+    buildOSCMessage(){
+        return {
+            device: this.device,
+            cmd: this.lastOSCMessage.address.replace('/', ''),
+            arg: this.lastOSCMessage.args[0]
+        }
     }
 }
 module.exports = DeviceListener;

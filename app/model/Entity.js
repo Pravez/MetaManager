@@ -1,7 +1,7 @@
 "use strict";
 
-var Device = require('../model/Device');
-var Robot = require('../model/Robot');
+var Device = require('../model/devices/Device');
+var Robot = require('robot/Robot');
 
 
 class Entity {
@@ -86,6 +86,10 @@ class Entity {
      */
     sendBluetoothData(data){
         this.device.sendToBluetooth(data);
+    }
+
+    executeCommand(command){
+        console.log(command);
     }
 }
 

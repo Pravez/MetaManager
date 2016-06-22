@@ -1,4 +1,4 @@
-var Device = require('../app/model/Device');
+var Device = require('../app/model/devices/Device');
 var MetaTests = require('./MetaTests');
 
 var testsPorts = new MetaTests("PORTS_TEST");

@@ -1,5 +1,5 @@
 "use strict";
-var OSCDevice = require('../model/OSCDevice');
+var OSCDevice = require('../devices/OSCDevice');
 
 /**
  * An object containing a map and an array (map for mapping enabled server to port,

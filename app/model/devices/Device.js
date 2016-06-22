@@ -1,10 +1,10 @@
 "use strict";
 
-var BluetoothDevice = require('../model/BluetoothDevice');
-var BluetoothManager = require('../model/BluetoothManager');
-var OSCDevice = require('../model/OSCDevice');
-var OSCManager = require('../model/OSCManager');
-var DeviceListener = require('../model/DeviceListener');
+var BluetoothDevice = require('../devices/BluetoothDevice');
+var BluetoothManager = require('../devices/BluetoothManager');
+var OSCDevice = require('../devices/OSCDevice');
+var OSCManager = require('../devices/OSCManager');
+var DeviceListener = require('../devices/DeviceListener');
 
 BluetoothManager.setupBluetooth();
 

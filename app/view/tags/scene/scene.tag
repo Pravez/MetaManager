@@ -14,7 +14,7 @@
     </form>
 
     <script>
-        var Bluetooth = require('../../../model/BluetoothManager');
+        var Bluetooth = require('../../../model/devices/BluetoothManager');
 
         var devices = new Map();
 

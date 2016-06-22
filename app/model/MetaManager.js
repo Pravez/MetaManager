@@ -78,7 +78,11 @@ class MetaManager{
      * @param message
      */
     static analyzeOSCResponse(message){
-        console.log(message);
+        for(let ent of entities.keys()){
+            if(entities.get(ent).device === message.device){
+                return entities.get(ent).executeCommand({ command: message.cmd, value: message.arg});
+            }
+        }
     }
 
 }

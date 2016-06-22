@@ -60,7 +60,7 @@
     <script>
         const remote = require('electron').remote;
         var Renderer = require('./../Renderer');
-        var BluetoothManager = require('../../../model/BluetoothManager');
+        var BluetoothManager = require('../../../model/devices/BluetoothManager');
         var Creation = require('../../js/Creation');
 
         //options

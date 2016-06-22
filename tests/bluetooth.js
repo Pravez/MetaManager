@@ -1,4 +1,4 @@
-var BluetoothDevice = require('../app/model/BluetoothDevice');
+var BluetoothDevice = require('../app/model/devices/BluetoothDevice');
 
 var device = new BluetoothDevice();
 

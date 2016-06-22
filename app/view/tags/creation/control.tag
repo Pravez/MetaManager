@@ -8,11 +8,11 @@
                 <div class="row"><strong> Firmware version </strong>: 1.1.1</div>
             </div>
             <div class="col-xs-6">
-                <div if={ !entity.isOSCListening() } class="row">
+                <div if={ !entity.device.isOSCListening() } class="row">
                     This entity is currently not listening to i-score
                     <p><button class="btn btn-positive" onclick={ enableOSC } >Enable listening</button></p>
                 </div>
-                <div if={ entity.isOSCListening() } class="row">
+                <div if={ entity.device.isOSCListening() } class="row">
                     This entity is listening to i-score
                     <p><button class="btn btn-warning" onclick={ enableOSC } >Disable listening</button></p>
                 </div>
@@ -62,7 +62,7 @@
         };
 
         this.enableOSC = function(e){
-            Controller.switchEntityOSCListening(self.entity.id);
+           Controller.switchEntityOSCListening(self.entity.id);
             self.update();
         };
 
@@ -72,7 +72,6 @@
             }catch(error){
                 console.log("Error: updated without mixin");
             }
-
         });
 
     </script>
