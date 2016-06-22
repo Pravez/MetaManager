@@ -43,8 +43,12 @@ class Entity {
     /**
      * To enable a device
      */
-    enableDevice() {
-        this.device.enable();
+    switchOSCState() {
+        this.device.switchOSCState();
+    }
+
+    isOSCListening(){
+        return this.device.isOSCListening();
     }
 
     /**
@@ -54,8 +58,8 @@ class Entity {
         this.device.disable();
     }
     
-    setUpDeviceListeners(bluetooth){
-        this.device.setUpListeners(bluetooth);
+    setUpDeviceListeners(bluetooth, osc){
+        this.device.setUpListeners(bluetooth, osc);
     }
 
     modify(options){

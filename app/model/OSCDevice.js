@@ -27,7 +27,12 @@ class OSCDevice{
             this.address = options.address || this.address;
             this.port = options.port || this.port;
 
-            return this.setListener();
+            this.oscServer = new osc.UDPPort({
+                localAddress: this.address,
+                localPort: this.port
+            });
+
+            return this;
         }else{
             return undefined;
         }
@@ -36,19 +41,14 @@ class OSCDevice{
     /**
      * Function used by the constructor to set up the listener (on ready, message and error)
      */
-    setListener(){
-
-        this.oscServer = new osc.UDPPort({
-            localAddress: this.address,
-            localPort: this.port
-        });
-
+    setListener(listener){
         this.oscServer.on("message", function (oscMessage) {
-            console.log(oscMessage);
+            listener(oscMessage);
         });
 
         this.oscServer.on("error", function (err) {
             console.log(err);
+            listener(err);
         });
 
         return this;
@@ -72,6 +72,7 @@ class OSCDevice{
      * Make the listener listen
      */
     listen(){
+        console.log("listening");
         this.oscServer.open();
         this.isListening = true;
     }
@@ -80,37 +81,25 @@ class OSCDevice{
      * Make the listener stop listening
      */
     close(){
+        console.log("closed");
         this.oscServer.close();
         this.isListening = false;
     }
 
-    /**
-     * Setter of localPort, and generates a new osc.UDPPort each time
-     * the localPort value is changed.
-     * @param localPort
-     */
-    setLocalPort(localPort){
-        this.localPort = localPort;
+    refresh(listener){
+        if(this.isListening === true){
+            this.close();
+        }
         this.oscServer = new osc.UDPPort({
             localAddress: this.address,
             localPort: this.port
         });
-        this.setListener();
-    }
-
-    refresh(){
-        this.oscServer = new osc.UDPPort({
-            localAddress: this.address,
-            localPort: this.port
-        });
-        this.setListener();
+        this.setListener(listener);
     }
 
     modify(osc) {
         this.address = osc.address || this.address;
         this.port = osc.port || this.port;
-
-        this.refresh();
     }
 }
 module.exports = OSCDevice;

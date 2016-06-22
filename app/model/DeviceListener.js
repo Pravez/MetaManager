@@ -23,8 +23,9 @@ class DeviceListener{
         this.currentMessage = "";
     }
 
-    setMainAnalyzer(analyzer){
-        this.analyzer = analyzer;
+    setMainAnalyzers(bluetooth, osc){
+        this.btAnalyzer = bluetooth;
+        this.oscAnalyze = osc;
     }
 
     bluetooth(message){
@@ -33,13 +34,17 @@ class DeviceListener{
 
         if(translated.indexOf('$') > -1){
             var interpreted = this.getMessage();
-            this.analyzer({
+            this.btAnalyzer({
                 device: this.device,
                 cmdSent: interpreted.cmdSent,
                 response: interpreted.response
             });
             this.currentMessage = "";
         }
+    }
+
+    osc(message){
+        console.log(message);
     }
 
     getMessage(){

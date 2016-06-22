@@ -29,8 +29,7 @@ class Device{
     setUpBluetooth(options){
         if(options.none === false){
             this.bluetoothDevice = options.bluetoothDevice;
-            this.bluetoothDevice.available = false;
-            this.bluetoothDevice.setListener((buffer) => this.listener.bluetooth(buffer));
+            this.enableBluetooth();
         }
     }
 
@@ -54,24 +53,36 @@ class Device{
      * Function to enable a device. Cannot enable a bluetooth device because located and managed elsewhere.
      * Tries to enable OSC device and changes the port if it's not the good one.
      */
-    enable(){
-        //Enabling bluetooth device
-        /*this.bluetoothDevice.findChannelAndConnect();
-        if(this.bluetoothDevice.connected === true) BluetoothManager.addDevice(this.bluetoothDevice);*/
-
+    enableOSC(){
         //Enabling OSC device
         try{
             OSCManager.addDevice(this.oscDevice);
         }catch (error){
             OSCManager.addDevice(OSCManager.changeDevicePort(this.oscDevice));
-            this.oscDevice.refresh();
+            this.oscDevice.refresh((buffer) => this.listener.osc(buffer));
         }
-        //And making it listening
-        this.oscDevice.listen();
+    }
+
+    switchOSCState(){
+        if(this.isOSCListening() === true){
+            this.oscDevice.close();
+        }else if(this.isOSCListening() === false){
+            this.oscDevice.refresh((buffer) => this.listener.osc(buffer));
+            this.oscDevice.listen();
+        }
+    }
+
+    /**
+     *
+     */
+    enableBluetooth(){
+        //Changing bluetooth's listener
+        this.bluetoothDevice.available = false;
+        this.bluetoothDevice.setListener((buffer) => this.listener.bluetooth(buffer));
     }
 
     isOSCListening(){
-        return this.oscDevice.oscServer.isListening;
+        return this.oscDevice.isListening;
     }
 
     /**
@@ -84,7 +95,13 @@ class Device{
 
     modify(osc, bluetooth) {
         if(osc){
+            //First we stop it and remove
+            this.oscDevice.close();
+            OSCManager.removeDevice(this.oscDevice);
+            //Then we modify
             this.oscDevice.modify(osc);
+            //And finally we re-enable it
+            this.enableOSC();
         }
         if(bluetooth){
             //First we free last bluetoothDevice used
@@ -96,9 +113,7 @@ class Device{
                 this.bluetoothDevice = undefined;
             }else if(bluetooth.bluetoothDevice.available === true){
                 this.bluetoothDevice = bluetooth.bluetoothDevice || this.bluetoothDevice;
-                this.bluetoothDevice.available = false;
-                this.bluetoothDevice.setListener((buffer) => this.listener.bluetooth(buffer));
-
+                this.enableBluetooth();
             }
         }
     }
@@ -109,8 +124,8 @@ class Device{
         }
     }
 
-    setUpListeners(bluetooth){
-        this.listener.setMainAnalyzer(bluetooth);
+    setUpListeners(bluetooth, osc){
+        this.listener.setMainAnalyzers(bluetooth, osc);
     }
 }
 module.exports = Device;

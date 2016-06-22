@@ -14,14 +14,16 @@ class MetaManager{
      */
     static addEntity(options){
         var ent = new Entity(auto_incr_key);
+        ent.setUpDeviceListeners(
+            (msg) => {MetaManager.analyzeBlueResponse(msg);},
+            (msg) => {MetaManager.analyzeOSCResponse(msg)});
+
         if(options.robot){
             ent.setUpRobot(options.robot);
         }
         if(options.device){
             ent.setUpDevice(options.device);
         }
-        
-        ent.setUpDeviceListeners((msg) => {MetaManager.analyzeBlueResponse(msg);});
 
         entities.set(auto_incr_key, ent);
         auto_incr_key += 1;
@@ -53,6 +55,10 @@ class MetaManager{
     }
 
     static analyzeBlueResponse(message){
+        console.log(message);
+    }
+
+    static analyzeOSCResponse(message){
         console.log(message);
     }
 

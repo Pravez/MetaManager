@@ -30,10 +30,10 @@ class Controller{
     static getEntity(id){
         return MetaManager.getEntity(id);
     }
-    
-    static enableEntityDevice(id){
+
+    static switchEntityOSCListening(id){
         var ent = MetaManager.getEntity(id);
-        ent.enableDevice();
+        ent.switchOSCState();
     }
 
     static findDevicesByRegexp(regexp){
