@@ -11,17 +11,30 @@ class Command{
         }
 
         this._args = args;
+
+        try{
+            this.verifyCommand();
+        }catch (error) {
+            console.log(error);
+            return Object.create(null);
+        }
     }
 
     execute(){
-        return this._command.cmd + " " + this._args.toString();
+        return this._command.cmd + (this._command.args === 1 ? " " + this._args.toString() : "");
+    }
+
+    verifyCommand(){
+        if(this._command.args > 0){
+            if(this._command.type === "number" && typeof this._args !== "number")
+                throw "Error, invalid argument";
+            if(this._command.type === "boolean" && typeof this._args !== "boolean")
+                throw "Error, invalid argument";
+        }
     }
 
     getCommandType(){
         return this._command;
     }
 }
-
-
-console.log(new Command('dx', 20).execute());
 module.exports = Command;
