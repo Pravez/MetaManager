@@ -1,7 +1,7 @@
 "use strict";
 
 var Device = require('../model/devices/Device');
-var Robot = require('robot/Robot');
+var Robot = require('./robot/Robot');
 
 
 class Entity {
