@@ -1,7 +1,8 @@
 "use strict";
 
 var Device = require('../model/devices/Device');
-var Robot = require('robot/Robot');
+var Robot = require('./robot/Robot');
+var Command = require('./robot/Command');
 
 
 class Entity {
@@ -89,6 +90,7 @@ class Entity {
     }
 
     executeCommand(command){
+        var command = new Command(command.cmd, command.args);
         console.log(command);
     }
 }
