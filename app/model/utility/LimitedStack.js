@@ -3,9 +3,11 @@
 
 class StackNode{
 
-    constructor(value, after, before){
+    constructor(value, after){
         this._value = value;
-        this._before = before;
+        this._before = undefined;
+        if(after)
+            after._before = this;
     }
 }
 
@@ -15,7 +17,7 @@ class LimitedStack{
         this._size = size;
         this._elements = 1;
 
-        this._head = new StackNode(value, undefined);
+        this._head = new StackNode(firstValue, undefined);
         this._tail = this._head;
     }
 
@@ -45,8 +47,5 @@ class LimitedStack{
             throw "Not in array";
         }
     }
-
-
-
 }
 module.exports = LimitedStack;

@@ -1,34 +1,20 @@
 "use strict";
 
-class Vector2 {
-    constructor(position){
-        this.x = position.x;
-        this.y = position.y;
-    }
-}
-
-class Vector3 {
-    constructor(position){
-        if(position.z) {
-            this.x = position.x;
-            this.y = position.y;
-            this.z = position.z;
-        }else{
-            return new Vector2(position);
-        }
-    }
-}
+var LimitedStack = require('../utility/LimitedStack');
+var Command = require('./Command');
 
 class Robot{
 
     constructor(){
-        this.name = "Jabberwockie"
+        this._name = "Jabberwockie";
+        
+        this._commands = new LimitedStack(20, new Command("start"));
     }
 
     setUp(options){
         if(options){
 
-            this.name = options.name;
+            this._name = options.name;
 
             return this;
         }else{
@@ -37,7 +23,19 @@ class Robot{
     }
 
     modify(options){
-        this.name = options.name || this.name;
+        this._name = options.name || this._name;
+    }
+
+    addExecutedCommand(command){
+        this._commands.add(command);
+    }
+
+    getExecutedCommands(){
+        return this._commands;
+    }
+    
+    getLastCommand(){
+        return this._commands.head();
     }
 
 }

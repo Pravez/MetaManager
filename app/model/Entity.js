@@ -2,6 +2,7 @@
 
 var Device = require('../model/devices/Device');
 var Robot = require('./robot/Robot');
+var Command = require('./robot/Command');
 
 
 class Entity {
@@ -89,7 +90,15 @@ class Entity {
     }
 
     executeCommand(command){
-        console.log(command);
+        var cmd = new Command(command.command, command.value);
+        try {
+            if(this.robot.getLastCommand().equals(cmd) === false) {
+                this.device.executeCommand(cmd.execute());
+                this.robot.addExecutedCommand(cmd);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

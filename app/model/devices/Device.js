@@ -138,6 +138,8 @@ class Device{
     sendToBluetooth(data){
         if(this.bluetoothDevice){
             this.bluetoothDevice.send(data);
+        }else{
+            throw "Error : no bluetoothDevice assignated";
         }
     }
 
@@ -148,6 +150,12 @@ class Device{
      */
     setUpListeners(bluetooth, osc){
         this.listener.setMainAnalyzers(bluetooth, osc);
+    }
+    
+    executeCommand(command){
+        //Sending to metabot here
+        console.log(command);
+        //this.sendToBluetooth(command);
     }
 }
 module.exports = Device;

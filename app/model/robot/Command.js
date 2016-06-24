@@ -25,7 +25,7 @@ class Command{
     }
 
     verifyCommand(){
-        if(this._command.args > 0){
+        if(this._args && this._command.args > 0){
             if(this._command.type === "number" && typeof this._args !== "number")
                 throw "Error, invalid argument";
             if(this._command.type === "boolean" && typeof this._args !== "boolean")
@@ -35,6 +35,10 @@ class Command{
 
     getCommandType(){
         return this._command;
+    }
+    
+    equals(command){
+        return this._command == command._command && this._args == command._args;
     }
 }
 module.exports = Command;

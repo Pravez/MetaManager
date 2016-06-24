@@ -1,6 +1,7 @@
 'use strict';
 
 var Entity = require('../model/Entity');
+var Scene = require('./Scene');
 
 var auto_incr_key = 0;
 var entities = new Map();
