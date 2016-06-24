@@ -1,10 +1,12 @@
 'use strict';
 
 var Entity = require('../model/Entity');
-var Scene = require('./Scene');
+var Scene = require('./scene/Scene');
 
 var auto_incr_key = 0;
 var entities = new Map();
+var n_scene = new Scene();
+
 
 class MetaManager{
 
@@ -81,9 +83,17 @@ class MetaManager{
     static analyzeOSCResponse(message){
         for(let ent of entities.keys()){
             if(entities.get(ent).device === message.device){
-                return entities.get(ent).executeCommand({ command: message.cmd, value: message.arg});
+                entities.get(ent).executeCommand({ command: message.cmd, value: message.arg});
+                break;
             }
         }
+        if(n_scene._stage){
+            n_scene.draw();
+        }
+    }
+
+    static getScene(){
+        return n_scene;
     }
 
 }

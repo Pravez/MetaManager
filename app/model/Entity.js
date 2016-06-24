@@ -95,6 +95,8 @@ class Entity {
             if(this.robot.getLastCommand().equals(cmd) === false) {
                 this.device.executeCommand(cmd.execute());
                 this.robot.addExecutedCommand(cmd);
+                this.robot._position._x += 2;
+                this.robot._position._y += 2;
             }
         } catch (error) {
             console.log(error);

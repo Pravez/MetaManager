@@ -2,6 +2,7 @@
 
 var LimitedStack = require('../utility/LimitedStack');
 var Command = require('./Command');
+var Vector = require('../utility/Vector');
 
 class Robot{
 
@@ -15,6 +16,7 @@ class Robot{
         if(options){
 
             this._name = options.name;
+            this._position = new Vector(options.position);
 
             return this;
         }else{

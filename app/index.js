@@ -39,3 +39,5 @@ Creation.setCurrentPane("nothing");
 //the called function upon click on one item.
 //var cm = new ContextMenu("bots", document.getElementById("photon_cm"), function(e){ console.log(e.innerHTML);}).setUp();
 
+
+

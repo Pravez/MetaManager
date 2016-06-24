@@ -4,7 +4,11 @@ var MetaManager = require('../model/MetaManager');
 
 MetaManager.addEntity({
     robot:{
-        name: "Ewok"
+        name: "Ewok",
+        position:{
+            x:100,
+            y:100
+        }
     },
     device:{
         osc:{
@@ -15,6 +19,10 @@ MetaManager.addEntity({
 });
 
 class Controller{
+    static getScene(){
+        return MetaManager.getScene();
+    }
+    
     static addEntity(options){
         MetaManager.addEntity(options);
     }
