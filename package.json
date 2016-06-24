@@ -13,6 +13,7 @@
     "electron": "latest",
     "electron-packager": "^7.0.3",
     "electron-prebuilt": "1.1.2",
+    "electron-rebuild": "^1.1.5",
     "spectron": "^3.2.3"
   },
   "dependencies": {
