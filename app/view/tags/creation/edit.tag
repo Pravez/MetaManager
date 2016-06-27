@@ -96,6 +96,7 @@
                 };
                 Controller.modifyEntity(self.entity, options);
                 document.dispatchEvent(new Event("addedEntity"));
+                Creation.changePane('controlBot');
             }else{
                 self.name.focus();
             }
@@ -123,13 +124,13 @@
         });
 
         function updateValues(entity){
-            self.name.value = entity.robot.name || '';
-            self.size.value = entity.robot.size || '';
-            self.legs.value = entity.robot.legs || '';
-            self.circumference.value = entity.robot.circumference || '';
-            self.x.value = entity.robot.x || '';
-            self.y.value = entity.robot.y || '';
-            self.z.value = entity.robot.z || '';
+            self.name.value = entity.robot._name || '';
+            self.size.value = entity.robot._size || '';
+            self.legs.value = entity.robot._legs || '';
+            self.circumference.value = entity.robot._circumference || '';
+            self.x.value = entity.robot._x || '';
+            self.y.value = entity.robot._y || '';
+            self.z.value = entity.robot._z || '';
             self.address.value = entity.device.oscDevice.address || '';
             self.port.value = entity.device.oscDevice.port || '';
             if (entity.device.bluetoothDevice)

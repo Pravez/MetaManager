@@ -8,10 +8,10 @@ class DeviceListener{
 
     /**
      * Simple constructor, needs to know which devices it is associated to
-     * @param device
+     * @param entity
      */
-    constructor(device){
-        this.device = device;
+    constructor(entityID){
+        this.entityID = entityID;
         this.lastBluetoothMessage = "";
         this.lastOSCMessage = undefined;
     }
@@ -36,12 +36,22 @@ class DeviceListener{
         this.lastBluetoothMessage += translated;
 
         if(translated.indexOf('$') > -1){
-            var interpreted = this.buildBluetoothMessage();
+            var interpreted = DeviceListener.buildBluetoothMessage(this.lastBluetoothMessage.split('$')[0]);
             this.btAnalyzer({
-                device: this.device,
+                entity: this.entityID,
                 cmdSent: interpreted.cmdSent,
                 response: interpreted.response
             });
+            var lasting = this.lastBluetoothMessage.substring(this.lastBluetoothMessage.indexOf('$')+3, this.lastBluetoothMessage.length);
+            while(lasting.length > 0 && lasting.indexOf('$') > -1){
+                var interpreted_last = DeviceListener.buildBluetoothMessage(lasting.split('$')[0]);
+                this.btAnalyzer({
+                    entity: this.entityID,
+                    cmdSent: interpreted_last.cmdSent,
+                    response: interpreted_last.response
+                });
+                lasting = lasting.substring(this.lastBluetoothMessage.indexOf('$')+3, this.lastBluetoothMessage.length);
+            }
             this.lastBluetoothMessage = "";
         }
     }
@@ -59,10 +69,10 @@ class DeviceListener{
      * Main function to cut a bluetoothMessage
      * @returns {{cmdSent: *, response: string}}
      */
-    buildBluetoothMessage(){
-        var splitted = this.lastBluetoothMessage.split('\r\n');
+    static buildBluetoothMessage(message){
+        var splitted = message.split('\r\n');
         var cmdSent = splitted[0];
-        var response = this.lastBluetoothMessage.replace(cmdSent, '');
+        var response = message.replace(cmdSent, '');
         response = response.replace(splitted[splitted.length-1], '');
         response = response.substr(response.indexOf('\r\n'), response.length);
 
@@ -71,7 +81,7 @@ class DeviceListener{
 
     buildOSCMessage(){
         return {
-            device: this.device,
+            entity: this.entityID,
             cmd: this.lastOSCMessage.address.replace('/', ''),
             arg: this.lastOSCMessage.args[0]
         }

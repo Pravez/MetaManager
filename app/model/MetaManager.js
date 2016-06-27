@@ -73,7 +73,7 @@ class MetaManager{
      * @param message
      */
     static analyzeBlueResponse(message){
-        console.log(message);
+        entities.get(message.entity).analyzeBluetoothResponse(message);
     }
 
     /**
@@ -81,12 +81,9 @@ class MetaManager{
      * @param message
      */
     static analyzeOSCResponse(message){
-        for(let ent of entities.keys()){
-            if(entities.get(ent).device === message.device){
-                entities.get(ent).executeCommand({ command: message.cmd, value: message.arg});
-                break;
-            }
-        }
+
+        entities.get(message.entity).executeCommand({ command: message.cmd, value: message.arg}, true);
+
         if(n_scene._stage){
             n_scene.draw();
         }
@@ -94,6 +91,10 @@ class MetaManager{
 
     static getScene(){
         return n_scene;
+    }
+    
+    static getRobotInformationsFromDevice(id){
+        return entities.get(id).askRobotInformations();
     }
 
 }

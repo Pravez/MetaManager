@@ -12,9 +12,11 @@ class Entity {
      * @param id
      */
     constructor(id) {
-        this.robot = new Robot();
-        this.device = new Device();
         this.id = id;
+
+        this.robot = new Robot();
+        this.device = new Device(this.id);
+        
     }
 
     /**
@@ -36,7 +38,8 @@ class Entity {
             this.device.setUpBluetooth(options.bluetooth);
         }
         if (options.osc) {
-            this.device.setUpOSC(options.osc)
+            this.device.setUpOSC(options.osc);
+            this.device.enableOSC();
         }
         if (options.xbee) {
             this.device.setUpXBee(options.xbee);
@@ -89,18 +92,55 @@ class Entity {
         this.device.sendToBluetooth(data);
     }
 
-    executeCommand(command){
+    executeCommand(command, verify){
         var cmd = new Command(command.command, command.value);
         try {
-            if(this.robot.getLastCommand().equals(cmd) === false) {
+            //if(!(verify === true ^ this.robot.getLastCommand().equals(cmd) === false)) {
                 this.device.executeCommand(cmd.execute());
                 this.robot.addExecutedCommand(cmd);
-                this.robot._position._x += 2;
-                this.robot._position._y += 2;
-            }
+            //}
         } catch (error) {
             console.log(error);
         }
+    }
+
+    analyzeBluetoothResponse(message){
+        if(message.args === undefined && this.askingInformations === true){
+            var response = Entity.parseBlueResponse(message.response);
+            this.robot.modifyValue(response.cmd, response.value);
+            console.log('updated ' + message.cmdSent + " : " + response.value);
+        }
+    }
+
+    static parseBlueResponse(response){
+        var changed = response.replace('\r\n', '');
+        return {
+            cmd: changed.split('=')[0],
+            value: changed.split('=')[1]
+        };
+    }
+
+    askRobotInformations(){
+        this.askingInformations = true;
+        this.executeCommand({command: 'h'}, false);
+        this.executeCommand({command: 'r'}, false);
+        this.executeCommand({command: 'alt'}, false);
+        this.executeCommand({command: 'freq'}, false);
+        this.executeCommand({command: 'dx'}, false);
+        this.executeCommand({command: 'dy'}, false);
+        this.executeCommand({command: 'version'}, false);
+
+        var self = this;
+        var finished = function(e){
+            if(self.robot.hasBeenUpdated() === true){
+                document.dispatchEvent(new Event("askedInfo"));
+                self.askingInformations = false;
+            }else{
+                setTimeout(finished, 1000);
+            }
+        };
+
+        setTimeout(finished, 1500);
     }
 }
 

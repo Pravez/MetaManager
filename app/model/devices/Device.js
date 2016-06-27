@@ -13,12 +13,12 @@ class Device{
     /**
      * Constructor which initializes the oscDevice and the listener
      */
-    constructor(){
+    constructor(entityID){
         this.bluetoothDevice = undefined;
         this.oscDevice = new OSCDevice();
         //this.xbeeDevice = new XbeeDevice();
 
-        this.listener = new DeviceListener(this);
+        this.listener = new DeviceListener(entityID);
     }
 
     /**
@@ -59,8 +59,11 @@ class Device{
             OSCManager.addDevice(this.oscDevice);
         }catch (error){
             OSCManager.addDevice(OSCManager.changeDevicePort(this.oscDevice));
-            this.oscDevice.refresh((buffer) => this.listener.osc(buffer));
         }
+
+        //Then we make the device listening
+        this.oscDevice.refresh((buffer) => this.listener.osc(buffer));
+        this.oscDevice.listen();
     }
 
     /**
@@ -139,7 +142,7 @@ class Device{
         if(this.bluetoothDevice){
             this.bluetoothDevice.send(data);
         }else{
-            throw "Error : no bluetoothDevice assignated";
+            console.log("Error : no bluetoothDevice assignated");
         }
     }
 
@@ -155,6 +158,7 @@ class Device{
     executeCommand(command){
         //Sending to metabot here
         console.log(command);
+        this.sendToBluetooth(command);
         //this.sendToBluetooth(command);
     }
 }

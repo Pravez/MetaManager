@@ -7,7 +7,7 @@
                 </li>
                 <li class="list-group-item entities-list" each={ entities } onclick={ selectItem }>
                     <div class="media-body">
-                        <strong>{ robot.name }</strong>
+                        <strong>{ robot._name }</strong>
                         <p>{ device.bluetoothDevice.name }</p>
                     </div>
                 </li>

@@ -18,10 +18,39 @@ class Robot{
             this._name = options.name;
             this._position = new Vector(options.position);
 
+            this._values = {
+                'h':0,
+                'r':0,
+                'dx':0,
+                'dy':0,
+                'alt':0,
+                'freq':0,
+            };
+            this._version = "1.1.1";
+
+            this.valuesQty = 7;
+
             return this;
         }else{
             return undefined;
         }
+    }
+
+    hasBeenUpdated(){
+        if(this.valuesQty === 0){
+            this.valuesQty = 7;
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    modifyValue(name, value){
+        if(name === 'version')
+            this._version = value;
+        else
+            this._values[name] = parseInt(value);
+        this.valuesQty -= 1;
     }
 
     modify(options){

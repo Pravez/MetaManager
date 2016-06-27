@@ -43,6 +43,10 @@ class Controller{
         var ent = MetaManager.getEntity(id);
         ent.switchOSCState();
     }
+    
+    static requestRobotInfo(id){
+        return MetaManager.getRobotInformationsFromDevice(id);
+    }
 
     static findDevicesByRegexp(regexp){
         var entities = MetaManager.getEntities();
