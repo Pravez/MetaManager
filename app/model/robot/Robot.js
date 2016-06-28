@@ -24,11 +24,12 @@ class Robot{
                 'dx':0,
                 'dy':0,
                 'alt':0,
-                'freq':0,
+                'freq':0
             };
             this._version = "1.1.1";
 
             this.valuesQty = 7;
+            this._defaultValues = undefined;
 
             return this;
         }else{

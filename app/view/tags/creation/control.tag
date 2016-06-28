@@ -89,8 +89,17 @@
         });
 
         this.requestInfo = function(e){
-            document.getElementById("loading").style.display="block";
+            document.getElementById("loading").style.display="flex";
             Controller.requestRobotInfo(self.entity.id);
+
+            //TODO if triggered notice it to the user
+            setTimeout(function(e){
+                if(self.entity.askingInformations === true){
+                    document.getElementById("loading").style.display="none";
+                    self.entity.robot.valuesQty = 0;
+                    self.entity.robot.hasBeenUpdated();
+                }
+            }, 3000);
         };
 
         document.addEventListener("askedInfo", function(e){
@@ -101,7 +110,6 @@
             document.getElementById("loading").style.display="none";
             self.update();
         });
-
     </script>
     <style>
 
