@@ -95,10 +95,15 @@ class Entity {
     executeCommand(command, verify){
         var cmd = new Command(command.command, command.value);
         try {
-            //if(!(verify === true ^ this.robot.getLastCommand().equals(cmd) === false)) {
+            if(verify === true){
+                if(this.robot.getLastCommand().equals(cmd) === false) {
+                    this.device.executeCommand(cmd.execute());
+                    this.robot.addExecutedCommand(cmd);
+                }
+            }else{
                 this.device.executeCommand(cmd.execute());
                 this.robot.addExecutedCommand(cmd);
-            //}
+            }
         } catch (error) {
             console.log(error);
         }

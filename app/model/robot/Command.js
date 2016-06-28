@@ -21,7 +21,7 @@ class Command{
     }
 
     execute(){
-        return this._command.cmd + (this._args && this._command.args === 1 ? " " + this._args.toString() : "");
+        return this._command.cmd + ((this._args !== undefined) && (this._command.args === 1) ? " " + this._args : "");
     }
 
     verifyCommand(){

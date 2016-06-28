@@ -1,5 +1,5 @@
 <menubar>
-    <header class="titlebar toolbar toolbar-header">
+    <header id="menu-bar" class="titlebar toolbar toolbar-header">
         <div id="act-btns" style="float:left; position:absolute;left:10px;font-size:16px;">
             <a id="btn-close" onclick={ toggleAction }><span class="icon icon-record main-btn"></span></a>
             <a id="btn-reduce" onclick={ toggleAction }><span class="icon icon-record main-btn" onclick={ toggleAction }></span></a>

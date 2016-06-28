@@ -40,13 +40,15 @@
                     <input id="height" name="h" type="range" min="-150" value="0" max="20" class="slider slider-round slider-small" oninput={ onRangeChange }>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <label for="cmd">Send command</label>
+                    <input id="cmd" name="cmd" type="text" class="form-control" onblur={ sendCmd }>
+                </div>
+            </div>
         </div>
         <div class="form-group col-md-5 col-md-offset-1">
-            <div class="row">
-                <label>Send command
-                    <input name="cmd" type="text" class="form-control" onblur={ sendCmd }>
-                </label>
-            </div>
+            <pad class="creation-tags" entity={ entity }></pad>
         </div>
     </div>
 
@@ -70,7 +72,7 @@
         };
 
         this.onRangeChange = function(e){
-            self.entity.sendBluetoothData(e.currentTarget.name + " " + e.currentTarget.value);
+            self.entity.executeCommand({ command:e.currentTarget.name, value:parseInt(e.currentTarget.value) }, true);
             self.entity.robot._values[e.currentTarget.name] = parseInt(e.currentTarget.value);
             console.log(e.currentTarget.name + " " + e.currentTarget.value);
         };

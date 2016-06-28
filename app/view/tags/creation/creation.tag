@@ -1,6 +1,6 @@
 <creation>
     <div class="pane-group">
-        <div class="pane pane-sm sidebar">
+        <div id="robots-list" class="pane pane-sm sidebar">
             <ul class="list-group">
                 <li class="list-group-header">
                     <input name="search" class="form-control" type="search" placeholder="Search for a robot" oninput={ searchBot }>
