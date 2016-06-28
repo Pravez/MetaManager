@@ -2,7 +2,7 @@
 
     <div class="padded-less">
         <button class="btn btn-large btn-default" onclick={ editEntity }>Edit Entity</button>
-        <button class="btn btn-large btn-warning" onclick={ requestInfo }>Request informations</button>
+        <button if={ entity.device.bluetoothDevice.connected } class="btn btn-large btn-primary" onclick={ requestInfo }>Request informations</button>
         <div class="form-group col-md-12">
             <div class="col-xs-3">
                 <div class="row"><strong> Name </strong> : { entity.robot._name }</div>
@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-xs-6">
                     <label for="size">Size : <strong>{ this.size.value }</strong></label>
-                    <input id="size" name="r" type="range" min="-200" value="0" max="150" class="slider slider-round slider-small" oninput={ onRangeChange }>
+                    <input id="size" name="r" type="range" min="80" value="0" max="150" class="slider slider-round slider-small" oninput={ onRangeChange }>
                 </div>
             </div>
             <div class="row">
@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-xs-6">
                     <label for="height">Height : <strong>{ this.height.value }</strong></label>
-                    <input id="height" name="h" type="range" min="-100" value="0" max="100" class="slider slider-round slider-small" oninput={ onRangeChange }>
+                    <input id="height" name="h" type="range" min="-150" value="0" max="20" class="slider slider-round slider-small" oninput={ onRangeChange }>
                 </div>
             </div>
         </div>
@@ -59,6 +59,7 @@
         var riot = require('riot');
 
         var self = this;
+        var entity = undefined;
 
         this.editEntity = function(e){
             Creation.changePane("editBot");
@@ -70,6 +71,7 @@
 
         this.onRangeChange = function(e){
             self.entity.sendBluetoothData(e.currentTarget.name + " " + e.currentTarget.value);
+            self.entity.robot._values[e.currentTarget.name] = parseInt(e.currentTarget.value);
             console.log(e.currentTarget.name + " " + e.currentTarget.value);
         };
 
@@ -80,22 +82,24 @@
 
         this.on('update', function(e){
             try{
-                self.entity = Controller.getEntity(this.mixin('entity').id);
-
+                self.entity = entity = Controller.getEntity(this.mixin('entity').id);
             }catch(error){
                 console.log("Error: updated without mixin");
             }
         });
 
         this.requestInfo = function(e){
+            document.getElementById("loading").style.display="block";
             Controller.requestRobotInfo(self.entity.id);
         };
 
         document.addEventListener("askedInfo", function(e){
-            self.height.value = self.entity.robot._values['h'];
-            self.freq.value = self.entity.robot._values['freq'];
-            self.alt.value = self.entity.robot._values['alt'];
-            self.size.value = self.entity.robot._values['r'];
+            self.height.value = e.detail.h;
+            self.freq.value = e.detail.freq;
+            self.alt.value = e.detail.alt;
+            self.size.value = e.detail.r;
+            document.getElementById("loading").style.display="none";
+            self.update();
         });
 
     </script>

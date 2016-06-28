@@ -122,18 +122,16 @@ class Entity {
 
     askRobotInformations(){
         this.askingInformations = true;
-        this.executeCommand({command: 'h'}, false);
-        this.executeCommand({command: 'r'}, false);
-        this.executeCommand({command: 'alt'}, false);
-        this.executeCommand({command: 'freq'}, false);
-        this.executeCommand({command: 'dx'}, false);
-        this.executeCommand({command: 'dy'}, false);
-        this.executeCommand({command: 'version'}, false);
-
+        var commands = ['h', 'r', 'alt', 'freq', 'dx', 'dy', 'version'];
         var self = this;
+
+        commands.forEach(function(e){
+            self.executeCommand({command: e}, false);
+        });
+
         var finished = function(e){
             if(self.robot.hasBeenUpdated() === true){
-                document.dispatchEvent(new Event("askedInfo"));
+                document.dispatchEvent(new CustomEvent("askedInfo", {'detail': self.robot._values}));
                 self.askingInformations = false;
             }else{
                 setTimeout(finished, 1000);

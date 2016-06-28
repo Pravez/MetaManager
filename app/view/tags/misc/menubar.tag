@@ -112,9 +112,11 @@
 
         this.select = function(e){
             var address = e.currentTarget.children[1].innerHTML;
-            if(BluetoothManager.getFromNameOrAddress(address).connected === true)
+            if(BluetoothManager.getFromNameOrAddress(address).connected === true){
                 BluetoothManager.disconnectDevice(address);
-            BluetoothManager.connectDevice(address);
+            }else{
+                BluetoothManager.connectDevice(address);
+            }
             self.update({devices: Array.from(BluetoothManager.getDevices())});
         };
     </script>

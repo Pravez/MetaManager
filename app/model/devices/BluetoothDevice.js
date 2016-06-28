@@ -2,6 +2,8 @@
 
 var BluetoothSerial = require('bluetooth-serial-port');
 
+var MAX_CONNECTION_TRIES = 5;
+
 /**
  * Each connection to a device is a BluetoothDevice instance. This class is
  * used to create and manage a connection to a bluetooth device.
@@ -21,6 +23,7 @@ class BluetoothDevice{
         this.connected = false;
         this.connecting = false;
         this.tries = 0;
+        this.tries_connect = 0;
     }
 
     /**
@@ -43,6 +46,13 @@ class BluetoothDevice{
 
             this.serial.on('finished', function() {
                 console.log('Scan did finish');
+            });
+
+            this.serial.on('closed', function(){
+                console.log("connection closed");
+                this.connected = false;
+                this.connecting = false;
+                document.dispatchEvent(new Event('devicesUpdate'));
             });
 
             return this;
@@ -78,33 +88,34 @@ class BluetoothDevice{
                 self.connect();
             }
         });
-
-        //TODO rework message to the view
-        setTimeout(function(){
-            self.connecting = false;
-            if(self.connected === false) {
-                document.dispatchEvent(new Event("devicesUpdate"));
-                console.log("Timed out to connect");
-            }
-        }, 7500);
     }
 
     /**
      * Method to connect to a device, after having found a channel.
      */
     connect(){
-        var self = this;
-        try {
+        if(this.connected === false) {
+            var self = this;
+            this.tries_connect += 1;
+
+            //First we try to connect
             this.serial.connect(this.address, this.channel, function () {
                 console.log('connected');
                 self.connected = true;
                 self.connecting = false;
                 document.dispatchEvent(new Event("devicesUpdate"));
+
             }, function () {
-                console.log('cannot connect');
+                //If it failed, if we are not already connected and if we haven't tried too many times, we retry
+                if (self.tries_connect < MAX_CONNECTION_TRIES && self.connected === false) {
+                    console.log('Unable to connect, retrying in 2 seconds...');
+                    setTimeout(self.connect(), 2000);
+                }else{
+                    self.connecting = false;
+                    document.dispatchEvent(new Event("devicesUpdate"));
+                }
+
             });
-        } catch(error){
-            console.log(error);
         }
     }
 
@@ -113,6 +124,10 @@ class BluetoothDevice{
      */
     disconnect(){
         this.serial.close();
+        this.connected = false;
+        this.connecting = false;
+        this.tries = 0;
+        this.tries_connect = 0;
     }
 
     /**
