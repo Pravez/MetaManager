@@ -18,9 +18,10 @@
   },
   "dependencies": {
     "bluetooth-serial-port": "^1.2.6",
+    "cannon": "^0.6.2",
     "jquery": "^3.0.0",
-    "ocanvas": "^2.8.4",
     "osc": "^2.1.0",
-    "riot": "^2.4.1"
+    "riot": "^2.4.1",
+    "three": "^0.78.0"
   }
 }

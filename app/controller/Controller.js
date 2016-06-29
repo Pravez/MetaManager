@@ -19,9 +19,6 @@ MetaManager.addEntity({
 });
 
 class Controller{
-    static getScene(){
-        return MetaManager.getScene();
-    }
     
     static addEntity(options){
         MetaManager.addEntity(options);

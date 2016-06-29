@@ -1,11 +1,9 @@
 'use strict';
 
 var Entity = require('../model/Entity');
-var Scene = require('./scene/Scene');
 
 var auto_incr_key = 0;
 var entities = new Map();
-var n_scene = new Scene();
 
 
 class MetaManager{
@@ -87,10 +85,6 @@ class MetaManager{
         if(n_scene._stage){
             n_scene.draw();
         }
-    }
-
-    static getScene(){
-        return n_scene;
     }
     
     static getRobotInformationsFromDevice(id){
