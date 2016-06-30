@@ -9,9 +9,15 @@ class SceneElement{
 
     setBody(options){
         var body = new Cannon.Body({
-            mass: options.mass,
-            position: new Cannon.Vec3(options.posX, options.posY, options.posZ)
+            mass: options.mass
         });
+
+        if(options.position){
+            body.position.x = options.position.x || body.position.x;
+            body.position.y = options.position.y || body.position.y;
+            body.position.z = options.position.z || body.position.z;
+        }
+
 
         switch(options.type){
             case "sphere":
@@ -22,6 +28,7 @@ class SceneElement{
                 break;
             case "plane":
                 body.addShape(new Cannon.Plane());
+                body.quaternion.setFromAxisAngle(new Cannon.Vec3(1,0,0),-Math.PI/2);
                 break;
             default:
                 body.addShape(new Cannon.Box(new Cannon.Vec3(1,1,1)));
@@ -33,7 +40,18 @@ class SceneElement{
     setMesh(options){
         var geometry, material;
 
-        material = new Three.MeshBasicMaterial({color: options.color, wireframe: options.wireframe});
+
+        switch(options.material.type){
+            case "basic":
+                material = new Three.MeshBasicMaterial({color: options.material.color, wireframe: options.material.wireframe});
+                break;
+            case "lambert":
+                material = new Three.MeshLambertMaterial( { color: options.material.color } );
+                break;
+            case "phong":
+                material = new Three.MeshPhongMaterial( { color: options.material.color } );
+                break;
+        }
 
         switch(options.type){
             case "box":
@@ -50,6 +68,10 @@ class SceneElement{
         this.geometry = geometry;
         this.material = material;
         this.mesh = new Three.Mesh(geometry, material);
+        if(options.castShadow === true)
+            this.mesh.castShadow = true;
+        if(options.receiveShadow === true)
+            this.mesh.receiveShadow = true;
     }
 
     updateMesh(){

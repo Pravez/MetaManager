@@ -5,16 +5,28 @@ require('./TrackballControls');
 
 class SceneRenderer{
 
-    constructor(options){
+    constructor(canvas){
         this.scene = new Three.Scene();
 
-        var canvas = typeof options.canvas === "string" ? document.getElementById(options.canvas) : options.canvas;
+        var Canvas = typeof canvas === "string" ? document.getElementById(canvas) : canvas;
 
-        this.camera = new Three.PerspectiveCamera(30, canvas.width / canvas.height, 0.5, 10000);
-        this.camera.position.set(17, 5, 17);
+        this.renderer = new Three.WebGLRenderer({ canvas: Canvas });
+        this.renderer.setSize(Canvas.width, Canvas.height);
+
+        this.renderer.gammaInput = true;
+        this.renderer.gammaOutput = true;
+        this.renderer.shadowMap.enabled = true;
+
+    }
+
+    setCamera(fov, aspect, near, far, position){
+        this.camera = new Three.PerspectiveCamera(fov, aspect, near, far);
+        this.camera.position.set(position.x, position.y, position.z);
         this.scene.add(this.camera);
+    }
 
-        this.controls = new Three.TrackballControls( this.camera , canvas);
+    addTrackballControls(){
+        this.controls = new Three.TrackballControls( this.camera , this.renderer.canvas);
         this.controls.rotateSpeed = 1.0;
         this.controls.zoomSpeed = 1.2;
         this.controls.panSpeed = 0.8;
@@ -23,47 +35,37 @@ class SceneRenderer{
         this.controls.staticMoving = true;
         this.controls.dynamicDampingFactor = 0.3;
         this.controls.keys = [ 65, 83, 68 ];
+    }
 
-        this.scene.add( new Three.AmbientLight( 0x666666 ) );
+    //TODO needs to be changed/enlighted
+    addLight(options){
+        var light;
+        switch(options.type){
+            case "ambient":
+                light = new Three.AmbientLight(options.color);
+                break;
+            case "directional":
+                light = new Three.DirectionalLight(options.color, options.intensity);
+                var d = 20;
 
-        var light = new Three.DirectionalLight( 0xffffff, 1.75 );
-        var d = 20;
-        light.position.set( d, d, d );
-        light.castShadow = true;
-        //light.shadowCameraVisible = true;
-        light.shadowMapWidth = 1024;
-        light.shadowMapHeight = 1024;
-        light.shadowCameraLeft = -d;
-        light.shadowCameraRight = d;
-        light.shadowCameraTop = d;
-        light.shadowCameraBottom = -d;
-        light.shadowCameraFar = 3*d;
-        light.shadowCameraNear = d;
-        light.shadowDarkness = 0.5;
+                light.position.set(d, d, d );
+                light.castShadow = true;
+                light.cameraHelper = true;
+
+                light.shadow.mapWidth = 1024;
+                light.shadow.mapHeight = 1024;
+
+                light.shadow.camera.left = -d;
+                light.shadow.camera.right = d;
+                light.shadow.camera.top = d;
+                light.shadow.camera.bottom = -d;
+
+                light.shadow.camera.far = 3*d;
+                light.shadow.camera.near = d;
+                light.shadow.darkness = 0.5;
+        }
+
         this.scene.add( light );
-
-        var geometry = new Three.PlaneGeometry( 100, 100, 1, 1 );
-        //geometry.applyMatrix( new THREE.Matrix4().makeRotationX( Math.PI / 2 ) );
-        var material = new Three.MeshLambertMaterial( { color: 0x777777 } );
-        //THREE.ColorUtils.adjustHSV( material.color, 0, 0, 0.9 );
-        var mesh = new Three.Mesh( geometry, material );
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-        this.scene.add( mesh );
-
-        var cubeGeo = new Three.BoxGeometry( 1, 1, 1, 10, 10 );
-        var cubeMaterial = new Three.MeshPhongMaterial( { color: 0x888888 } );
-        var cubeMesh = new Three.Mesh( cubeGeo, cubeMaterial );
-        cubeMesh.castShadow = true;
-        this.scene.add( cubeMesh );
-
-        this.renderer = new Three.WebGLRenderer({ canvas: canvas });
-        this.renderer.setSize(canvas.width, canvas.height);
-
-        this.renderer.gammaInput = true;
-        this.renderer.gammaOutput = true;
-        this.renderer.shadowMap.enabled = true;
-
     }
 
     addMesh(mesh){

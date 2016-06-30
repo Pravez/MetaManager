@@ -1,27 +1,23 @@
 "use strict";
 
 class Vector{
-    constructor(position){
-        if(position){
-            this._x = position.x || 0;
-            this._y = position.y || 0;
-            this._z = position.z || null;
-        }
+    constructor(x, y, z){
+        this.x = x || 0;
+        this.y = y || 0;
+        this.z = z || 0;
     }
 
-    change(position){
-        if(position){
-            this._x = position.x || this._x;
-            this._y = position.y || this._y;
-            this._z = position.z || this._z;
-        }
+    change(x, y, z){
+        this.x = x || this.x;
+        this.y = y || this.y;
+        this.z = z || this.z;
     }
 
     toPosition(){
         return {
-            x:this._x,
-            y:this._y,
-            z:this._z
+            x:this.x,
+            y:this.y,
+            z:this.z
         }
     }
     
