@@ -11,6 +11,7 @@
     "use strict";
     var Controller = require('../../../controller/Controller');
     var Scene = require('../../../model/scene/Scene');
+    var MetaManager = require('../../../model/MetaManager');
 
     var metaScene;
 
@@ -25,12 +26,12 @@
                 mass:0,
                 type:"plane",
                 values:{
-                    width:300,
-                    height:300
+                    width:100,
+                    height:100
                 }
             },
             mesh:{
-                color: 0x777777,
+                color: "#777777",
                 materialType: "phong",
                 type: "plane",
                 widthSeg: 1,
@@ -39,7 +40,7 @@
                 receiveShadow: true
             }
         });
-        for(let i = 0;i< 20;i++)
+        for(let i=0;i<200;i++)
         metaScene.addElement({
             body:{
                 mass:1,
@@ -51,12 +52,12 @@
                 },
                 position:{
                     x:1,
-                    y:1+i*4,
+                    y:1+i*3,
                     z:1
                 }
             },
             mesh:{
-                color: 0x185963,
+                color: "#185963",
                 materialType: "phong",
                 type: "box",
                 widthSeg: 10,

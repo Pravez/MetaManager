@@ -16,7 +16,7 @@ class Robot{
         if(options){
 
             this._name = options.name;
-            this._position = new Vector(options.position);
+            this._position = new Vector(options.position.x, options.position.y, options.position.z);
 
             this._values = {
                 'h':0,
@@ -56,6 +56,7 @@ class Robot{
 
     modify(options){
         this._name = options.name || this._name;
+        this._position.change(options.position.x || this._position.x, options.position.y || this._position.y, options.position.z || this._position.z)
     }
 
     addExecutedCommand(command){

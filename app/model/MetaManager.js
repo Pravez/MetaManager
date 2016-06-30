@@ -27,6 +27,8 @@ class MetaManager{
         if(options.device){
             ent.setUpDevice(options.device);
         }
+        
+        ent.setUpSceneElement(options);
 
         entities.set(auto_incr_key, ent);
         auto_incr_key += 1;
@@ -79,16 +81,21 @@ class MetaManager{
      * @param message
      */
     static analyzeOSCResponse(message){
-
         entities.get(message.entity).executeCommand({ command: message.cmd, value: message.arg}, true);
-
-        if(n_scene._stage){
-            n_scene.draw();
-        }
     }
     
     static getRobotInformationsFromDevice(id){
         return entities.get(id).askRobotInformations();
+    }
+
+    static addEntitiesToScene(scene){
+        for(let ent of entities.values()){
+            scene.addElement({ element: ent.sceneElement });
+        }
+    }
+
+    static addEntityToScene(scene, entityID){
+        scene.addElement(entities.get(entityID).sceneElement);
     }
 
 }

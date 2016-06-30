@@ -76,6 +76,8 @@ class SceneElement{
             this.mesh.castShadow = true;
         if(options.receiveShadow === true)
             this.mesh.receiveShadow = true;
+
+        this.color = options.material.color;
     }
 
     updateMesh(){
@@ -92,6 +94,7 @@ class SceneElement{
     }
 
     setColor(color){
+        this.color = color;
         this.material.color = new Three.Color(color);
     }
 }

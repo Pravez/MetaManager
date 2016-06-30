@@ -28,6 +28,12 @@
                 <div class="col-md-4"><input name="y" type="number" class="form-control" placeholder="y" required></div>
                 <div class="col-md-4"><input name="z" type="number" class="form-control" placeholder="[z]"></div>
             </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <label for="colorpick">Pick a color for the scene element : </label>
+                    <input type="color" id="colorpick" name="colorpick" style="width:150px;height:20px;" value="#FFFFFF">
+                </div>
+            </div>
         </div>
         <div class="form-group col-md-5 col-md-offset-1">
             <strong>OSC communication (<a onclick={ openInBrowser }>i-score</a>)</strong>
@@ -90,7 +96,8 @@
                             none: self.bDevice.value === "none",
                             bluetoothDevice: Bluetooth.getFromNameOrAddress(self.bDevice.value)
                         }
-                    }
+                    },
+                    color: self.colorpick.value
                 };
 
                 Controller.addEntity(options);

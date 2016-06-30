@@ -3,6 +3,7 @@
 var Device = require('../model/devices/Device');
 var Robot = require('./robot/Robot');
 var Command = require('./robot/Command');
+var SceneElement = require('../model/scene/SceneElement');
 
 
 class Entity {
@@ -16,7 +17,7 @@ class Entity {
 
         this.robot = new Robot();
         this.device = new Device(this.id);
-        
+        this.sceneElement = new SceneElement();
     }
 
     /**
@@ -46,6 +47,37 @@ class Entity {
         }
 
         return this.device;
+    }
+
+    setUpSceneElement(options){
+        this.sceneElement.setBody({
+            mass:1,
+            type: 'box',
+            values:{
+                width: 1,
+                height:1,
+                depth:1
+            },
+            position:{
+                x: this.robot._position.x,
+                y: this.robot._position.y,
+                z: this.robot._position.z
+            }
+        });
+        this.sceneElement.setMesh({
+            material: {
+                type: "phong",
+                color: options.color || 0xffffff
+            },
+            type: "box",
+            width: 2,
+            height: 2,
+            depth: 2,
+            widthSeg: 10,
+            heightSeg: 10,
+            castShadow: true,
+            receiveShadow: true
+        })
     }
 
     /**
@@ -82,6 +114,9 @@ class Entity {
         if(options.osc || this.bluetooth){
             this.device.modify(options.osc, options.bluetooth);
         }
+        if(options.color){
+            this.sceneElement.setColor(options.color);
+        }
     }
 
     /**
@@ -92,6 +127,11 @@ class Entity {
         this.device.sendToBluetooth(data);
     }
 
+    /**
+     *
+     * @param command
+     * @param verify
+     */
     executeCommand(command, verify){
         var cmd = new Command(command.command, command.value);
         try {
@@ -109,6 +149,10 @@ class Entity {
         }
     }
 
+    /**
+     *
+     * @param message
+     */
     analyzeBluetoothResponse(message){
         if(message.args === undefined && this.askingInformations === true){
             var response = Entity.parseBlueResponse(message.response);
@@ -117,6 +161,11 @@ class Entity {
         }
     }
 
+    /**
+     *
+     * @param response
+     * @returns {{cmd: *, value: *}}
+     */
     static parseBlueResponse(response){
         var changed = response.replace('\r\n', '');
         return {
@@ -125,6 +174,9 @@ class Entity {
         };
     }
 
+    /**
+     *
+     */
     askRobotInformations(){
         this.askingInformations = true;
         var commands = ['h', 'r', 'alt', 'freq', 'dx', 'dy', 'version'];

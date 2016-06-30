@@ -26,10 +26,16 @@
                 </div>
             </div>
             <div class="row" style="margin-top:4px;">
-                <label class="col-xs-12">Starting position (x, y, z)</label>
+                <label class="col-xs-12">Current position (x, y, z)</label>
                 <div class="col-md-4"><input name="x" type="number" class="form-control" ></div>
                 <div class="col-md-4"><input name="y" type="number" class="form-control" ></div>
                 <div class="col-md-4"><input name="z" type="number" class="form-control" placeholder="[z]"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <label for="colorpick">Color of the scene element : </label>
+                    <input type="color" id="colorpick" name="colorpick" style="width:150px;height:20px;">
+                </div>
             </div>
         </div>
         <div class="form-group col-md-5 col-md-offset-1">
@@ -92,7 +98,8 @@
                     bluetooth:{
                         none: self.bDevice.value === "none",
                         bluetoothDevice: Bluetooth.getFromNameOrAddress(self.bDevice.value)
-                    }
+                    },
+                    color: self.colorpick.value
                 };
                 Controller.modifyEntity(self.entity, options);
                 document.dispatchEvent(new Event("addedEntity"));
@@ -135,6 +142,7 @@
             self.port.value = entity.device.oscDevice.port || '';
             if (entity.device.bluetoothDevice)
                 self.bluetoothDevice.value = entity.device.bluetoothDevice.name || '';
+            self.colorpick.value = entity.sceneElement.color || "#FFFFFF";
         }
     </script>
 

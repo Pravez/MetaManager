@@ -9,10 +9,10 @@ class SceneRenderer{
         this.scene = new Three.Scene();
         //this.scene.fog = new Three.Fog( 0x000000, 0, 1000 );
 
-        var Canvas = typeof canvas === "string" ? document.getElementById(canvas) : canvas;
+        this.canvas = typeof canvas === "string" ? document.getElementById(canvas) : canvas;
 
-        this.renderer = new Three.WebGLRenderer({ canvas: Canvas });
-        this.renderer.setSize(Canvas.width, Canvas.height);
+        this.renderer = new Three.WebGLRenderer({ canvas: this.canvas });
+        this.renderer.setSize(this.canvas.width, this.canvas.height);
 
         this.renderer.gammaInput = true;
         this.renderer.gammaOutput = true;
@@ -28,7 +28,7 @@ class SceneRenderer{
     }
 
     addTrackballControls(){
-        this.controls = new Three.TrackballControls( this.camera , this.renderer.canvas);
+        this.controls = new Three.TrackballControls( this.camera , this.canvas);
         this.controls.rotateSpeed = 1.0;
         this.controls.zoomSpeed = 1.2;
         this.controls.panSpeed = 0.8;
@@ -48,7 +48,7 @@ class SceneRenderer{
                 break;
             case "directional":
                 light = new Three.DirectionalLight(options.color, options.intensity);
-                var d = 20;
+                var d = 50;
 
                 light.position.set(options.x || d, options.y || d, options.z || d );
                 light.castShadow = true;
