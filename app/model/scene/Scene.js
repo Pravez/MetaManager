@@ -18,6 +18,9 @@ class Scene{
         this.renderer.addLight({ type:"directional", color: 0xffffff, intensity:2 });
 
         this.elements = [];
+
+        this.physics.addMaterial("no_special");
+        this.physics.addContactMaterial("no_special", "no_special", 0,0);
     }
 
     addElement(options){
@@ -27,7 +30,8 @@ class Scene{
             mass: options.body.mass,
             type: options.body.type,
             values: options.body.values,
-            position: options.body.position
+            position: options.body.position,
+            material: this.physics.getMaterial("no_special")
         });
 
         element.setMesh({

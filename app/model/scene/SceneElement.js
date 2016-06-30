@@ -18,6 +18,10 @@ class SceneElement{
             body.position.z = options.position.z || body.position.z;
         }
 
+        if(options.material){
+            body.material = options.material;
+        }
+
 
         switch(options.type){
             case "sphere":
@@ -77,6 +81,18 @@ class SceneElement{
     updateMesh(){
         this.mesh.position.copy(this.body.position);
         this.mesh.quaternion.copy(this.body.quaternion);
+    }
+
+    setVelocity(x, y, z){
+        this.body.velocity = new Cannon.Vec3(x, y, z);
+    }
+
+    getVelocity(){
+        return this.body.velocity;
+    }
+
+    setColor(color){
+        this.material.color = new Three.Color(color);
     }
 }
 module.exports = SceneElement;

@@ -22,12 +22,17 @@ class Physics{
         this.materials.set(name, new Cannon.Material(name));
     }
 
+    getMaterial(name){
+        return this.materials.get(name);
+    }
+
     addContactMaterial(first, second, friction = 0.4, restitution = 0.0){
-        this.world.addContactMaterial(new ContactMaterial({
-            first,
-            second,
-            friction,
-            restitution
+        var firstMat = this.materials.get(first);
+        var secondMat = this.materials.get(second);
+
+        this.world.addContactMaterial(new Cannon.ContactMaterial(firstMat, secondMat, {
+            friction: friction,
+            restitution: restitution
         }))
     }
 
