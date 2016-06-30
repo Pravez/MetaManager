@@ -31,7 +31,7 @@
             },
             mesh:{
                 color: 0x777777,
-                materialType: "lambert",
+                materialType: "phong",
                 type: "plane",
                 widthSeg: 1,
                 heightSeg: 1,
@@ -39,6 +39,7 @@
                 receiveShadow: true
             }
         });
+        for(let i = 0;i< 20;i++)
         metaScene.addElement({
             body:{
                 mass:1,
@@ -50,7 +51,7 @@
                 },
                 position:{
                     x:1,
-                    y:1,
+                    y:1+i*4,
                     z:1
                 }
             },
@@ -70,8 +71,6 @@
     function animate(){
         requestAnimationFrame(animate);
         metaScene.play();
-        metaScene.elements[1].setVelocity(10 , 0, 0);
-        console.log(metaScene.elements[1].body.position);
     }
     </script>
 </sceneCanvas>

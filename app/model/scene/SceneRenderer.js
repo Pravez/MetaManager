@@ -7,6 +7,7 @@ class SceneRenderer{
 
     constructor(canvas){
         this.scene = new Three.Scene();
+        //this.scene.fog = new Three.Fog( 0x000000, 0, 1000 );
 
         var Canvas = typeof canvas === "string" ? document.getElementById(canvas) : canvas;
 
@@ -16,6 +17,7 @@ class SceneRenderer{
         this.renderer.gammaInput = true;
         this.renderer.gammaOutput = true;
         this.renderer.shadowMap.enabled = true;
+        //this.renderer.setClearColor( this.scene.fog.color, 1 );
 
     }
 
@@ -48,9 +50,9 @@ class SceneRenderer{
                 light = new Three.DirectionalLight(options.color, options.intensity);
                 var d = 20;
 
-                light.position.set(d, d, d );
+                light.position.set(options.x || d, options.y || d, options.z || d );
                 light.castShadow = true;
-                light.cameraHelper = true;
+                //light.cameraHelper = true;
 
                 light.shadow.mapWidth = 1024;
                 light.shadow.mapHeight = 1024;
@@ -63,6 +65,21 @@ class SceneRenderer{
                 light.shadow.camera.far = 3*d;
                 light.shadow.camera.near = d;
                 light.shadow.darkness = 0.5;
+                break;
+            case "point":
+                light = new Three.PointLight(options.color, options.intensity);
+
+                light.position.set(options.x, options.y, options.z);
+                light.castShadow = true;
+
+                break;
+            case "spot":
+                light = new Three.SpotLight( options.color, options.intensity );
+
+                light.position.set( options.x, options.y, options.z );
+                light.target.position.set( options.tx || 0, options.ty || 0, options.tz || 0 );
+
+                light.castShadow = true;
         }
 
         this.scene.add( light );

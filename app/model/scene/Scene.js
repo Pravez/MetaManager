@@ -12,10 +12,15 @@ class Scene{
         this.physics = new Physics({ gravX: 0, gravY: 0, gravZ: 0});
         this.renderer = new SceneRenderer(canvas);
 
-        this.renderer.setCamera(30, canvas.width / canvas.height, 0.5, 10000, new Vec3(17, 5, 17));
+
+        this.renderer.setCamera(30, canvas.width / canvas.height, 0.5, 10000, new Vec3(100, 50, 100));
         this.renderer.addTrackballControls();
         this.renderer.addLight({ type: "ambient", color:0x666666});
-        this.renderer.addLight({ type:"directional", color: 0xffffff, intensity:2 });
+        //this.renderer.addLight({ type:"directional", color: 0xffffff, intensity:2 , x:0, z:0});
+        this.renderer.addLight({ type:"spot", color: 0xffffff, intensity:1, x:100, y:15, z:100 });
+        this.renderer.addLight({ type:"spot", color: 0xffffff, intensity:1, x:100, y:15, z:-100 });
+        this.renderer.addLight({ type:"spot", color: 0xffffff, intensity:1, x:-100, y:15, z:100 });
+        this.renderer.addLight({ type:"spot", color: 0xffffff, intensity:1, x:-100, y:15, z:-100 });
 
         this.elements = [];
 
@@ -41,9 +46,9 @@ class Scene{
                 wireframe: options.mesh.wireframe
             },
             type: options.mesh.type,
-            width: options.body.values.width*2,
-            height: options.body.values.height*2,
-            depth: options.body.values.depth*2,
+            width: options.mesh.width || options.body.values.width*2,
+            height: options.mesh.height || options.body.values.height*2,
+            depth: options.mesh.depth || options.body.values.depth*2,
             widthSeg: options.mesh.widthSeg,
             heightSeg: options.mesh.heightSeg,
             castShadow: options.mesh.castShadow,
