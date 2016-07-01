@@ -28,8 +28,6 @@ class MetaManager{
             ent.setUpDevice(options.device);
         }
         
-        ent.setUpSceneElement(options);
-
         entities.set(auto_incr_key, ent);
         auto_incr_key += 1;
         return ent;

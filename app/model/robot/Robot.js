@@ -3,6 +3,7 @@
 var LimitedStack = require('../utility/LimitedStack');
 var Command = require('./Command');
 var Vector = require('../utility/Vector');
+var SceneElement = require('../scene/SceneElement');
 
 class Robot{
 
@@ -10,6 +11,9 @@ class Robot{
         this._name = "Jabberwockie";
         
         this._commands = new LimitedStack(20, new Command("start"));
+
+        this._sceneElement = new SceneElement();
+
     }
 
     setUp(options){
@@ -17,6 +21,8 @@ class Robot{
 
             this._name = options.name;
             this._position = new Vector(options.position.x, options.position.y, options.position.z);
+            this._velocity = new Vector(0, 0, 0);
+            this.valuesQty = 7;
 
             this._values = {
                 'h':0,
@@ -28,13 +34,43 @@ class Robot{
             };
             this._version = "1.1.1";
 
-            this.valuesQty = 7;
-            this._defaultValues = undefined;
+            this.setUpSceneElement(options);
 
             return this;
         }else{
             return undefined;
         }
+    }
+
+    setUpSceneElement(options){
+        this._sceneElement.setBody({
+            mass:1,
+            type: 'box',
+            values:{
+                width: 1,
+                height:1,
+                depth:1
+            },
+            position:{
+                x: this._position.x,
+                y: this._position.y,
+                z: this._position.z
+            }
+        });
+        this._sceneElement.setMesh({
+            material: {
+                type: "phong",
+                color: options.color || 0xffffff
+            },
+            type: "box",
+            width: 2,
+            height: 2,
+            depth: 2,
+            widthSeg: 10,
+            heightSeg: 10,
+            castShadow: true,
+            receiveShadow: true
+        })
     }
 
     hasBeenUpdated(){
@@ -71,5 +107,17 @@ class Robot{
         return this._commands.head();
     }
 
+    executeCommand(cmd) {
+        this.addExecutedCommand(cmd);
+        switch(cmd._command.cmd){
+            case "dx":
+                this._velocity.x = cmd._args;
+                break;
+            case "dy":
+                this._velocity.y = cmd._args;
+                break;
+        }
+        this._sceneElement.setVelocity(this._velocity.x, this._velocity.y, this._velocity.z);
+    }
 }
 module.exports = Robot;

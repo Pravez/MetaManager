@@ -89,7 +89,8 @@
                             x: self.x.value,
                             y: self.y.value,
                             z: self.z.value
-                        }
+                        },
+                        color: self.colorpick.value
                     },
                     osc:{
                         address: self.address.value,
@@ -98,8 +99,7 @@
                     bluetooth:{
                         none: self.bDevice.value === "none",
                         bluetoothDevice: Bluetooth.getFromNameOrAddress(self.bDevice.value)
-                    },
-                    color: self.colorpick.value
+                    }
                 };
                 Controller.modifyEntity(self.entity, options);
                 document.dispatchEvent(new Event("addedEntity"));
@@ -135,14 +135,14 @@
             self.size.value = entity.robot._size || '';
             self.legs.value = entity.robot._legs || '';
             self.circumference.value = entity.robot._circumference || '';
-            self.x.value = entity.robot.x || '';
-            self.y.value = entity.robot.y || '';
-            self.z.value = entity.robot.z || '';
+            self.x.value = entity.robot._position.x || '';
+            self.y.value = entity.robot._position.y || '';
+            self.z.value = entity.robot._position.z || '';
             self.address.value = entity.device.oscDevice.address || '';
             self.port.value = entity.device.oscDevice.port || '';
             if (entity.device.bluetoothDevice)
                 self.bluetoothDevice.value = entity.device.bluetoothDevice.name || '';
-            self.colorpick.value = entity.sceneElement.color || "#FFFFFF";
+            self.colorpick.value = entity.robot._sceneElement.color || "#FFFFFF";
         }
     </script>
 

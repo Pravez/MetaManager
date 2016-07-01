@@ -3,16 +3,6 @@
 
     <sceneCanvas one_arg="true" sec={ opts.sec }/>
 
-
-    <form onsubmit={ sendCmd }>
-        <div each={ device } class="checkbox">
-            <label>
-                <input onclick={parent.toggle} type="checkbox"> { bName }
-            </label>
-        </div>
-        <input name="cmd" type="text" class="form-control" onblur={ sendCmd }>
-    </form>
-
     <script>
         var Bluetooth = require('../../../model/devices/BluetoothManager');
 

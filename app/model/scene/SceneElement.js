@@ -9,7 +9,8 @@ class SceneElement{
 
     setBody(options){
         var body = new Cannon.Body({
-            mass: options.mass
+            mass: options.mass,
+            type: Cannon.Body.DYNAMIC
         });
 
         if(options.position){

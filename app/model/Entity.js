@@ -17,7 +17,6 @@ class Entity {
 
         this.robot = new Robot();
         this.device = new Device(this.id);
-        this.sceneElement = new SceneElement();
     }
 
     /**
@@ -47,37 +46,6 @@ class Entity {
         }
 
         return this.device;
-    }
-
-    setUpSceneElement(options){
-        this.sceneElement.setBody({
-            mass:1,
-            type: 'box',
-            values:{
-                width: 1,
-                height:1,
-                depth:1
-            },
-            position:{
-                x: this.robot._position.x,
-                y: this.robot._position.y,
-                z: this.robot._position.z
-            }
-        });
-        this.sceneElement.setMesh({
-            material: {
-                type: "phong",
-                color: options.color || 0xffffff
-            },
-            type: "box",
-            width: 2,
-            height: 2,
-            depth: 2,
-            widthSeg: 10,
-            heightSeg: 10,
-            castShadow: true,
-            receiveShadow: true
-        })
     }
 
     /**
@@ -138,11 +106,11 @@ class Entity {
             if(verify === true){
                 if(this.robot.getLastCommand().equals(cmd) === false) {
                     this.device.executeCommand(cmd.execute());
-                    this.robot.addExecutedCommand(cmd);
+                    this.robot.executeCommand(cmd);
                 }
             }else{
                 this.device.executeCommand(cmd.execute());
-                this.robot.addExecutedCommand(cmd);
+                this.robot.executeCommand(cmd);
             }
         } catch (error) {
             console.log(error);

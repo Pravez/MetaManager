@@ -85,7 +85,8 @@
                             x: self.x.value,
                             y: self.y.value,
                             z: self.z.value
-                        }
+                        },
+                        color: self.colorpick.value
                     },
                     device: {
                         osc: {
@@ -96,8 +97,7 @@
                             none: self.bDevice.value === "none",
                             bluetoothDevice: Bluetooth.getFromNameOrAddress(self.bDevice.value)
                         }
-                    },
-                    color: self.colorpick.value
+                    }
                 };
 
                 Controller.addEntity(options);

@@ -68,7 +68,8 @@
         };
 
         this.sendCmd = function(e){
-            self.entity.sendBluetoothData(this.cmd.value);
+            //self.entity.sendBluetoothData(this.cmd.value);
+            self.entity.executeCommand({ command:this.cmd.value.split(" ")[0], value:parseInt(this.cmd.value.split(" ")[1])}, true);
         };
 
         this.onRangeChange = function(e){

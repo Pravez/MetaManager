@@ -61,13 +61,15 @@ class Controller{
 
     static unpauseWorldAndAnimations(){
         if(animationId === -1){
+            //Restore controls, probably temporary solution
+            metaScene.renderer.addTrackballControls();
             animate();
         }
     }
     
     static addEntity(options){
         var created = MetaManager.addEntity(options);
-        metaScene.addElement({ element: created.sceneElement });
+        metaScene.addElement({ element: created.robot._sceneElement });
     }
 
     static modifyEntity(entity, options){
@@ -107,6 +109,8 @@ class Controller{
 function animate(){
     animationId = requestAnimationFrame(animate);
     metaScene.play();
+    /*metaScene.elements[1].setVelocity(1, 0, 0);
+    console.log(metaScene.elements[1].body.position);*/
 }
 
 module.exports = Controller;
