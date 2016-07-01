@@ -87,16 +87,5 @@ class MetaManager{
     static getRobotInformationsFromDevice(id){
         return entities.get(id).askRobotInformations();
     }
-
-    static addEntitiesToScene(scene){
-        for(let ent of entities.values()){
-            scene.addElement({ element: ent.sceneElement });
-        }
-    }
-
-    static addEntityToScene(scene, entityID){
-        scene.addElement(entities.get(entityID).sceneElement);
-    }
-
 }
 module.exports = MetaManager;

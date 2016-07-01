@@ -1,6 +1,10 @@
 'use strict';
 
 var MetaManager = require('../model/MetaManager');
+var Scene = require('../model/scene/Scene');
+
+var metaScene;
+var animationId = -1;
 
 MetaManager.addEntity({
     robot:{
@@ -19,9 +23,51 @@ MetaManager.addEntity({
 });
 
 class Controller{
+
+    static setScene(canvas){
+        metaScene = new Scene(canvas);
+        //Adding ground
+        metaScene.addElement({
+            body:{
+                mass:0,
+                type:"plane",
+                values:{
+                    width:100,
+                    height:100
+                }
+            },
+            mesh:{
+                color: "#777777",
+                materialType: "phong",
+                type: "plane",
+                widthSeg: 1,
+                heightSeg: 1,
+                castShadow: true,
+                receiveShadow: true
+            }
+        });
+    }
+
+    static animateScene(){
+        animate();
+    }
+
+    static pauseWorldAndAnimations(){
+        if(animationId !== -1) {
+            cancelAnimationFrame(animationId);
+            animationId = -1;
+        }
+    }
+
+    static unpauseWorldAndAnimations(){
+        if(animationId === -1){
+            animate();
+        }
+    }
     
     static addEntity(options){
-        MetaManager.addEntity(options);
+        var created = MetaManager.addEntity(options);
+        metaScene.addElement({ element: created.sceneElement });
     }
 
     static modifyEntity(entity, options){
@@ -57,4 +103,10 @@ class Controller{
         return found.sort();
     }
 }
+
+function animate(){
+    animationId = requestAnimationFrame(animate);
+    metaScene.play();
+}
+
 module.exports = Controller;

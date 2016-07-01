@@ -135,9 +135,9 @@
             self.size.value = entity.robot._size || '';
             self.legs.value = entity.robot._legs || '';
             self.circumference.value = entity.robot._circumference || '';
-            self.x.value = entity.robot._x || '';
-            self.y.value = entity.robot._y || '';
-            self.z.value = entity.robot._z || '';
+            self.x.value = entity.robot.x || '';
+            self.y.value = entity.robot.y || '';
+            self.z.value = entity.robot.z || '';
             self.address.value = entity.device.oscDevice.address || '';
             self.port.value = entity.device.oscDevice.port || '';
             if (entity.device.bluetoothDevice)

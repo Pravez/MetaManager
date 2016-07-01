@@ -38,7 +38,7 @@ class Scene{
                 type: options.body.type,
                 values: options.body.values,
                 position: options.body.position,
-                material: this.physics.getMaterial("no_special")
+                material: this.physics.getMaterial("friction")
             });
 
             element.setMesh({

@@ -60,6 +60,7 @@
     <script>
         const remote = require('electron').remote;
         var Renderer = require('./../Renderer');
+        var Controller = require('../../../controller/Controller');
         var BluetoothManager = require('../../../model/devices/BluetoothManager');
         var Creation = require('../../js/Creation');
 
@@ -94,6 +95,8 @@
             self.active = e.currentTarget.id;
             e.currentTarget.classList.add("active");
             Renderer.showWindow(e.currentTarget.id);
+            if(e.currentTarget.id == "scene") Controller.unpauseWorldAndAnimations();
+            else Controller.pauseWorldAndAnimations();
         };
 
         this.showbt = function(e){
