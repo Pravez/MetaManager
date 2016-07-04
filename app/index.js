@@ -14,8 +14,8 @@ var path = require('path');
 global.appRoot = path.resolve(__dirname);
 
 //Here we mount every single tag
-riot.mount('menubar', {active: "home"});
-riot.mount('home');
+riot.mount('toolbar', {active: "scene"});
+riot.mount('menu', {active: "scene"});
 riot.mount('creation', {entities: Controller.getEntities(), devices: []});
 riot.mount('scene', {sec: "prout"});
 riot.mount('contextMenus');
@@ -23,10 +23,13 @@ riot.mount('wfooter');
 riot.mount('.creation-tags');
 
 //And we add the main windows composing the app
-Renderer.addWindow('home');
 Renderer.addWindow("creation");
 Renderer.addWindow("scene");
-Renderer.showWindow("home");
+Renderer.hideAll();
+Renderer.showWindow("scene");
+
+Controller.setScene(document.getElementById('sceneCanvas'));
+
 
 Creation.addPane(document.getElementById("addBot"), "addBot");
 Creation.addPane(document.getElementById("editBot"), "editBot");
@@ -39,4 +42,3 @@ Creation.setCurrentPane("nothing");
 //the called function upon click on one item.
 //var cm = new ContextMenu("bots", document.getElementById("photon_cm"), function(e){ console.log(e.innerHTML);}).setUp();
 
-Controller.setScene(document.getElementById("drawScene"));

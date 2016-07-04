@@ -1,4 +1,4 @@
-<control>
+<control class="pane pane-group">
 
     <div class="padded-less">
         <button class="btn btn-large btn-default" onclick={ editEntity }>Edit Entity</button>

@@ -8,9 +8,9 @@ require('./creation/add.tag');
 require('./creation/edit.tag');
 require('./creation/control.tag');
 require('./creation/pad.tag');
-require('./misc/menubar.tag');
+require('./nav/toolbar.tag');
+require('./nav/menu.tag');
 require('./scene/scene.tag');
-require('./scene/sceneCanvas.tag');
 require('./misc/contextMenus.tag');
 require('./misc/wfooter.tag');
 
@@ -20,6 +20,12 @@ var currentWindow;
 
 class Renderer {
 
+    static hideAll(){
+        for(let window of windows.values()){
+            window.style.display = 'none';
+        }
+    }
+
     static addWindow(windowName, element){
         windows.set(windowName, document.getElementsByTagName(windowName || element)[0]);
     }
@@ -27,12 +33,12 @@ class Renderer {
     static currentWindow(){
         return currentWindow;
     }
-
+    
     static showWindow(windowName){
         //Hides every window
-        for(var key of windows.keys()){
-            windows.get(key).style.display = 'none';
-        }
+
+        if(currentWindow)
+            windows.get(currentWindow).style.display = 'none';
 
         //shows only the concerned
         windows.get(windowName).style.display = '';

@@ -2,6 +2,7 @@
 
 var MetaManager = require('../model/MetaManager');
 var Scene = require('../model/scene/Scene');
+var Renderer = require('../view/tags/Renderer');
 
 var metaScene;
 var animationId = -1;
@@ -23,7 +24,7 @@ MetaManager.addEntity({
 });
 
 class Controller{
-
+    
     static setScene(canvas){
         metaScene = new Scene(canvas);
         //Adding ground

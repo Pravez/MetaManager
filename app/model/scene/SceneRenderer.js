@@ -2,23 +2,37 @@
 var Three = require('three');
 require('./TrackballControls');
 
+var self;
 
 class SceneRenderer{
 
     constructor(canvas){
+        self = this;
+
         this.scene = new Three.Scene();
         //this.scene.fog = new Three.Fog( 0x000000, 0, 1000 );
 
         this.canvas = typeof canvas === "string" ? document.getElementById(canvas) : canvas;
 
         this.renderer = new Three.WebGLRenderer({ canvas: this.canvas });
-        this.renderer.setSize(this.canvas.width, this.canvas.height);
+        SceneRenderer.onResize();
 
         this.renderer.gammaInput = true;
         this.renderer.gammaOutput = true;
         this.renderer.shadowMap.enabled = true;
         //this.renderer.setClearColor( this.scene.fog.color, 1 );
 
+        window.addEventListener('resize', SceneRenderer.onResize, false );
+
+    }
+
+    static onResize(){
+        //this.camera.updateProjectionMatrix();
+
+        self.canvas.width = self.canvas.offsetParent.offsetWidth;
+        self.canvas.height = 600;
+
+        self.renderer.setSize( self.canvas.width, self.canvas.height );
     }
 
     setCamera(fov, aspect, near, far, position){

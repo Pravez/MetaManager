@@ -1,5 +1,4 @@
-<creation>
-    <div class="pane-group">
+<creation class="pane pane-group">
         <div id="robots-list" class="pane pane-sm sidebar">
             <ul class="list-group">
                 <li class="list-group-header">
@@ -30,9 +29,7 @@
                 <edit name="editTag" class="creation-tags"></edit>
             </div>
         </div>
-    </div>
 
-    <!--suppress ThisExpressionReferencesGlobalObjectJS -->
     <script>
         'use strict';
 

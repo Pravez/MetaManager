@@ -1,8 +1,8 @@
-<add>
-    <form id="createBot" class="padded-less" style="margin-top:50px;">
+<add class="pane pane-group">
+    <form id="createBot" class="pane pane-group padded-less" style="margin-top:50px;">
         <div class="form-group col-md-5">
             <strong>Bot characteristics</strong>
-            <div class="row">
+            <div class="pane">
                 <div class="col-xs-6">
                     <label>Name of the robot</label>
                     <input name="name" type="text" class="form-control" placeholder="name" required>
