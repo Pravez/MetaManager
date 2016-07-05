@@ -8,20 +8,20 @@ var SceneElement = require('../scene/SceneElement');
 class Robot{
 
     constructor(){
-        this._name = "Jabberwockie";
+        this.name = "Jabberwockie";
         
-        this._commands = new LimitedStack(20, new Command("start"));
+        this.commands = new LimitedStack(20, new Command("start"));
 
-        this._sceneElement = new SceneElement();
+        this.sceneElement = new SceneElement();
 
     }
 
     setUp(options){
         if(options){
 
-            this._name = options.name;
-            this._position = new Vector(options.position.x, options.position.y, options.position.z);
-            this._velocity = new Vector(0, 0, 0);
+            this.name = options.name;
+            this.position = new Vector(options.position.x, options.position.y, options.position.z);
+            this.velocity = new Vector(0, 0, 0);
             this.valuesQty = 7;
 
             this._values = {
@@ -43,7 +43,7 @@ class Robot{
     }
 
     setUpSceneElement(options){
-        this._sceneElement.setBody({
+        this.sceneElement.setBody({
             mass:1,
             type: 'box',
             values:{
@@ -52,12 +52,12 @@ class Robot{
                 depth:1
             },
             position:{
-                x: this._position.x,
-                y: this._position.y,
-                z: this._position.z
+                x: this.position.x,
+                y: this.position.y,
+                z: this.position.z
             }
         });
-        this._sceneElement.setMesh({
+        this.sceneElement.setMesh({
             material: {
                 type: "phong",
                 color: options.color || 0xffffff
@@ -91,33 +91,33 @@ class Robot{
     }
 
     modify(options){
-        this._name = options.name || this._name;
-        this._position.change(options.position.x || this._position.x, options.position.y || this._position.y, options.position.z || this._position.z)
+        this.name = options.name || this.name;
+        this.position.change(options.position.x || this.position.x, options.position.y || this.position.y, options.position.z || this.position.z)
     }
 
     addExecutedCommand(command){
-        this._commands.add(command);
+        this.commands.add(command);
     }
 
     getExecutedCommands(){
-        return this._commands;
+        return this.commands;
     }
     
     getLastCommand(){
-        return this._commands.head();
+        return this.commands.head();
     }
 
     executeCommand(cmd) {
         this.addExecutedCommand(cmd);
         switch(cmd._command.cmd){
             case "dx":
-                this._velocity.x = cmd._args;
+                this.velocity.x = cmd._args;
                 break;
             case "dy":
-                this._velocity.y = cmd._args;
+                this.velocity.y = cmd._args;
                 break;
         }
-        this._sceneElement.setVelocity(this._velocity.x, this._velocity.y, this._velocity.z);
+        this.sceneElement.setVelocity(this.velocity.x, this.velocity.y, this.velocity.z);
     }
 }
 module.exports = Robot;

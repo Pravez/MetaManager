@@ -131,18 +131,18 @@
         });
 
         function updateValues(entity){
-            self.name.value = entity.robot._name || '';
+            self.name.value = entity.robot.name || '';
             self.size.value = entity.robot._size || '';
             self.legs.value = entity.robot._legs || '';
             self.circumference.value = entity.robot._circumference || '';
-            self.x.value = entity.robot._position.x || '';
-            self.y.value = entity.robot._position.y || '';
-            self.z.value = entity.robot._position.z || '';
+            self.x.value = entity.robot.position.x || '';
+            self.y.value = entity.robot.position.y || '';
+            self.z.value = entity.robot.position.z || '';
             self.address.value = entity.device.oscDevice.address || '';
             self.port.value = entity.device.oscDevice.port || '';
             if (entity.device.bluetoothDevice)
                 self.bluetoothDevice.value = entity.device.bluetoothDevice.name || '';
-            self.colorpick.value = entity.robot._sceneElement.color || "#FFFFFF";
+            self.colorpick.value = entity.robot.sceneElement.color || "#FFFFFF";
         }
     </script>
 

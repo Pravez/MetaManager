@@ -2,10 +2,11 @@
 
 var MetaManager = require('../model/MetaManager');
 var Scene = require('../model/scene/Scene');
-var Renderer = require('../view/tags/Renderer');
+var Renderer = require('../view/tags/Renderer').Renderer;
 
 var metaScene;
 var animationId = -1;
+var resizeNeeded = false;
 
 MetaManager.addEntity({
     robot:{
@@ -24,6 +25,14 @@ MetaManager.addEntity({
 });
 
 class Controller{
+
+    static resizeCanvas(){
+        if(Renderer.currentContainsCanvas()){
+            metaScene.renderer.resize();
+        }else{
+            resizeNeeded = true;
+        }
+    }
     
     static setScene(canvas){
         metaScene = new Scene(canvas);
@@ -71,7 +80,7 @@ class Controller{
     
     static addEntity(options){
         var created = MetaManager.addEntity(options);
-        metaScene.addElement({ element: created.robot._sceneElement });
+        metaScene.addElement({ element: created.robot.sceneElement });
     }
 
     static modifyEntity(entity, options){
@@ -114,5 +123,11 @@ function animate(){
     /*metaScene.elements[1].setVelocity(1, 0, 0);
     console.log(metaScene.elements[1].body.position);*/
 }
+
+window.addEventListener('resize', Controller.resizeCanvas, false );
+document.addEventListener('windowChanged', () => {
+    if(resizeNeeded === true)
+        Controller.resizeCanvas();
+});
 
 module.exports = Controller;

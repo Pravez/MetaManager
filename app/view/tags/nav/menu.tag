@@ -5,7 +5,7 @@
             <span class="icon icon-note"></span>
             Scene
         </span>
-        <span id="creation" class="nav-group-item" onclick={ changeWindow }>
+        <span id="manager" class="nav-group-item" onclick={ changeWindow }>
             <span class="icon icon-network"></span>
             Entities
         </span>
@@ -19,7 +19,7 @@
 
     <script>
         const remote = require('electron').remote;
-        var Renderer = require('./../Renderer');
+        var Renderer = require('./../Renderer').Renderer;
         var Controller = require('../../../controller/Controller');
         var Creation = require('../../js/Creation');
 

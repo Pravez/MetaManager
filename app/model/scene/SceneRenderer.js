@@ -15,24 +15,21 @@ class SceneRenderer{
         this.canvas = typeof canvas === "string" ? document.getElementById(canvas) : canvas;
 
         this.renderer = new Three.WebGLRenderer({ canvas: this.canvas });
-        SceneRenderer.onResize();
+        this.resize();
 
         this.renderer.gammaInput = true;
         this.renderer.gammaOutput = true;
         this.renderer.shadowMap.enabled = true;
         //this.renderer.setClearColor( this.scene.fog.color, 1 );
-
-        window.addEventListener('resize', SceneRenderer.onResize, false );
-
     }
 
-    static onResize(){
+    resize(){
         //this.camera.updateProjectionMatrix();
 
-        self.canvas.width = self.canvas.offsetParent.offsetWidth;
-        self.canvas.height = 600;
+        this.canvas.width = this.canvas.offsetParent.offsetWidth;
+        this.canvas.height = 600;
 
-        self.renderer.setSize( self.canvas.width, self.canvas.height );
+        this.renderer.setSize( this.canvas.width, this.canvas.height );
     }
 
     setCamera(fov, aspect, near, far, position){

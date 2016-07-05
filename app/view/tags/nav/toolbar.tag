@@ -11,7 +11,7 @@
         <div class="toolbar-actions" style="margin-left:20%;">
 
             <!-- Bluetooth dropdown -->
-            <div class="dropdown">
+            <!--<div class="dropdown">
                 <button class="btn btn-default btn-dropdown" onclick={ showbt }>
                     <span class="icon icon-megaphone"></span>
                 </button>
@@ -35,7 +35,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div>-->
 
             <!-- Specific buttons -->
             <div if={ Renderer.currentWindow() === "creation" } class="pull-right" style="margin-right:150px;">
@@ -48,7 +48,7 @@
 
     <script>
         const remote = require('electron').remote;
-        var Renderer = require('./../Renderer');
+        var Renderer = require('./../Renderer').Renderer;
         var Controller = require('../../../controller/Controller');
         var BluetoothManager = require('../../../model/devices/BluetoothManager');
         var Creation = require('../../js/Creation');
@@ -112,75 +112,4 @@
             self.update({devices: Array.from(BluetoothManager.getDevices())});
         };
     </script>
-
-    <style>
-
-        #btn-close span{
-            color:#fc605b;
-        }
-
-        #btn-reduce span{
-            color:#fdbc40;
-        }
-
-        #btn-max span{
-            color:#34c84a;
-        }
-
-        #btn-close:hover span{
-            color:#C15A56;
-        }
-
-        #btn-reduce:hover span{
-            color:#CC8C3F;
-        }
-
-        #btn-max:hover span{
-            color:#339D49;
-        }
-
-        .main-btn{
-            margin-left:3px;
-        }
-
-        img{
-            -webkit-user-select: none;
-            pointer-events: none;
-        }
-
-        #act-btns{
-            -webkit-user-select: none;
-            -webkit-app-region: no-drag;
-            z-index:2;
-        }
-
-        .titlebar {
-            z-index:0;
-            -webkit-user-select: none;
-            -webkit-app-region: drag;
-        }
-
-        /* Dropdown Content (Hidden by Default) */
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            border:1px solid black;
-        }
-
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        #scanning{
-            display:block;
-        }
-
-        .show {
-            display:block;
-            z-index:50;
-        }
-    </style>
 </toolbar>
