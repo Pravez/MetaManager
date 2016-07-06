@@ -115,6 +115,23 @@ class Controller{
 
         return found.sort();
     }
+
+    static packageRangeControlDatas(id){
+        if(id > -1) {
+            var robot = Controller.getEntity(id).robot;
+            var data = [];
+            data.push({name: 'h', type: 'range', min: -150, max: 50, init_value: robot._values.h, description: "Height"});
+            data.push({name: 'r', type: 'range', min: 80, max: 150, init_value: robot._values.r, description: "Size"});
+            data.push({name: 'freq', type: 'range', min: 0, max: 4, init_value: robot._values.freq, description: "Frequency of steps"});
+            data.push({name: 'alt', type: 'range', min: -200, max: 150, init_value: robot._values.alt, description: "Altitude of steps"});
+            data.push({name: 'dx', type: 'text', init_value: robot._values.dx, description: "Speed in x"});
+            data.push({name: 'dy', type: 'text', init_value: robot._values.dy, description: "Speed in y"});
+
+            return data;
+        }
+
+        return null;
+    }
 }
 
 function animate(){

@@ -7,6 +7,10 @@ input[type=range]:hover{
     cursor:auto;
 }
 
+input{
+    transition: 0.1s all;
+}
+
 input[type=search]:hover{
     cursor:pointer;
 }
