@@ -33,5 +33,6 @@
         });
 
         document.addEventListener('entitySelected', function(){ self.update(); });
+        document.addEventListener('add_pane', function(){ Manager.changePane("add"); });
     </script>
 </manager>

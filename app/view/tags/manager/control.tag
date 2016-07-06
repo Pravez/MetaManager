@@ -1,4 +1,4 @@
-<control class="control">
+<control class="full">
 
     <div class="col-md-12">
         <h2>Entity { entity.robot.name }</h2>
@@ -28,7 +28,7 @@
         <div class="col-xs-6" style="border-right:1px solid #BFBFBF;">
             <div class="row" each={ this.control_datas.ranges } style="margin-bottom: 20px;">
                 <label for={ name } class="input-title">{ description }</label>
-                <input id={ name } name={ name } type="range" min={ min } max={ max } value={ init_value } oninput={ onInput }>
+                <input id={ name } name={ name } type="range" min={ min } max={ max } value={ init_value } oninput={ onInput } >
                 <div class="input-values">
                     <div class="col-md-4" style="text-align: left;">{ min }</div>
                     <div class="col-md-4">{ this.entity.robot._values[name] }</div>
@@ -43,7 +43,7 @@
         <div class="col-xs-6">
             <div class="row" each={ this.control_datas.texts } style="margin-bottom: 20px">
                 <label for={ name } class="input-title">{ description }</label>
-                <input id={ name } name={ name } value={ init_value } type="number" oninput={ onInput }>
+                <input class="form-control" id={ name } name={ name } value={ init_value } type="number" oninput={ onInput }>
             </div>
             <button class="btn btn-primary btn-large" onclick={ validateSpeed }>Change speed</button>
         </div>
@@ -101,10 +101,6 @@
 
     <style>
 
-        .input-title{
-            display:block;
-        }
-
         .input-values{
             width:65%;
             margin:0 auto;
@@ -114,21 +110,12 @@
             width:60%;
         }
 
-        .row input[type=number]{
+        .row input, .row select{
             width:50%;
             text-align:center;
         }
 
-        .control{
-            width:100%;
-            height:100%;
-            text-align: center;
-        }
 
-        .separator{
-            height:20px;
-            width:100%;
-        }
 
         hr{
             margin:0 auto;

@@ -8,7 +8,7 @@ input[type=range]:hover{
 }
 
 input{
-    transition: 0.1s all;
+    transition: 0.15s all;
 }
 
 input[type=search]:hover{
@@ -37,6 +37,21 @@ input[type=search]:hover{
 
     -webkit-filter: blur(20px);
 
+}
+
+.full{
+    width:100%;
+    height:100%;
+    text-align: center;
+}
+
+.separator{
+    height:20px;
+    width:100%;
+}
+
+.input-title{
+    display:block;
 }
 
 #loading #gif{
