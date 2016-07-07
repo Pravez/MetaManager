@@ -2,6 +2,7 @@
 
 var BluetoothSerial = require('bluetooth-serial-port');
 var BluetoothDevice = require('../devices/BluetoothDevice');
+var JSONFile = require('jsonfile');
 
 /**
  * Set of all devices found
@@ -142,10 +143,37 @@ class BluetoothManager{
     static getFromNameOrAddress(name){
         return findDevice(name);
     }
+
+    static importDevicesFrom(url){
+        JSONFile.readFile(url, function(err, obj){
+            if(err){
+                console.log(err);
+            }else{
+                for(let value in obj){
+                    if(obj.hasOwnProperty(value)){
+                        if(obj[value].address && obj[value].name)
+                            devices.add(new BluetoothDevice().setUp({address:obj[value].address, name:obj[value].name, lastconn:obj[value].lastconn}));
+                    }
+                }
+            }
+        });
+    }
+
+    static exportToJSON(url){
+        var exported = {};
+        var i = 0;
+        for(let device of devices){
+            exported[i.toString()] = { address: device.address, name: device.name, lastconn: device.last_connection.toDateString()};
+            i += 1;
+        }
+
+        JSONFile.writeFile(url, exported, function(error){
+            console.log(error);
+        })
+    }
 }
 module.exports = BluetoothManager;
 
 
 //FOR DEBUG
 devices.add(new BluetoothDevice().setUp({address:"B8:63:BC:00:46:ED", name:"ROBOTIS BT-210"}));
-devices.add(new BluetoothDevice().setUp({address:"B8:63:BC:00:46:ED", name:"ROBOTIS BT-220"}));

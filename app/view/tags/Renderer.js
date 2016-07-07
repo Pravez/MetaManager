@@ -20,6 +20,9 @@ require('./manager/add.tag');
 require('./manager/edit.tag');
 require('./manager/control.tag');
 
+//Bluetooth
+require('./bluetooth/bluetooth.tag');
+
 //Windows are a map of windows composing the app
 var windows = new Map();
 var currentWindow;

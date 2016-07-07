@@ -24,6 +24,8 @@ class BluetoothDevice{
         this.connecting = false;
         this.tries = 0;
         this.tries_connect = 0;
+
+        this.last_connection = undefined;
     }
 
     /**
@@ -34,6 +36,7 @@ class BluetoothDevice{
         if(options){
             this.address = options.address || this.address;
             this.name = options.name || this.name;
+            this.last_connection = new Date(options.lastconn);
 
             this.serial = new BluetoothSerial.BluetoothSerialPort();
 
@@ -103,6 +106,7 @@ class BluetoothDevice{
                 console.log('connected');
                 self.connected = true;
                 self.connecting = false;
+                self.last_connection = Date.now();
                 document.dispatchEvent(new Event("devicesUpdate"));
 
             }, function () {
