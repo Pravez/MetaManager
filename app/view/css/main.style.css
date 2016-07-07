@@ -12,7 +12,7 @@ input{
 }
 
 input[type=search]:hover{
-    cursor:pointer;
+    cursor:text;
 }
 
 #loading{

@@ -36,7 +36,7 @@
         };
 
         //After adding an entity
-        document.addEventListener("addedEntity", function(e){
+        document.addEventListener("entities_update", function(e){
             self.update({ entities: Controller.getEntities() });
         });
 

@@ -18,6 +18,11 @@ class Physics{
         this.world.addBody(body);
     }
 
+    removeBody(body){
+        if(body)
+            this.world.removeBody(body);
+    }
+
     addMaterial(name){
         this.materials.set(name, new Cannon.Material(name));
     }

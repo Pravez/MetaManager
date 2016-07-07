@@ -19,7 +19,7 @@
 
 
         <div class="col-md-12">
-            <div class="col-md-6">
+            <div class="col-md-6" style="border-right:1px solid #BFBFBF;">
                 <div class="col-md-12">
                     <h5>Information about the robot</h5>
                     <div class="col-md-12 separator"></div>
@@ -36,11 +36,19 @@
                         <input class="form-control" type="number" id="legs" name="legs" placeholder="">
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6" style="border-left:1px solid #BFBFBF;">
                 <div class="col-md-12">
-                    <h5>OSC communication (<a onclick={ shell.openExternal('http://i-score.org/'); }>i-score</a>)</h5>
+                    <h5>3D Scene reproduction</h5>
                     <div class="col-md-12 separator"></div>
+                    <div class="row" style="margin-top: 30px;">
+                        <label for="color" class="input-title">Color of the robot</label>
+                        <input type="color" name="color" id="color" value="#FFFFFF" style="height:20px;">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-12">
+                    <h5>OSC communication (i-score)</h5>
+                    <div class="col-md-12 separator" style="height:40px;"></div>
                     <div class="row" style="margin-top:30px;">
                         <label for="address" class="input-title">Address to listen for the OSC listener</label>
                         <input class="form-control" type="text" id="address" name="address" value="127.0.0.1">
@@ -74,49 +82,45 @@
     </form>
 
     <script>
-        var shell = require('electron');
         var Controller = require('../../../controller/Controller');
         var BluetoothManager = require('../../../model/devices/BluetoothManager');
 
         var self = this;
 
+        this.cancel = function(e){
+            this.form.reset();
+            document.dispatchEvent(new Event('home_pane'));
+        };
+
         this.verify = function(e){
-            //TODO something with lastValue
-            /*if(self.port <= 1024 || (Controller.isPortTaken(self.port))){
-             alert('Port already taken');
-             }*/
-            if(self.name.validity.valid){
-                var options = {
-                    robot:{
-                        name: self.name.value,
-                        size: self.size.value,
-                        legs: self.legs.value,
-                        circumference: self.circumference.value,
-                        position:{
-                            x: self.x.value,
-                            y: self.y.value,
-                            z: self.z.value
-                        },
-                        color: self.colorpick.value
-                    },
-                    device: {
+            //TODO verify port and IP address
+            if(this.name.validity.valid && this.name.value !== ""){
+                var options = {};
+                options.robot = {
+                        name: this.name.value,
+                        size: this.size.value,
+                        legs: this.legs.value,
+                        circumference: this.circ.value,
+                        color: this.color.value
+                };
+                options.device = {
                         osc: {
-                            address: self.address.value,
-                            port: self.port.value
+                            address: this.address.value,
+                            port: this.port.value
                         },
                         bluetooth: {
-                            none: self.bDevice.value === "none",
-                            bluetoothDevice: Bluetooth.getFromNameOrAddress(self.bDevice.value)
+                            none: this.device_select.value === "None",
+                            bluetoothDevice: BluetoothManager.getFromNameOrAddress(this.device_select.value)
                         }
-                    }
                 };
 
                 Controller.addEntity(options);
-                self.form.reset();
-                self.update();
-                document.dispatchEvent(new Event('addedEntity'));
+                this.form.reset();
+                this.update();
+                document.dispatchEvent(new Event('entities_update'));
+                document.dispatchEvent(new Event('home_pane'));
             }else{
-                self.name.focus();
+                this.name.focus();
             }
         };
 
@@ -131,6 +135,10 @@
 
         .form-group .row{
             margin-bottom: 20px;
+        }
+
+        input[type=color]:hover{
+            cursor:pointer;
         }
 
         hr{

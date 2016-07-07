@@ -20,7 +20,12 @@ class Robot{
         if(options){
 
             this.name = options.name;
-            this.position = new Vector(options.position.x, options.position.y, options.position.z);
+            this.circumference = options.circumference || 0;
+            this.legs = options.legs || 0;
+            this.size = options.size || 0;
+
+            this.position = new Vector(1, 1, 1);
+
             this.velocity = new Vector(0, 0, 0);
             this.valuesQty = 7;
 
@@ -92,7 +97,9 @@ class Robot{
 
     modify(options){
         this.name = options.name || this.name;
-        this.position.change(options.position.x || this.position.x, options.position.y || this.position.y, options.position.z || this.position.z)
+        this.size = options.size || this.size;
+        this.circumference = options.circumference || this.circumference;
+        this.legs = options.legs || this.legs;
     }
 
     addExecutedCommand(command){

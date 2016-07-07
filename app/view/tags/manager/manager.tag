@@ -34,5 +34,8 @@
 
         document.addEventListener('entitySelected', function(){ self.update(); });
         document.addEventListener('add_pane', function(){ Manager.changePane("add"); });
+        document.addEventListener('edit_pane', function(){ Manager.changePane("edit"); });
+        document.addEventListener('home_pane', function(){ Manager.changePane("home"); });
+        document.addEventListener('control_pane', function(){ Manager.changePane("control"); });
     </script>
 </manager>

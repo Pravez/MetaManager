@@ -11,9 +11,10 @@
 
     <div class="col-xs-6" style="border-right:1px solid #BFBFBF;">
         <button class="btn btn-large btn-warning" onclick={ editEntity }>Edit this entity</button>
+        <button class="btn btn-large btn-negative" onclick={ removeEntity }>Remove this entity</button>
     </div>
     <div class="col-xs-6">
-        <button class="btn btn-large btn-positive" onclick={ toggleOSCListening }>Listen on OSC</button>
+        <button class="btn btn-large btn-positive" onclick={ toggleOSC }>Listen on OSC</button>
     </div>
     <div class="separator col-xs-12"></div>
     <hr style="width:70%;">
@@ -28,7 +29,7 @@
         <div class="col-xs-6" style="border-right:1px solid #BFBFBF;">
             <div class="row" each={ this.control_datas.ranges } style="margin-bottom: 20px;">
                 <label for={ name } class="input-title">{ description }</label>
-                <input id={ name } name={ name } type="range" min={ min } max={ max } value={ init_value } oninput={ onInput } >
+                <input id={ name } name={ name } type="range" min={ min } max={ max } value={ this.entity.robot._values[name] } oninput={ onInput } >
                 <div class="input-values">
                     <div class="col-md-4" style="text-align: left;">{ min }</div>
                     <div class="col-md-4">{ this.entity.robot._values[name] }</div>
@@ -38,6 +39,9 @@
             <div class="col-md-12" style="margin-top: 30px;">
                 <button class="btn btn-default btn-large" onclick={ setDefault }>Set values as default</button>
                 <button class="btn btn-warning btn-large" onclick={ restoreDefault }>Restore default values</button>
+                <div class="col-md-12">
+                    <p><span class="icon icon-attention"></span> Defaults values are globally stored</p>
+                </div>
             </div>
         </div>
         <div class="col-xs-6">
@@ -57,16 +61,40 @@
 
     <script>
         var Controller = require('../../../controller/Controller');
+        const {dialog} = require('electron').remote;
 
         this.onInput = function(e){
             this.entity.robot._values[this.name] = this[this.name].value;
-            console.log(this.entity.robot._values[this.name]);
         };
 
         this.validateSpeed = function(e){
 
         };
 
+        ////////Edit, remove and listen/////////
+        this.removeEntity = function(e){
+            var self = this;
+            dialog.showMessageBox({type: 'warning', buttons:['yes', 'no'], title:'Warning', message:'Do you really want to remove this entity ?', },
+                    function(response){
+                    if(response === 0){
+                        Controller.removeEntity(self.entity.id);
+                        document.dispatchEvent(new Event('entities_update'));
+                        document.dispatchEvent(new Event('home_pane'));
+                    }
+            });
+        };
+
+        this.editEntity = function(e){
+            document.dispatchEvent(new Event('edit_pane'));
+        };
+
+
+        this.toggleOSC = function(e){
+
+        };
+        /////////////////////////////////////////
+
+        ///////About default values///////
         this.setDefault = function(e){
             for(let i = 0;i<this.control_datas.ranges.length;i++){
                 this.control_datas.ranges[i].init_value = this[this.control_datas.ranges[i].name].value;
@@ -79,7 +107,7 @@
                 this.entity.robot._values[this.control_datas.ranges[i].name] = this.control_datas.ranges[i].init_value;
             }
         };
-
+        /////////////////////////////////
 
 
         this.on('update', function(){

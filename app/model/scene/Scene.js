@@ -69,6 +69,11 @@ class Scene{
         return element;
     }
 
+    removeElement(element){
+        this.physics.removeBody(element.body);
+        this.renderer.removeMesh(element.mesh);
+    }
+
     play(){
         this.physics.step();
 

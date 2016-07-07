@@ -83,8 +83,14 @@ class Controller{
         metaScene.addElement({ element: created.robot.sceneElement });
     }
 
-    static modifyEntity(entity, options){
-        entity.modify(options);
+    static modifyEntity(options, id){
+        Controller.getEntity(id).modify(options);
+    }
+
+    static removeEntity(id){
+        var ent = MetaManager.removeEntity(id);
+        if(ent.robot.sceneElement)
+            metaScene.removeElement(ent.robot.sceneElement);
     }
     
     static getEntities(){

@@ -40,8 +40,9 @@ class MetaManager{
      */
     static removeEntity(id){
         var entity = entities.get(id);
-        entity.stopDevices();
-        return entities.delete(id);
+        entity.disableDevice();
+        entities.delete(id);
+        return entity;
     }
 
     /**

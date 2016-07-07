@@ -100,7 +100,10 @@ class Device{
      * Disconnects and closes devices
      */
     disable(){
-        this.bluetoothDevice.disconnect();
+        if(this.bluetoothDevice){
+            this.bluetoothDevice.available = true;
+            this.bluetoothDevice = undefined;
+        }
         this.oscDevice.close();
     }
 

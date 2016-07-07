@@ -93,6 +93,11 @@ class SceneRenderer{
         this.scene.add(mesh);
     }
 
+    removeMesh(mesh){
+        if(mesh)
+            this.scene.remove(mesh);
+    }
+
     render(){
         this.controls.update();
         this.renderer.render(this.scene, this.camera);
