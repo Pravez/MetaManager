@@ -62,6 +62,16 @@ class Entity {
         this.device.disable();
     }
 
+    toggleRobotState(){
+        if(this.robot.started === false){
+            this.executeCommand({command: 'start'}, false);
+            this.robot.started = true;
+        }else{
+            this.executeCommand({command: 'stop'}, false);
+            this.robot.started = false;
+        }
+    }
+
     /**
      * Method to set deviceListeners according to functions to which will be sent datas to be analyzed
      * @param bluetooth
@@ -79,8 +89,8 @@ class Entity {
         if(options.robot){
             this.robot.modify(options.robot);
         }
-        if(options.osc || this.bluetooth){
-            this.device.modify(options.osc, options.bluetooth);
+        if(options.device.osc || options.device.bluetooth){
+            this.device.modify(options.device.osc, options.device.bluetooth);
         }
         if(options.color){
             this.sceneElement.setColor(options.color);
@@ -143,7 +153,7 @@ class Entity {
     }
 
     /**
-     *
+     * Function to ask robot's informations
      */
     askRobotInformations(){
         this.askingInformations = true;
@@ -164,6 +174,16 @@ class Entity {
         };
 
         setTimeout(finished, 1500);
+    }
+
+    /**
+     * Modifier of values from view, and updater of values of the robot
+     * @param name
+     * @param value
+     */
+    modifyRobotBasicValue(name, value){
+        this.robot.modifyValue(name, value);
+        this.executeCommand({command: name, value: value});
     }
 }
 

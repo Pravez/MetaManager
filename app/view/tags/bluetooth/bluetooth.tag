@@ -30,8 +30,11 @@
             <div style="height:40px;">
                 Name :
             </div>
-            <div style="height:200px;">
+            <div style="height:150px;">
                 State :
+            </div>
+            <div  if={ this.selected.last_connection } style="height:40px">
+                Last connection :
             </div>
             <div style="height:40px">
                 Number of tries to connect :
@@ -41,20 +44,24 @@
             <div style="height:40px">
                 <strong>{ this.selected.name }</strong>
             </div>
-            <div style="height:200px;">
+            <div style="height:150px;">
                 <strong>{ this.selected.connected ? "Connected" : "Not connected" }</strong> <br>
                 <div style="text-align: justify;font-size:12px;">
                     <span if={ this.selected.connected }> Application is connected to
                         this Bluetooth Device whose MAC address is { this.selected.address } </span>
                 </div>
             </div>
+            <div if={ this.selected.last_connection } style="height:40px;">
+                <strong>{ this.selected.last_connection.toString() }</strong>
+            </div>
             <div style="height:40px;">
                 <strong>{ this.selected.tries }</strong>
             </div>
         </div>
-        <div class="col-md-12" style="bottom:10px;">
-            <button class="btn btn-large btn-default" onclick={ connect } if={ !this.selected.connected }>Connect</button>
-            <button class="btn btn-large btn-default" onclick={ disconnect } if={ this.selected.connected }>Disconnect</button>
+        <div class="col-md-12 connect-div">
+            <button class="btn btn-large btn-default" onclick={ connect } if={ !this.selected.connecting && !this.selected.connected }>Connect</button>
+            <button class="btn btn-large btn-default" if={ this.selected.connecting } disabled>Connecting ...</button>
+            <button class="btn btn-large btn-default" onclick={ disconnect } if={ !this.selected.connecting && this.selected.connected }>Disconnect</button>
         </div>
     </div>
 
@@ -111,6 +118,13 @@
     </script>
 
     <style>
+
+        .connect-div{
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            text-align: right;
+        }
 
         .no-padding{
             padding:0;

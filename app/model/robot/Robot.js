@@ -14,6 +14,8 @@ class Robot{
 
         this.sceneElement = new SceneElement();
 
+        this.started = false;
+
     }
 
     setUp(options){

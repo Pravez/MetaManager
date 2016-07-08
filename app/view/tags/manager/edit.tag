@@ -64,6 +64,7 @@
                     <div class="row" style="margin-top:30px;">
                         <label for="device_select" class="input-title">Select an available Bluetooth Device</label>
                         <select id="device_select" class="form-control">
+                            <option if={ this.entity.device.bluetoothDevice } selected>{ this.entity.device.bluetoothDevice.name }</option>
                             <option> None </option>
                             <option each={ devices }>{ name }</option>
                         </select>
@@ -127,6 +128,9 @@
         };
 
         this.on('update', function(){
+
+            this.devices = Array.from(BluetoothManager.getAvailableDevices());
+
             if(this.entity){
                 this.name.value = this.entity.robot.name;
                 this.size.value = this.entity.robot.size;

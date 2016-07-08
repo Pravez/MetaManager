@@ -14,7 +14,10 @@
         <button class="btn btn-large btn-negative" onclick={ removeEntity }>Remove this entity</button>
     </div>
     <div class="col-xs-6">
-        <button class="btn btn-large btn-positive" onclick={ toggleOSC }>Listen on OSC</button>
+        <button if={ this.entity.robot.started } class="btn btn-large btn-negative" onclick={ toggleRobotState }>Stop robot</button>
+        <button if={ !this.entity.robot.started } class="btn btn-large btn-positive" onclick={ toggleRobotState }>Start robot</button>
+        <button if={ !this.entity.device.isOSCListening() } class="btn btn-large btn-positive" onclick={ toggleOSC }>Listen on OSC</button>
+        <button if={ this.entity.device.isOSCListening() } class="btn btn-large btn-warning" onclick={ toggleOSC }>Stop listening on OSC</button>
     </div>
     <div class="separator col-xs-12"></div>
     <hr style="width:70%;">
@@ -64,17 +67,21 @@
         const {dialog} = require('electron').remote;
 
         this.onInput = function(e){
-            this.entity.robot._values[this.name] = this[this.name].value;
+            this.entity.modifyRobotBasicValue(this.name, parseInt(this[this.name].value));
         };
 
         this.validateSpeed = function(e){
 
         };
 
+        this.toggleRobotState = function(e){
+            this.entity.toggleRobotState();
+        };
+
         ////////Edit, remove and listen/////////
         this.removeEntity = function(e){
             var self = this;
-            dialog.showMessageBox({type: 'warning', buttons:['yes', 'no'], title:'Warning', message:'Do you really want to remove this entity ?', },
+            dialog.showMessageBox({type: 'warning', buttons:['yes', 'no'], title:'Warning', message:'Do you really want to remove this entity ?'},
                     function(response){
                     if(response === 0){
                         Controller.removeEntity(self.entity.id);
@@ -90,7 +97,7 @@
 
 
         this.toggleOSC = function(e){
-
+            Controller.switchEntityOSCListening(this.entity.id);
         };
         /////////////////////////////////////////
 
@@ -104,7 +111,7 @@
         this.restoreDefault = function(e){
             for(let i = 0;i<this.control_datas.ranges.length;i++){
                 this[this.control_datas.ranges[i].name].value = this.control_datas.ranges[i].init_value;
-                this.entity.robot._values[this.control_datas.ranges[i].name] = this.control_datas.ranges[i].init_value;
+                this.entity.modifyRobotBasicValue(this.control_datas.ranges[i].name, parseInt(this.control_datas.ranges[i].init_value));
             }
         };
         /////////////////////////////////

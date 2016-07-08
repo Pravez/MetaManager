@@ -33,7 +33,9 @@ var CommandTypes = {
     PHASE_LEG_3: {cmd:'phaseLeg3', args:1, type:Types.NUMBER, description: "Leg 3's phase"},
     PHASE_LEG_4: {cmd:'phaseLeg4', args:1, type:Types.NUMBER, description: "Leg 4's phase"},
     COMMANDS: {cmd:'params', args:0, type:Types.NO_TYPE, description: "Get all possible commands"},
-    VERSION: {cmd:'version', args:0, type:Types.NO_TYPE, description: "Get version of the firmware"}
+    VERSION: {cmd:'version', args:0, type:Types.NO_TYPE, description: "Get version of the firmware"},
+    START: {cmd: 'start', args: 0, type:Types.NO_TYPE, description:"Start the robot"},
+    STOP: {cmd: 'stop', args:0, type:Types.NO_TYPE, description:"Stop the robot"}
 };
 
 var commandsMap = new Map();

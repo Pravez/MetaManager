@@ -2,7 +2,7 @@
 
 var BluetoothSerial = require('bluetooth-serial-port');
 
-var MAX_CONNECTION_TRIES = 5;
+var MAX_CONNECTION_TRIES = 3;
 
 /**
  * Each connection to a device is a BluetoothDevice instance. This class is
@@ -26,6 +26,7 @@ class BluetoothDevice{
         this.tries_connect = 0;
 
         this.last_connection = undefined;
+
     }
 
     /**
@@ -88,7 +89,9 @@ class BluetoothDevice{
             self.channel = channel;
             console.log("Channel found !" + channel);
             if(self.channel !== 0){
-                self.connect();
+                self.connection_try_timeout = setInterval(function(){
+                    self.connect();
+                }, 2000);
             }
         });
     }
@@ -97,9 +100,10 @@ class BluetoothDevice{
      * Method to connect to a device, after having found a channel.
      */
     connect(){
-        if(this.connected === false) {
-            var self = this;
-            this.tries_connect += 1;
+        var self = this;
+
+        if(self.connected === false && self.tries_connect < MAX_CONNECTION_TRIES) {
+            self.tries_connect += 1;
 
             //First we try to connect
             this.serial.connect(this.address, this.channel, function () {
@@ -113,13 +117,20 @@ class BluetoothDevice{
                 //If it failed, if we are not already connected and if we haven't tried too many times, we retry
                 if (self.tries_connect < MAX_CONNECTION_TRIES && self.connected === false) {
                     console.log('Unable to connect, retrying in 2 seconds...');
-                    setTimeout(self.connect(), 2000);
                 }else{
+                    console.log("Couldn't connect");
                     self.connecting = false;
+                    self.tries_connect = 0;
+                    clearInterval(self.connection_try_timeout);
                     document.dispatchEvent(new Event("devicesUpdate"));
+
+                    self.serial.close();
+                    self.setUp({name: self.name, address:self.address, lastconn: self.last_connection});
                 }
 
             });
+        }else{
+            clearInterval(self.connection_try_timeout);
         }
     }
 
