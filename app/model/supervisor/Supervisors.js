@@ -10,10 +10,10 @@ class SimpleSupervisor extends Supervisor{
     step() {
         if (this.robots.size > 0) {
             if (this.robots.get(0).position.x > this.groundSize) {
-                this.robots.get(0).position.x = 0;
+                this.setRobotVelocity(0, 0, 0, 10);
+            }else{
+                this.setRobotVelocity(0, 10);
             }
-
-            this.robots.get(0).velocity.x = 30;
         }
     }
     

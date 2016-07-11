@@ -162,7 +162,6 @@ class Device{
         //Sending to metabot here
         console.log(command);
         this.sendToBluetooth(command);
-        //this.sendToBluetooth(command);
     }
 }
 module.exports = Device;

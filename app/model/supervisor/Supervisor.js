@@ -26,10 +26,10 @@ class Supervisor{
 
     sendCommand(entity, command, arg){
         if(typeof entity === "number")
-            MetaManager.getEntity(entity).executeCommand({command: command, value: arg});
+            MetaManager.getEntity(entity).executeCommand({command: command, value: arg}, true);
         else if(typeof entity === "object")
             entity.forEach(function(e){
-                MetaManager.getEntity(e).executeCommand({command: command, value: arg});
+                MetaManager.getEntity(e).executeCommand({command: command, value: arg}, true);
             });
     }
 
@@ -44,6 +44,20 @@ class Supervisor{
     onOrder(message){
         //No analyze if not overrided
         Supervisor.retransmitMessage(message);
+    }
+
+    setRobotVelocity(id, x, y, z){
+        let robot = this.robots.get(id);
+        let velocity = {};
+        velocity.x = x || x == 0 ? x : robot.velocity.x;
+        velocity.y = y || y == 0 ? y : robot.velocity.y;
+        velocity.z = z || z == 0 ? z : robot.velocity.z;
+
+        robot.velocity = velocity;
+        
+        this.sendCommand(id, "dx", velocity.x);
+        this.sendCommand(id, "dy", velocity.y);
+        //this.sendCommand(id, "dz", velocity.z);
     }
 
     get size(){
