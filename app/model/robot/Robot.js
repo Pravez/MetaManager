@@ -100,7 +100,7 @@ class Robot{
         this.size = options.size || this.size;
         this.circumference = options.circumference || this.circumference;
         this.legs = options.legs || this.legs;
-        this.position.copy(options.position);
+        //this.position.copy(options.position);
     }
 
     addExecutedCommand(command){

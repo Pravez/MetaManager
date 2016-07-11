@@ -117,13 +117,14 @@
         };
 
         this.askCurrentValues = function(e){
-            document.getElementById("loading").style.display="flex";
+            //document.getElementById("loading").style.display="flex";
+            var self = this;
             Controller.requestRobotInfo(self.entity.id);
 
             //TODO if triggered notice it to the user
             setTimeout(function(e){
                 if(self.entity.askingInformations === true){
-                    document.getElementById("loading").style.display="none";
+                    //document.getElementById("loading").style.display="none";
                     self.entity.robot.valuesQty = 0;
                     self.entity.robot.hasBeenUpdated();
                 }
