@@ -8,6 +8,7 @@ var SceneElement = require('../scene/SceneElement');
 class Robot{
 
     constructor(){
+        //Default name uh
         this.name = "Jabberwockie";
         
         this.commands = new LimitedStack(20, new Command("start"));
@@ -26,9 +27,6 @@ class Robot{
             this.legs = options.legs || 0;
             this.size = options.size || 0;
 
-            this.position = new Vector(1, 1, 1);
-
-            this.velocity = new Vector(0, 0, 0);
             this.valuesQty = 7;
 
             this._values = {
@@ -59,9 +57,9 @@ class Robot{
                 depth:1
             },
             position:{
-                x: this.position.x,
-                y: this.position.y,
-                z: this.position.z
+                x: 1,
+                y: 1,
+                z: 1
             }
         });
         this.sceneElement.setMesh({
@@ -102,6 +100,7 @@ class Robot{
         this.size = options.size || this.size;
         this.circumference = options.circumference || this.circumference;
         this.legs = options.legs || this.legs;
+        this.position.copy(options.position);
     }
 
     addExecutedCommand(command){
@@ -120,13 +119,32 @@ class Robot{
         this.addExecutedCommand(cmd);
         switch(cmd._command.cmd){
             case "dx":
-                this.velocity.x = cmd._args;
+                this.sceneElement.body.velocity.x = cmd._args;
                 break;
             case "dy":
-                this.velocity.y = cmd._args;
+                this.sceneElement.body.velocity.y = cmd._args;
                 break;
         }
-        this.sceneElement.setVelocity(this.velocity.x, this.velocity.y, this.velocity.z);
+    }
+
+    get position(){
+        return this.sceneElement.body.position;
+    }
+
+    set position(position){
+        if(position){
+            this.sceneElement.bodyCopyPosition(position);
+        }
+    }
+
+    get velocity(){
+        return this.sceneElement.body.velocity;
+    }
+
+    set velocity(velocity){
+        if(velocity){
+            this.sceneElement.setVelocity(velocity.x, velocity.y, velocity.z);
+        }
     }
 }
 module.exports = Robot;

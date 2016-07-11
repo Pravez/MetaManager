@@ -8,7 +8,7 @@ var metaScene;
 var animationId = -1;
 var resizeNeeded = false;
 
-MetaManager.addEntity({
+/*MetaManager.addEntity({
     robot:{
         name: "Ewok",
         position:{
@@ -22,7 +22,7 @@ MetaManager.addEntity({
             port: 15000
         }
     }
-});
+});*/
 
 class Controller{
 

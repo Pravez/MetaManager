@@ -81,13 +81,20 @@ class SceneElement{
         this.color = options.material.color;
     }
 
-    updateMesh(){
+    updatePositions(){
+        //Update mesh positions
         this.mesh.position.copy(this.body.position);
         this.mesh.quaternion.copy(this.body.quaternion);
     }
 
     setVelocity(x, y, z){
-        this.body.velocity = new Cannon.Vec3(x, y, z);
+        if(x && y && z){
+            this.body.velocity = new Cannon.Vec3(x, y, z);
+        }else{
+            this.body.velocity.x = x ? x : this.body.velocity.x;
+            this.body.velocity.y = y ? y : this.body.velocity.y;
+            this.body.velocity.z = z ? z : this.body.velocity.z;
+        }
     }
 
     getVelocity(){
@@ -97,6 +104,14 @@ class SceneElement{
     setColor(color){
         this.color = color;
         this.material.color = new Three.Color(color);
+    }
+
+    setPosition(position){
+        if(position){
+            this.body.position.x = position.x ? position.x : this.body.position.x;
+            this.body.position.y = position.y ? position.y : this.body.position.y;
+            this.body.position.z = position.z ? position.z : this.body.position.z;
+        }
     }
 }
 module.exports = SceneElement;

@@ -106,7 +106,8 @@ class Entity {
     }
 
     /**
-     *
+     * Function to execute a command. Verify option will try to see if the last command sent is exactly the same as the
+     * one sent here. If so, it will ignore the command. 
      * @param command
      * @param verify
      */
@@ -128,10 +129,10 @@ class Entity {
     }
 
     /**
-     *
+     * Function to update values from a bluetooth message
      * @param message
      */
-    analyzeBluetoothResponse(message){
+    updateRobotValuesFromBluetooth(message){
         if(message.args === undefined && this.askingInformations === true){
             var response = Entity.parseBlueResponse(message.response);
             this.robot.modifyValue(response.cmd, response.value);

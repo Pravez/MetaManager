@@ -4,7 +4,7 @@ var Entity = require('../model/Entity');
 
 var auto_incr_key = 0;
 var entities = new Map();
-
+var supervisors = new Set();
 
 class MetaManager{
 
@@ -18,8 +18,8 @@ class MetaManager{
     static addEntity(options){
         var ent = new Entity(auto_incr_key);
         ent.setUpDeviceListeners(
-            (msg) => {MetaManager.analyzeBlueResponse(msg);},
-            (msg) => {MetaManager.analyzeOSCResponse(msg)});
+            (msg) => {MetaManager.updateFromBluetooth(msg);},
+            (msg) => {MetaManager.retrieveOrder(msg)});
 
         if(options.robot){
             ent.setUpRobot(options.robot);
@@ -30,6 +30,9 @@ class MetaManager{
         
         entities.set(auto_incr_key, ent);
         auto_incr_key += 1;
+
+        activeSupervisor.updateRobotsList();
+
         return ent;
     }
 
@@ -68,23 +71,72 @@ class MetaManager{
     }
 
     /**
-     * Main function to analyze a message from bluetooth
+     * Main function to analyze a message from bluetooth. Bluetooth messages are essentially robot's responses to orders
+     * so it is only updating in-app values of the robot.
      * @param message
      */
-    static analyzeBlueResponse(message){
-        entities.get(message.entity).analyzeBluetoothResponse(message);
+    static updateFromBluetooth(message){
+        entities.get(message.entity).updateRobotValuesFromBluetooth(message);
     }
 
     /**
-     * Main function to analyze a message from OSC
+     * Main function to analyze a message from OSC. If a supervisor is active, sends message to it.
+     * Else, by default sends message to the entity.
      * @param message
      */
-    static analyzeOSCResponse(message){
-        entities.get(message.entity).executeCommand({ command: message.cmd, value: message.arg}, true);
+    static retrieveOrder(message){
+        if(activeSupervisor){
+            activeSupervisor.onOrder(message);
+        }else{
+            entities.get(message.entity).executeCommand({ command: message.cmd, value: message.arg}, true);
+        }
     }
-    
+
+    /**
+     * Intermediate function to ask to the robot its informations (works with metabots, maybe not with others)
+     * @param id
+     * @returns {*}
+     */
     static getRobotInformationsFromDevice(id){
         return entities.get(id).askRobotInformations();
     }
+
+    /**
+     * Add a supervisor to the set
+     * @param supervisor
+     */
+    static addSupervisor(supervisor){
+        supervisors.add(supervisor);
+    }
+
+    /**
+     * Set a supervisor as active
+     * @param supervisor
+     */
+    static setSupervisorActive(supervisor){
+        if(supervisors.has(supervisor)){
+            activeSupervisor = supervisor;
+        }
+    }
+
+    /**
+     * Delete a supervisor from the set
+     * @param supervisor
+     */
+    static removeSupervisor(supervisor){
+        if(supervisors.has(supervisor)){
+            supervisors.delete(supervisor);
+        }
+    }
+
+    static stepSupervisor() {
+        if(activeSupervisor){
+            activeSupervisor.step();
+        }
+    }
 }
 module.exports = MetaManager;
+
+var Supervisors = require('./supervisor/Supervisors');
+
+var activeSupervisor = new Supervisors.simple("name");

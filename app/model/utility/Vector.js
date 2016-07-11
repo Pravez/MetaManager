@@ -7,10 +7,12 @@ class Vector{
         this.z = z ? typeof z == "string" ? parseInt(z) : z : 0;
     }
 
-    change(x, y, z){
-        this.x = x ? typeof x == "string" ? parseInt(x) : x : this.x;
-        this.y = y ? typeof y == "string" ? parseInt(y) : y : this.y;
-        this.z = z ? typeof z == "string" ? parseInt(z) : z : this.z;
+    copy(position){
+        if(position){
+            this.x = position.x ? typeof position.x == "string" ? parseInt(position.x) : position.x : this.x;
+            this.y = position.y ? typeof position.y == "string" ? parseInt(position.y) : position.y : this.y;
+            this.z = position.z ? typeof position.z == "string" ? parseInt(position.z) : position.z : this.z;
+        }
     }
 
     toPosition(){

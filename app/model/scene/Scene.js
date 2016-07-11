@@ -1,4 +1,5 @@
 "use strict";
+var MetaManager = require('../MetaManager');
 var SceneRenderer = require('./SceneRenderer');
 var Physics = require('./Physics');
 var SceneElement = require('./SceneElement');
@@ -78,8 +79,11 @@ class Scene{
         this.physics.step();
 
         for(let i = 0;i < this.elements.length;i++) {
-            this.elements[i].updateMesh();
+            this.elements[i].updatePositions();
         }
+
+        //Let the AI analyse things
+        MetaManager.stepSupervisor();
 
         this.renderer.render();
     }
