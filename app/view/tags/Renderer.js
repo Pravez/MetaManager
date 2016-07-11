@@ -23,6 +23,9 @@ require('./manager/control.tag');
 //Bluetooth
 require('./bluetooth/bluetooth.tag');
 
+//Supervisor
+require('./supervisor/supervisor.tag');
+
 //Windows are a map of windows composing the app
 var windows = new Map();
 var currentWindow;

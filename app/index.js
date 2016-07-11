@@ -16,9 +16,10 @@ BluetoothManager.importDevicesFrom(global.appRoot + '/view/resources/bluetooth/l
 riot.mount('toolbar', {active: "scene"});
 riot.mount('menu', {active: "scene"});
 riot.mount('creation', {entities: Controller.getEntities(), devices: []});
-riot.mount('scene', {sec: "prout"});
+riot.mount('scene');
 riot.mount('contextMenus');
 riot.mount('bluetooth');
+riot.mount('supervisor');
 riot.mount('wfooter');
 
 //Mounting manager
@@ -31,6 +32,7 @@ riot.mount('.management');
 Renderer.addWindow("manager");
 Renderer.addWindow("scene");
 Renderer.addWindow("bluetooth");
+Renderer.addWindow("supervisor");
 Renderer.hideAll();
 Renderer.showWindow("scene");
 

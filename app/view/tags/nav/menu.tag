@@ -1,19 +1,25 @@
-<menu class="pane pane-sm sidebar">
-    <nav class="nav-group">
-    <h5 class="nav-group-title">Main menu</h5>
-        <span id="scene" class="nav-group-item active" onclick={ changeWindow }>
+<menu>
+    <div class="btn-group">
+        <button id="scene" class="btn btn-default active" onclick={ changeWindow }>
             <span class="icon icon-note"></span>
             Scene
-        </span>
-        <span id="manager" class="nav-group-item" onclick={ changeWindow }>
+        </button>
+        <button id="manager" class="btn btn-default" onclick={ changeWindow }>
             <span class="icon icon-network"></span>
             Entities
-        </span>
-        <span id="bluetooth" class="nav-group-item" onclick={ changeWindow }>
+        </button>
+        <button id="bluetooth" class="btn btn-default" onclick={ changeWindow }>
             <span class="icon icon-signal"></span>
             Bluetooth
-        </span>
-    </nav>
+        </button>
+        <button id="supervisor" class="btn btn-default" onclick={ changeWindow }>
+            <span class="icon icon-eye"></span>
+            Supervisor
+        </button>
+    </div>
+
+
+    <button if={ this.active.id === 'manager' } class="btn btn-primary" onclick={ addEntity }>Add an entity</button>
 
 
 
@@ -47,6 +53,10 @@
             }
         };
 
+        this.addEntity = function(e){
+            document.dispatchEvent(new Event("add_pane"));
+        };
+
         //Functions for buttons
         this.changeWindow = function(e){
             //Changing active menu item
@@ -77,9 +87,8 @@
     </script>
 
     <style>
-        menu{
-            padding:0;
-            margin:0;
+        menu span{
+            margin-right:5px;
         }
     </style>
 </menu>

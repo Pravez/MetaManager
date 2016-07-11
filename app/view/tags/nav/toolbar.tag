@@ -9,37 +9,7 @@
 
         <!-- Actions to change windows -->
         <div class="toolbar-actions" style="margin-left:20%;">
-
-            <!-- Bluetooth dropdown -->
-            <!--<div class="dropdown">
-                <button class="btn btn-default btn-dropdown" onclick={ showbt }>
-                    <span class="icon icon-megaphone"></span>
-                </button>
-                <div id="bt-dropdown" class="dropdown-content">
-                    <table class="table-striped">
-                        <tbody>
-                        <tr id="scanning">
-                            <td onclick={ searchBT }>Click to scan for devices ...</td>
-                        </tr>
-                        <tr each={ devices } onclick={ select }>
-                            <td>{name}</td>
-                            <td>{address}</td>
-                            <td>
-                                <div style="width:19px;height:15px;text-align:center;">
-                                    <span if={tries > 0 && connected && !connecting} class='icon icon-check'></span>
-                                    <span if={tries > 0 && !connected && !connecting} class='icon icon-cancel'></span>
-                                    <img if={connecting} style='height:15px;width:19px;' src='view/resources/spin.gif'>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>-->
-
-            <!-- Specific buttons -->
-            <div if={ Renderer.currentWindow() === "creation" } class="pull-right" style="margin-right:150px;">
-            <button class="btn btn-primary bottom-right" onclick="Creation.changePane('addBot');">Create an entity</button>
+            <menu></menu>
         </div>
 
         </div>

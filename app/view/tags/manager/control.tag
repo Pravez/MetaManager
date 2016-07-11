@@ -14,6 +14,7 @@
         <button class="btn btn-large btn-negative" onclick={ removeEntity }>Remove this entity</button>
     </div>
     <div class="col-xs-6">
+        <button if={ this.entity.robot.started } class="btn btn-large btn-primary" onclick={ askCurrentValues }>Update current values</button>
         <button if={ this.entity.robot.started } class="btn btn-large btn-negative" onclick={ toggleRobotState }>Stop robot</button>
         <button if={ !this.entity.robot.started } class="btn btn-large btn-positive" onclick={ toggleRobotState }>Start robot</button>
         <button if={ !this.entity.device.isOSCListening() } class="btn btn-large btn-positive" onclick={ toggleOSC }>Listen on OSC</button>
@@ -113,6 +114,20 @@
                 this[this.control_datas.ranges[i].name].value = this.control_datas.ranges[i].init_value;
                 this.entity.modifyRobotBasicValue(this.control_datas.ranges[i].name, parseInt(this.control_datas.ranges[i].init_value));
             }
+        };
+
+        this.askCurrentValues = function(e){
+            document.getElementById("loading").style.display="flex";
+            Controller.requestRobotInfo(self.entity.id);
+
+            //TODO if triggered notice it to the user
+            setTimeout(function(e){
+                if(self.entity.askingInformations === true){
+                    document.getElementById("loading").style.display="none";
+                    self.entity.robot.valuesQty = 0;
+                    self.entity.robot.hasBeenUpdated();
+                }
+            }, 3000);
         };
         /////////////////////////////////
 
