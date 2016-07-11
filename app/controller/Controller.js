@@ -3,26 +3,15 @@
 var MetaManager = require('../model/MetaManager');
 var Scene = require('../model/scene/Scene');
 var Renderer = require('../view/tags/Renderer').Renderer;
+var Supervisors = require('../model/supervisor/Supervisors');
+
 
 var metaScene;
 var animationId = -1;
 var resizeNeeded = false;
 
-/*MetaManager.addEntity({
-    robot:{
-        name: "Ewok",
-        position:{
-            x:100,
-            y:100
-        }
-    },
-    device:{
-        osc:{
-            address: 'localhost',
-            port: 15000
-        }
-    }
-});*/
+var supervisors = new Map();
+var activeSupervisor;
 
 class Controller{
 
@@ -42,8 +31,8 @@ class Controller{
                 mass:0,
                 type:"plane",
                 values:{
-                    width:500,
-                    height:500
+                    width:1000,
+                    height:1000
                 },
                 material: "no_special"
             },
@@ -138,6 +127,24 @@ class Controller{
 
         return null;
     }
+
+    static addSupervisor(supervisorType, name, groundSize){
+        supervisors.set(name, new Supervisors[supervisorType](name, groundSize));
+        activeSupervisor = name;
+    }
+
+    static removeSupervisor(name){
+        supervisors.delete(name);
+    }
+
+    static getActiveSupervisorName(){
+        return activeSupervisor;
+    }
+    
+    static setSupervisor(name){
+        MetaManager.setSupervisor(supervisors.get(name));
+        metaScene.createLimits(supervisors.get(name).size);
+    }
 }
 
 function animate(){
@@ -154,3 +161,4 @@ document.addEventListener('windowChanged', () => {
 });
 
 module.exports = Controller;
+

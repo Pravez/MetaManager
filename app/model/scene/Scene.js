@@ -6,6 +6,8 @@ var SceneElement = require('./SceneElement');
 var Vec3 = require('../utility/Vector');
 
 
+
+
 class Scene{
 
 
@@ -16,16 +18,27 @@ class Scene{
 
         this.renderer.setCamera(30, canvas.width / canvas.height, 0.5, 10000, new Vec3(100, 50, 100));
         this.renderer.addTrackballControls();
-        //this.renderer.addLight({ type: "ambient", color:0x666666});
+        this.renderer.addLight({ type: "ambient", color:0x666666});
         this.renderer.addLight({ type:"directional", color: 0xffffff, intensity:2, x:50, y:50, z:50});
 
         this.elements = [];
+
+        //Adjusting the scene limits
+        this.createLimits(500);
 
         this.physics.addMaterial("no_special");
         this.physics.addContactMaterial("no_special", "no_special", 0, 0);
 
         this.physics.addMaterial("friction");
         this.physics.addContactMaterial("friction", "friction", 0.2);
+    }
+
+    createLimits(size){
+        if(this.limits){
+            this.renderer.removeMesh(this.limits);
+        }
+        this.limits = SceneElement.createLimits(size);
+        this.renderer.addMesh(this.limits);
     }
 
     addElement(options){

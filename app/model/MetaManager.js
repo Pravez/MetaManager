@@ -4,7 +4,7 @@ var Entity = require('../model/Entity');
 
 var auto_incr_key = 0;
 var entities = new Map();
-var supervisors = new Set();
+var Supervisor;
 
 class MetaManager{
 
@@ -31,7 +31,7 @@ class MetaManager{
         entities.set(auto_incr_key, ent);
         auto_incr_key += 1;
 
-        activeSupervisor.updateRobotsList();
+        Supervisor.updateRobotsList();
 
         return ent;
     }
@@ -102,41 +102,17 @@ class MetaManager{
     }
 
     /**
-     * Add a supervisor to the set
-     * @param supervisor
-     */
-    static addSupervisor(supervisor){
-        supervisors.add(supervisor);
-    }
-
-    /**
      * Set a supervisor as active
      * @param supervisor
      */
-    static setSupervisorActive(supervisor){
-        if(supervisors.has(supervisor)){
-            activeSupervisor = supervisor;
-        }
-    }
-
-    /**
-     * Delete a supervisor from the set
-     * @param supervisor
-     */
-    static removeSupervisor(supervisor){
-        if(supervisors.has(supervisor)){
-            supervisors.delete(supervisor);
-        }
+    static setSupervisor(supervisor){
+        Supervisor = supervisor;
     }
 
     static stepSupervisor() {
-        if(activeSupervisor){
-            activeSupervisor.step();
+        if(Supervisor){
+            Supervisor.step();
         }
     }
 }
 module.exports = MetaManager;
-
-var Supervisors = require('./supervisor/Supervisors');
-
-var activeSupervisor = new Supervisors.simple("name");

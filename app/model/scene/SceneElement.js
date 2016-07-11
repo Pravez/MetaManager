@@ -27,13 +27,16 @@ class SceneElement{
         switch(options.type){
             case "sphere":
                 body.addShape(new Cannon.Sphere(options.values.radius));
+                this.type = "drone";
                 break;
             case "cube":
                 body.addShape(new Cannon.Box(new Cannon.Vec3(options.values.width, options.values.height, options.values.depth)));
+                this.type = "robot";
                 break;
             case "plane":
                 body.addShape(new Cannon.Plane());
                 body.quaternion.setFromAxisAngle(new Cannon.Vec3(1,0,0),-Math.PI/2);
+                this.type = "ground";
                 break;
             default:
                 body.addShape(new Cannon.Box(new Cannon.Vec3(1,1,1)));
@@ -112,6 +115,20 @@ class SceneElement{
             this.body.position.y = position.y ? position.y : this.body.position.y;
             this.body.position.z = position.z ? position.z : this.body.position.z;
         }
+    }
+
+    static createLimits(size){
+        var material = new Three.LineBasicMaterial({
+            color: 0x0000ff
+        });
+        var geometry = new Three.Geometry();
+        geometry.vertices.push(new Three.Vector3(-size, 0.1 , size));
+        geometry.vertices.push(new Three.Vector3(-size, 0.1 , -size));
+        geometry.vertices.push(new Three.Vector3(size, 0.1 , -size));
+        geometry.vertices.push(new Three.Vector3(size, 0.1 , size));
+        geometry.vertices.push(new Three.Vector3(-size, 0.1 , size));
+
+        return new Three.Line(geometry, material);
     }
 }
 module.exports = SceneElement;

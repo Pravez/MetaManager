@@ -2,8 +2,9 @@ var MetaManager = require('../MetaManager');
 
 class Supervisor{
 
-    constructor(name){
+    constructor(name, groundSize){
         this.name = name;
+        this.groundSize = groundSize;
 
         this.updateRobotsList();
 
@@ -43,6 +44,10 @@ class Supervisor{
     onOrder(message){
         //No analyze if not overrided
         Supervisor.retransmitMessage(message);
+    }
+
+    get size(){
+        return this.groundSize;
     }
 
 }

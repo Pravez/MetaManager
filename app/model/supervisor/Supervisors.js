@@ -3,17 +3,17 @@ var Supervisor = require('./Supervisor');
 var exports = module.exports = {};
 
 class SimpleSupervisor extends Supervisor{
-    constructor(name){
-        super(name);
+    constructor(name, groundSize){
+        super(name, groundSize);
     }
 
     step() {
         if (this.robots.size > 0) {
-            if (this.robots.get(0).position.x > 20) {
+            if (this.robots.get(0).position.x > this.groundSize) {
                 this.robots.get(0).position.x = 0;
             }
 
-            this.robots.get(0).velocity.x = 5;
+            this.robots.get(0).velocity.x = 30;
         }
     }
     

@@ -46,3 +46,6 @@ Manager.setCurrentPane("home");
 
 
 Controller.animateScene();
+
+Controller.addSupervisor("simple", "SimpleSupervisor", 150);
+Controller.setSupervisor("SimpleSupervisor");
