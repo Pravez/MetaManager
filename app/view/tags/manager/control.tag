@@ -127,6 +127,7 @@
                     //document.getElementById("loading").style.display="none";
                     self.entity.robot.valuesQty = 0;
                     self.entity.robot.hasBeenUpdated();
+                    self.update();
                 }
             }, 3000);
         };

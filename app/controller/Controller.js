@@ -128,6 +128,16 @@ class Controller{
         return null;
     }
 
+    static packageDefaultRangeControlDatas(){
+        var data = [];
+        data.push({name: 'h', type: 'range', min: -150, max: 50, description: "Height"});
+        data.push({name: 'r', type: 'range', min: 80, max: 150, description: "Size"});
+        data.push({name: 'freq', type: 'range', min: 0, max: 4, description: "Frequency"});
+        data.push({name: 'alt', type: 'range', min: -200, max: 150, description: "Altitude"});
+
+        return data;
+    }
+
     static addSupervisor(supervisorType, name, groundSize){
         supervisors.set(name, new Supervisors[supervisorType](name, groundSize));
         activeSupervisor = name;

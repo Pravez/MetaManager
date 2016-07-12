@@ -149,16 +149,11 @@ img{
 }
 
 
-/** Panes rework **/
+/** forms rework **/
 
-.pane-horizontal {
-    position: relative;
-    overflow-x: auto;
-    flex: 1;
-    border-bottom: 1px solid #ddd;
-}
-.pane:last-child {
-    border-bottom: 0;
+input[type=range]:focus {
+    border-color: inherit;
+    box-shadow: none;
 }
 
 /** Bootstrap grid **/
