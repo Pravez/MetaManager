@@ -1,11 +1,10 @@
-<home>
+<home class="pane full">
     <div class="col-md-12">
         <h2>Control Panel</h2>
     </div>
 
-    <div class="col-md-6">
-        <button class="btn btn-large btn-primary" onclick={ addEntity }>Add an entity</button>
-        <button class="btn btn-large btn-warning" onclick={ editEntity }>Edit an entity</button>
+    <div class="col-md-12">
+        <button class="btn btn-large btn-primary" onclick="document.dispatchEvent(new Event('add_pane'));">Add an entity</button>
     </div>
 
 

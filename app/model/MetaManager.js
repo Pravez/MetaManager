@@ -31,7 +31,8 @@ class MetaManager{
         entities.set(auto_incr_key, ent);
         auto_incr_key += 1;
 
-        Supervisor.updateRobotsList();
+        if(Supervisor)
+            Supervisor.updateRobotsList();
 
         return ent;
     }

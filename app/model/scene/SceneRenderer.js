@@ -27,7 +27,7 @@ class SceneRenderer{
         //this.camera.updateProjectionMatrix();
 
         this.canvas.width = this.canvas.offsetParent.offsetWidth;
-        this.canvas.height = 600;
+        this.canvas.height = this.canvas.offsetParent.offsetHeight;
 
         this.renderer.setSize( this.canvas.width, this.canvas.height );
     }

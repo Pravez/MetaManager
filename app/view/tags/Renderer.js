@@ -10,6 +10,7 @@ require('./misc/wfooter.tag');
 
 //Scene
 require('./scene/scene.tag');
+require('./scene/selection.tag');
 require('./misc/contextMenus.tag');
 
 //Manager

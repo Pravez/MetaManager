@@ -148,6 +148,19 @@ img{
     z-index:50;
 }
 
+
+/** Panes rework **/
+
+.pane-horizontal {
+    position: relative;
+    overflow-x: auto;
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+}
+.pane:last-child {
+    border-bottom: 0;
+}
+
 /** Bootstrap grid **/
 
 @media (max-width: 600px ) {

@@ -15,12 +15,14 @@ BluetoothManager.importDevicesFrom(global.appRoot + '/view/resources/bluetooth/l
 //Here we mount every single tag
 riot.mount('toolbar', {active: "scene"});
 riot.mount('menu', {active: "scene"});
-riot.mount('creation', {entities: Controller.getEntities(), devices: []});
-riot.mount('scene');
-riot.mount('contextMenus');
 riot.mount('bluetooth');
 riot.mount('supervisor');
 riot.mount('wfooter');
+
+//Mounting scene
+riot.mount('scene');
+riot.mount('contextMenus');
+riot.mount('selection', { entities: Controller.getEntities()});
 
 //Mounting manager
 riot.mount('manager');
@@ -47,5 +49,5 @@ Manager.setCurrentPane("home");
 
 Controller.animateScene();
 
-Controller.addSupervisor("simple", "SimpleSupervisor", 30);
-Controller.setSupervisor("SimpleSupervisor");
+/*Controller.addSupervisor("simple", "SimpleSupervisor", 30);
+Controller.setSupervisor("SimpleSupervisor");*/
