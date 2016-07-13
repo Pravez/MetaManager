@@ -96,7 +96,7 @@ class Device{
             this.bluetoothDevice.available = true;
             this.bluetoothDevice = undefined;
         }
-        this.oscDevice.close();
+        this.oscDevice.disconnect();
     }
 
     /**
@@ -106,8 +106,7 @@ class Device{
      */
     modify(osc, bluetooth) {
         if(osc){
-            //First we stop it and remove
-            this.oscDevice.close();
+            //First we remove
             OSCManager.removeDevice(this.oscDevice);
             //Then we modify
             this.oscDevice.modify(osc);

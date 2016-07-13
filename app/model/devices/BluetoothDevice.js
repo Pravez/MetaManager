@@ -65,7 +65,7 @@ class BluetoothDevice extends DeviceElement{
             self.tries_connect += 1;
 
             //First we try to connect
-            this.serial.connect(this.address, this.channel, function () {
+            this.device.connect(this.address, this.channel, function () {
                 console.log('connected');
                 self.connected = true;
                 self.connecting = false;
@@ -83,7 +83,7 @@ class BluetoothDevice extends DeviceElement{
                     clearInterval(self.connection_try_timeout);
                     document.dispatchEvent(new Event("devicesUpdate"));
 
-                    self.serial.close();
+                    self.device.close();
                     self.setUp({name: self.name, address:self.address, lastconn: self.last_connection});
                 }
 
