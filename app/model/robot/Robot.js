@@ -119,10 +119,10 @@ class Robot{
         this.addExecutedCommand(cmd);
         switch(cmd._command.cmd){
             case "dx":
-                this.sceneElement.body.velocity.x = cmd._args;
+                this.velocity = { x: cmd._args };
                 break;
             case "dy":
-                this.sceneElement.body.velocity.y = cmd._args;
+                this.velocity = { z: cmd._args };
                 break;
         }
     }
@@ -143,7 +143,7 @@ class Robot{
 
     set velocity(velocity){
         if(velocity){
-            this.sceneElement.setVelocity(velocity.x, velocity.y, velocity.z);
+            this.sceneElement.setVelocity(velocity);
         }
     }
 }

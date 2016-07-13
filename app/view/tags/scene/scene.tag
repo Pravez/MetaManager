@@ -1,18 +1,24 @@
-<scene class="pane pane-group">
+<scene class="pane pane-group full">
 
     <selection></selection>
 
     <div class="pane">
         <div class="col-md-12 form-group">
             <div class="row" each={ this.control_datas } style="margin-bottom: 20px;">
-                <label for={ name }>{ description }</label>
+                <label for={ name } class="col-md-2">{ description }</label>
                 <input class="form-control" id={ name } name={ name } type="range" min={ min } max={ max } oninput={ onInput } >
             </div>
         </div>
         <div class="col-md-12">
-            <label for="singlecmd">Enter a custom command</label>
-            <input type="text" class="form-control" id="singlecmd" placeholder="dx 10, toggleCrab, dy -5 ...">
-            <button class="btn btn-primary btn-large" style="margin-left:20px;" onclick={ sendCommand }>Send command</button>
+            <div class="col-md-6" style="text-align: right;">
+                <label for="singlecmd">Enter a custom command</label>
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="singlecmd" name="singlecmd" placeholder="dx 10, toggleCrab, dy -5 ...">
+            </div>
+            <div class="col-md-12">
+                <button class="btn btn-primary btn-large" style="margin-left:20px;" onclick={ sendCommand }>Send command</button>
+            </div>
         </div>
     </div>
     <div class="pane">
@@ -28,13 +34,13 @@
 
         this.onInput = function(e){
             for(let entity of this.selectedEntities){
-                entity.executeCommand({ command:e.currentTarget.name, value: parseInt(e.currentTarget.value)});
+                entity.executeCommand({ command: e.currentTarget.value, value: parseInt(e.currentTarget.value)});
             }
         };
 
         this.sendCommand = function(e){
             for(let entity of this.selectedEntities){
-                entity.executeCommand({ command: e.currentTarget.value.split(' ')[0], value: parseInt(e.currentTarget.value.split(' ')[1])});
+                entity.executeCommand({ command: this.singlecmd.value.split(' ')[0], value: parseInt(this.singlecmd.value.split(' ')[1])});
             }
         };
 

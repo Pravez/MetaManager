@@ -153,7 +153,7 @@ class Controller{
     
     static setSupervisor(name){
         MetaManager.setSupervisor(supervisors.get(name));
-        metaScene.createLimits(supervisors.get(name).size);
+        metaScene.createLimits(supervisors.get(name).groundSize);
     }
 }
 

@@ -37,7 +37,7 @@ class Scene{
         if(this.limits){
             this.renderer.removeMesh(this.limits);
         }
-        this.limits = SceneElement.createLimits(size);
+        this.limits = SceneElement.createLimits(size.x);
         this.renderer.addMesh(this.limits);
     }
 

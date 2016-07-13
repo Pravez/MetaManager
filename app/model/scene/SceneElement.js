@@ -90,13 +90,11 @@ class SceneElement{
         this.mesh.quaternion.copy(this.body.quaternion);
     }
 
-    setVelocity(x, y, z){
-        if(x && y && z){
-            this.body.velocity = new Cannon.Vec3(x, y, z);
-        }else{
-            this.body.velocity.x = x ? x : this.body.velocity.x;
-            this.body.velocity.y = y ? y : this.body.velocity.y;
-            this.body.velocity.z = z ? z : this.body.velocity.z;
+    setVelocity(options){
+        if(options){
+            this.body.velocity.x = options.x || options.x === 0 ? options.x : this.body.velocity.x;
+            this.body.velocity.y = options.y || options.y === 0 ? options.y : this.body.velocity.y;
+            this.body.velocity.z = options.z || options.z === 0 ? options.z : this.body.velocity.z;
         }
     }
 
@@ -111,9 +109,9 @@ class SceneElement{
 
     setPosition(position){
         if(position){
-            this.body.position.x = position.x ? position.x : this.body.position.x;
-            this.body.position.y = position.y ? position.y : this.body.position.y;
-            this.body.position.z = position.z ? position.z : this.body.position.z;
+            this.body.position.x = position.x || position.x ===  0 ? position.x : this.body.position.x;
+            this.body.position.y = position.y || position.y ===  0 ? position.y : this.body.position.y;
+            this.body.position.z = position.z || position.z ===  0 ? position.z : this.body.position.z;
         }
     }
 
@@ -122,11 +120,11 @@ class SceneElement{
             color: 0x0000ff
         });
         var geometry = new Three.Geometry();
-        geometry.vertices.push(new Three.Vector3(-size, 0.1 , size));
-        geometry.vertices.push(new Three.Vector3(-size, 0.1 , -size));
-        geometry.vertices.push(new Three.Vector3(size, 0.1 , -size));
-        geometry.vertices.push(new Three.Vector3(size, 0.1 , size));
-        geometry.vertices.push(new Three.Vector3(-size, 0.1 , size));
+        geometry.vertices.push(new Three.Vector3(-size, 0.9 , size));
+        geometry.vertices.push(new Three.Vector3(-size, 0.9 , -size));
+        geometry.vertices.push(new Three.Vector3(size, 0.9 , -size));
+        geometry.vertices.push(new Three.Vector3(size, 0.9 , size));
+        geometry.vertices.push(new Three.Vector3(-size, 0.9 , size));
 
         return new Three.Line(geometry, material);
     }
