@@ -86,8 +86,8 @@ class MetaManager{
      * @param message
      */
     static retrieveOrder(message){
-        if(activeSupervisor){
-            activeSupervisor.onOrder(message);
+        if(Supervisor){
+            Supervisor.onOrder(message);
         }else{
             entities.get(message.entity).executeCommand({ command: message.cmd, value: message.arg}, true);
         }

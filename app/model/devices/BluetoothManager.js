@@ -78,7 +78,7 @@ class BluetoothManager{
     static connectDevice(address){
         var device = findDevice(address);
         if(device){
-            device.findChannelAndConnect();
+            device.connect();
         }
 
         return device;

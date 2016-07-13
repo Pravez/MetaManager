@@ -63,18 +63,18 @@ class Device{
 
         //Then we make the device listening
         this.oscDevice.refresh((buffer) => this.listener.osc(buffer));
-        this.oscDevice.listen();
+        this.oscDevice.connect();
     }
 
     /**
      * Method to switch on/off current listening state of an OSCDevice
      */
     switchOSCState(){
-        if(this.isOSCListening() === true){
-            this.oscDevice.close();
-        }else if(this.isOSCListening() === false){
+        if(this.oscDevice.isConnected === true){
+            this.oscDevice.disconnect();
+        }else{
             this.oscDevice.refresh((buffer) => this.listener.osc(buffer));
-            this.oscDevice.listen();
+            this.oscDevice.connect();
         }
     }
 
@@ -86,14 +86,6 @@ class Device{
         //Changing bluetooth's listener
         this.bluetoothDevice.available = false;
         this.bluetoothDevice.setListener((buffer) => this.listener.bluetooth(buffer));
-    }
-
-    /**
-     * Explicit enough
-     * @returns {boolean}
-     */
-    isOSCListening(){
-        return this.oscDevice.isListening;
     }
 
     /**

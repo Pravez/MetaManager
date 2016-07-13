@@ -1,105 +1,64 @@
 "use strict";
 
 var BluetoothSerial = require('bluetooth-serial-port');
+var DeviceElement = require('./DeviceElement');
 
 var MAX_CONNECTION_TRIES = 3;
 
-/**
- * Each connection to a device is a BluetoothDevice instance. This class is
- * used to create and manage a connection to a bluetooth device.
- */
-class BluetoothDevice{
-
-    /**
-     * Constructor by default
-     */
+class BluetoothDevice extends DeviceElement{
     constructor(){
-        this.address = undefined;
-        this.name = "MEGANONAME 3000";
+        super();
+
         this.channel = 0;
-
         this.available = true;
-
-        this.connected = false;
         this.connecting = false;
         this.tries = 0;
         this.tries_connect = 0;
-
         this.last_connection = undefined;
-
     }
 
-    /**
-     * Method which will initialize by default the listeners, and will create a serial port for Bluetooth.
-     * @returns {BluetoothDevice}
-     */
     setUp(options){
         if(options){
-            this.address = options.address || this.address;
-            this.name = options.name || this.name;
-            this.last_connection = new Date(options.lastconn);
+            super.setUp(options);
 
-            this.serial = new BluetoothSerial.BluetoothSerialPort();
-
-            var self = this;
-            this.serial.bluetoothDeviceObject = this;
-
-            this.serial.on('data', function(buffer){
-                console.log("BTCONNECTLOG: " + buffer.toString('utf-8'));
-            });
-
-            this.serial.on('finished', function() {
-                console.log('Scan did finish');
-            });
-
-            this.serial.on('closed', function(){
-                console.log("connection closed");
+            this.device = new BluetoothSerial.BluetoothSerialPort();
+            this.on('closed', function(){
+                console.log('connection closed');
                 this.connected = false;
                 this.connecting = false;
                 document.dispatchEvent(new Event('devicesUpdate'));
             });
 
+            ///////For debug//////////
+            this.on('data', function(data){ console.log("Log : " + data.toString('utf-8')); });
+            this.on('finished', function(){ console.log("Scan did finish"); });
+            //////////////////////////
+
             return this;
-        }else{
-            return undefined;
         }
     }
 
-    /**
-     * Function to set listener (function to which data will be given)
-     * @param listener
-     */
     setListener(listener){
-        this.serial.on('data', function(buffer){
-            listener(buffer);
-        });
+        super.setListener('data', listener);
     }
 
-    /**
-     * Method to try finding a channel to connect, and if so, to try
-     * connecting the device through the found channel.
-     */
-    findChannelAndConnect(){
-        this.tries +=1;
-        var self = this;
-        console.log("Searching");
+    connect(){
+        this.tries += 1;
         this.connecting = true;
+        var self = this;
 
-        this.serial.findSerialPortChannel(this.address, function(channel){
+        this.device.findSerialPortChannel(this.address, function(channel){
             self.channel = channel;
             console.log("Channel found !" + channel);
             if(self.channel !== 0){
                 self.connection_try_timeout = setInterval(function(){
-                    self.connect();
+                    self.finalizeConnection();
                 }, 2000);
             }
         });
     }
 
-    /**
-     * Method to connect to a device, after having found a channel.
-     */
-    connect(){
+    finalizeConnection(){
         var self = this;
 
         if(self.connected === false && self.tries_connect < MAX_CONNECTION_TRIES) {
@@ -134,36 +93,23 @@ class BluetoothDevice{
         }
     }
 
-    /**
-     * Disconnect the serial
-     */
     disconnect(){
-        this.serial.close();
+        this.device.close();
         this.connected = false;
         this.connecting = false;
         this.tries = 0;
         this.tries_connect = 0;
     }
 
-    /**
-     * Function to write data to a device
-     * @param data
-     */
     send(data){
-        this.serial.write(new Buffer(data + "\n", 'utf-8'), function (err, bytesWritten) {
-            if (err) console.log(err);
-        });
+        this.device.write(new Buffer(data + "\n", 'utf-8'), (err) => { if(err) console.log(err); });
     }
 
-    /**
-     * Function to modify a bluetooth device. First closes the bluetooth serial (= destroys it), and then re-creates
-     * it.
-     * @param bluetooth
-     */
-    modify(bluetooth){
-        this.serial.close();
-        this.setUp(bluetooth);
+    modify(options){
+        if(options) {
+            this.disconnect();
+            this.setUp(options);
+        }
     }
 }
-
 module.exports = BluetoothDevice;

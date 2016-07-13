@@ -1,117 +1,71 @@
 "use strict";
+var OSC = require('osc');
+var DeviceElement = require('./DeviceElement');
 
-var osc = require('osc');
+var port_index = 10000;
 
-/**
- * Little override of the osc.UDPPort from osc library (node).
- */
-class OSCDevice{
 
-    /**
-     * A simple constructor just initializing default attributes
-     */
+class OSCDevice extends DeviceElement{
     constructor(){
-        this.address = "127.0.0.1";
-        this.port = 9999;
+        super();
 
-        this.isListening = false;
+        this.address = "127.0.0.1";
+        this.port = port_index;
+        port_index += 1;
+
+        this.dest_address = "127.0.0.1";
+        this.dest_port = 9950;
     }
 
-    /**
-     * This will initialize attributes according to what is given in options. It creates an oscServer, ready to be added
-     * to the list of enabled oscServers.
-     * @param options
-     * @returns {*}
-     */
-    setUp(options) {
-        if(options) {
-            this.address = options.address || this.address;
-            this.port = options.port || this.port;
+    setUp(options){
+        if(options){
+            super.setUp(options);
 
-            this.oscServer = new osc.UDPPort({
-                localAddress: this.address,
-                localPort: this.port
-            });
+            this.port = options.port || this.port;
+            this.dest_address = options.dest_address || this.dest_address;
+            this.dest_port = options.dest_port || this.dest_port;
+
+            this.device = new OSC.UDPPort({ localAddress: this.address, localPort: this.port });
+
+
+            ////////For debug//////////
+            this.on('error', function(data){ console.log(data); });
+            ///////////////////////////
 
             return this;
-        }else{
-            return undefined;
         }
     }
 
-    /**
-     * Sets up listeners on error and message, according to a certain function. (will send the data to the given
-     * function)
-     * @param listener
-     * @returns {OSCDevice}
-     */
     setListener(listener){
-        this.oscServer.on("message", function (oscMessage) {
-            listener(oscMessage);
-        });
-
-        this.oscServer.on("error", function (err) {
-            console.log(err);
-            listener(err);
-        });
-
-        return this;
+        super.setListener('message', listener);
     }
 
-    /**
-     * Sends an OSC message
-     * @param address
-     * @param args
-     * @param remoteAddr
-     * @param remotePort
-     */
-    send(address, args, remoteAddr, remotePort){
-        this.oscServer.send({
-            address: address,
-            args: args
-        }, remoteAddr, remotePort);
+    connect(){
+        this.device.open();
+        this.connected = true;
     }
 
-    /**
-     * Make the listener listen
-     */
-    listen(){
-        this.oscServer.open();
-        this.isListening = true;
+    disconnect(){
+        this.device.close();
+        this.connected = false;
     }
 
-    /**
-     * Make the listener stop listening
-     */
-    close(){
-        this.oscServer.close();
-        this.isListening = false;
+    send(data){
+        this.device.send({address: data.address, args: data.args}, this.dest_address, this.dest_port);
     }
 
-    /**
-     * Function to refresh an OSCDevice, with a listener. It closes the oscServer, rebuilds it and reattributes
-     * the different listeners.
-     * @param listener
-     */
-    refresh(listener){
-        if(this.isListening === true){
-            this.close();
+    modify(options){
+        if(options){
+            this.disconnect();
+            this.setUp(options);
         }
-        this.oscServer = new osc.UDPPort({
-            localAddress: this.address,
-            localPort: this.port
-        });
-        this.setListener(listener);
     }
 
-    /**
-     * To modify attributes according to an osc optional parameter. Changes will be applied on the oscServer
-     * only after calling refresh()
-     * @param osc
-     */
-    modify(osc) {
-        this.address = osc.address || this.address;
-        this.port = osc.port || this.port;
+    refresh(listener){
+        if(this.connected === true)
+            this.disconnect();
+        this.device = new OSC.UDPPort({ localAddress: this.address, localPort: this.port });
+        this.setListener(listener);
     }
 }
 module.exports = OSCDevice;

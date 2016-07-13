@@ -40,7 +40,7 @@ class Supervisor{
     }
 
     static retransmitMessage(message){
-        MetaManager.getEntity(message.entity).updateRobotValuesFromBluetooth(message);
+        MetaManager.getEntity(message.entity).executeCommand({ command: message.cmd, value: message.arg}, true);
     }
 
     step(){
