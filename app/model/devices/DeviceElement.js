@@ -19,6 +19,9 @@ class DeviceElement{
     }
 
     setListener(event, listener){
+        if(listener)
+            this.listener = listener;
+        //Maybe this.listener instead of listener ? self.listener should be better
         this.on(event, function(data){ listener(data); });
     }
 

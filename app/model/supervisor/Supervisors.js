@@ -23,8 +23,8 @@ class SimpleSupervisor extends Supervisor{
             }
         }
     }
-    
-    onOrder(message){
+
+    onEntityOrder(message){
         Supervisor.retransmitMessage(message);
     }
 }

@@ -1,4 +1,5 @@
 var MetaManager = require('../MetaManager');
+var OSCDevice = require('../devices/OSCDevice');
 
 var supervisors_types = new Set();
 
@@ -13,6 +14,7 @@ class Supervisor{
 
         this.updateRobotsList();
 
+        this.device = new OSCDevice();
 
     }
 
@@ -47,9 +49,13 @@ class Supervisor{
         //Nothing done if not overrided
     }
 
-    onOrder(message){
+    onEntityOrder(message){
         //No analyze if not overrided
         Supervisor.retransmitMessage(message);
+    }
+
+    onOSCMessage(message){
+
     }
 
     setRobotVelocity(id, options){
