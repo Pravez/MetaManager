@@ -1,5 +1,7 @@
 var MetaManager = require('../MetaManager');
 
+var supervisors_types = new Set();
+
 class Supervisor{
 
     constructor(name, groundSize){
@@ -10,6 +12,7 @@ class Supervisor{
         this.groundSize.z = groundSize.z || groundSize;
 
         this.updateRobotsList();
+
 
     }
 
@@ -73,6 +76,14 @@ class Supervisor{
         return this.groundSize;
     }
 
+    set type(value){
+        this.sup_type = value;
+        supervisors_types.add(value);
+    }
+
+    static get types(){
+        return Array.from(supervisors_types);
+    }
 }
 
 module.exports = Supervisor;

@@ -4,6 +4,7 @@ var MetaManager = require('../model/MetaManager');
 var Scene = require('../model/scene/Scene');
 var Renderer = require('../view/tags/Renderer').Renderer;
 var Supervisors = require('../model/supervisor/Supervisors');
+var Supervisor = require('../model/supervisor/Supervisor');
 
 
 var metaScene;
@@ -154,6 +155,10 @@ class Controller{
     static setSupervisor(name){
         MetaManager.setSupervisor(supervisors.get(name));
         metaScene.createLimits(supervisors.get(name).groundSize);
+    }
+
+    static getSupervisorsTypes(){
+        return Supervisor.types;
     }
 }
 

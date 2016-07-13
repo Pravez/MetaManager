@@ -5,6 +5,7 @@ var exports = module.exports = {};
 class SimpleSupervisor extends Supervisor{
     constructor(name, groundSize){
         super(name, groundSize);
+        this.type = "simple";
     }
 
     step() {
