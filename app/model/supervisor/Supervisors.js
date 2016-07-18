@@ -1,11 +1,11 @@
-var Supervisor = require('./Supervisor');
+var Supervisor = require('./Supervisor').Supervisor;
+var Types = require('./Supervisor').Types;
 
 var exports = module.exports = {};
 
 class SimpleSupervisor extends Supervisor{
     constructor(name, groundSize){
         super(name, groundSize);
-        this.type = "simple";
     }
 
     step() {
@@ -27,6 +27,10 @@ class SimpleSupervisor extends Supervisor{
     onEntityOrder(message){
         Supervisor.retransmitMessage(message);
     }
+
+    onOSCMessage(){
+
+    }
 }
 
-exports.simple = SimpleSupervisor;
+exports[Types.Simple.name] = SimpleSupervisor;

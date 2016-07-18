@@ -2,18 +2,17 @@
 var OSC = require('osc');
 var DeviceElement = require('./DeviceElement');
 
-var port_index = 10000;
 
 class OSCDevice extends DeviceElement.Device{
     constructor(){
         super();
 
         this.address = "127.0.0.1";
-        this.port = port_index;
-        port_index += 1;
 
         this.dest_address = "127.0.0.1";
         this.dest_port = 9950;
+
+        DeviceElement.PortsManager.changeDevicePort(this, 10000);
     }
 
     setUp(options){

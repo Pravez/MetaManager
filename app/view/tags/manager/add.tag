@@ -55,7 +55,7 @@
                     </div>
                     <div class="row">
                         <label for="port" class="input-title">Socket to listen to</label>
-                        <input class="form-control" type="text" id="port" name="address" placeholder="A random number > 1024">
+                        <input class="form-control" type="text" id="port" name="port" placeholder="A random number > 1024">
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -95,7 +95,7 @@
         };
 
         this.verify = function(e){
-            if(this.port.value <= 1024 || Controller.isPortAlreadyTaken(this.port.value)){
+            if((this.port.value <= 1024 || Controller.isPortAlreadyTaken(this.port.value)) && this.port.value !== ''){
                 dialog.showMessageBox({type: 'info', buttons:['Ok'], title:'Cannot create entity', message:'Port invalid (> 1024 or already taken), please choose another...'});
                 this.port.focus();
             } else {
@@ -111,7 +111,7 @@
                     options.device = {
                         osc: {
                             address: this.address.value,
-                            port: this.port.value
+                            port: undefined
                         },
                         bluetooth: {
                             none: this.device_select.value === "None",

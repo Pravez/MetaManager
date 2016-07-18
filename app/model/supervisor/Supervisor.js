@@ -1,11 +1,17 @@
 var MetaManager = require('../MetaManager');
-var Device = require('../devices/Device');
+var Entity = require('../Entity');
 
-var supervisors_types = new Set();
+var SupervisorTypes = {
+    Simple: "Simple"
+};
 
-class Supervisor{
+var exports = module.exports = {};
+
+class Supervisor extends Entity {
 
     constructor(name, groundSize){
+        super();
+
         this.name = name;
         this.groundSize = {};
         this.groundSize.x = groundSize.x || groundSize;
@@ -13,9 +19,11 @@ class Supervisor{
         this.groundSize.z = groundSize.z || groundSize;
 
         this.updateRobotsList();
+    }
 
-        this.device = new Device.Device();
-
+    setUp(options){
+        this.setUpDeviceListeners(undefined, this.onOSCMessage);
+        this.setUpDevice({ osc: options });
     }
 
     getRobots(){
@@ -55,7 +63,7 @@ class Supervisor{
     }
 
     onOSCMessage(message){
-
+        //Nothing ?
     }
 
     setRobotVelocity(id, options){
@@ -82,14 +90,16 @@ class Supervisor{
         return this.groundSize;
     }
 
-    set type(value){
-        this.sup_type = value;
-        supervisors_types.add(value);
-    }
-
     static get types(){
-        return Array.from(supervisors_types);
+        let array = [];
+        for (let sup in SupervisorTypes){
+            if(SupervisorTypes.hasOwnProperty(sup)){
+                array.push({name : sup});
+            }
+        }
+        return array;
     }
 }
 
-module.exports = Supervisor;
+exports.Supervisor = Supervisor;
+exports.Types = SupervisorTypes;

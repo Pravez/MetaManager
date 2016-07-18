@@ -142,7 +142,7 @@ class Controller{
 
     static addSupervisor(supervisorType, name, groundSize){
         supervisors.set(name, new Supervisors[supervisorType](name, groundSize));
-        activeSupervisor = name;
+        return supervisors.get(name);
     }
 
     static removeSupervisor(name){
@@ -159,7 +159,7 @@ class Controller{
     }
 
     static getSupervisorsTypes(){
-        return Supervisor.types;
+        return Supervisor.Supervisor.types;
     }
 
     static isPortAlreadyTaken(port){
