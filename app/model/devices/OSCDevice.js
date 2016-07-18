@@ -4,7 +4,7 @@ var DeviceElement = require('./DeviceElement');
 
 var port_index = 10000;
 
-class OSCDevice extends DeviceElement{
+class OSCDevice extends DeviceElement.Device{
     constructor(){
         super();
 
@@ -40,6 +40,7 @@ class OSCDevice extends DeviceElement{
     }
 
     connect(){
+        DeviceElement.PortsManager.addDevice(this);
         this.device.open();
         this.connected = true;
     }
@@ -55,8 +56,10 @@ class OSCDevice extends DeviceElement{
 
     modify(options){
         if(options){
+            DeviceElement.PortsManager.removeDevice(this);
             this.disconnect();
             this.setUp(options);
+            DeviceElement.PortsManager.addDevice(this);
         }
     }
 
@@ -69,46 +72,3 @@ class OSCDevice extends DeviceElement{
 }
 
 module.exports = OSCDevice;
-
-
-////////////////OSC MANAGER///////////////////
-var devices = new Map();
-
-function addDevice(device){
-    if(!devices.has(device.port)){
-        devices.set(device.port, device);
-    }else{
-        throw "Error : a device is already listening on this port.";
-    }
-}
-
-function removeDevice(device){
-    if(devices.has(device.port)){
-        devices.delete(device.port);
-        return device;
-    }else{
-        console.log('Error : Trying to remove not existing device.')
-    }
-}
-
-function changeDevicePort(device, port){
-    var n_port = port ? port : device.port;
-
-    while(devices.enabled.has(n_port)){
-        n_port += 1;
-    }
-
-    device.port = n_port;
-    return device;
-}
-
-function handleOSCError(address, port){
-    if(devices.has(port)){
-        let device = removeDevice(devices.get(port));
-        device.connected = false;
-        addDevice()
-    }
-}
-
-
-////////////////////////////////////////////////////

@@ -87,7 +87,7 @@ class MetaManager{
      */
     static retrieveOrder(message){
         if(Supervisor){
-            Supervisor.onOrder(message);
+            Supervisor.onEntityOrder(message);
         }else{
             entities.get(message.entity).executeCommand({ command: message.cmd, value: message.arg}, true);
         }

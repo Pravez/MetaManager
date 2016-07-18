@@ -71,9 +71,9 @@
 
         this.verify = function(e){
             //TODO something with lastValue
-            /*if(self.port <= 1024 || (Controller.isPortTaken(self.port))){
-                alert('Port already taken');
-            }*/
+            if(self.port.value <= 1024 || Controller.isPortAlreadyTaken(self.port.value)){
+
+            }
             if(self.name.validity.valid){
                 var options = {
                     robot:{

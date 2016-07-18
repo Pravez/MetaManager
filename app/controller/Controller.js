@@ -5,6 +5,7 @@ var Scene = require('../model/scene/Scene');
 var Renderer = require('../view/tags/Renderer').Renderer;
 var Supervisors = require('../model/supervisor/Supervisors');
 var Supervisor = require('../model/supervisor/Supervisor');
+var DeviceElement = require('../model/devices/DeviceElement');
 
 
 var metaScene;
@@ -159,6 +160,10 @@ class Controller{
 
     static getSupervisorsTypes(){
         return Supervisor.types;
+    }
+
+    static isPortAlreadyTaken(port){
+        return DeviceElement.PortsManager.has(port);
     }
 }
 

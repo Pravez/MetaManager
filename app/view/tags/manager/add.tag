@@ -84,6 +84,8 @@
     <script>
         var Controller = require('../../../controller/Controller');
         var BluetoothManager = require('../../../model/devices/BluetoothManager');
+        const {dialog} = require('electron').remote;
+
 
         var self = this;
 
@@ -93,17 +95,20 @@
         };
 
         this.verify = function(e){
-            //TODO verify port and IP address
-            if(this.name.validity.valid && this.name.value !== ""){
-                var options = {};
-                options.robot = {
+            if(this.port.value <= 1024 || Controller.isPortAlreadyTaken(this.port.value)){
+                dialog.showMessageBox({type: 'info', buttons:['Ok'], title:'Cannot create entity', message:'Port invalid (> 1024 or already taken), please choose another...'});
+                this.port.focus();
+            } else {
+                if (this.name.validity.valid && this.name.value !== "") {
+                    var options = {};
+                    options.robot = {
                         name: this.name.value,
                         size: this.size.value,
                         legs: this.legs.value,
                         circumference: this.circ.value,
                         color: this.color.value
-                };
-                options.device = {
+                    };
+                    options.device = {
                         osc: {
                             address: this.address.value,
                             port: this.port.value
@@ -112,15 +117,16 @@
                             none: this.device_select.value === "None",
                             bluetoothDevice: BluetoothManager.getFromNameOrAddress(this.device_select.value)
                         }
-                };
+                    };
 
-                Controller.addEntity(options);
-                this.form.reset();
-                this.update();
-                document.dispatchEvent(new Event('entities_update'));
-                document.dispatchEvent(new Event('home_pane'));
-            }else{
-                this.name.focus();
+                    Controller.addEntity(options);
+                    this.form.reset();
+                    this.update();
+                    document.dispatchEvent(new Event('entities_update'));
+                    document.dispatchEvent(new Event('home_pane'));
+                } else {
+                    this.name.focus();
+                }
             }
         };
 

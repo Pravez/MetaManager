@@ -5,7 +5,7 @@ var DeviceElement = require('./DeviceElement');
 
 var MAX_CONNECTION_TRIES = 3;
 
-class BluetoothDevice extends DeviceElement{
+class BluetoothDevice extends DeviceElement.Device{
     constructor(){
         super();
 

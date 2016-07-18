@@ -3,17 +3,21 @@
 var BluetoothDevice = require('../devices/BluetoothDevice');
 var BluetoothManager = require('../devices/BluetoothManager');
 var OSCDevice = require('../devices/OSCDevice');
-var OSCManager = require('../devices/OSCManager');
 var DeviceListener = require('../devices/DeviceListener');
 
 BluetoothManager.setupBluetooth();
+
+var exports = module.exports = {};
+
 
 class Device{
 
     /**
      * Constructor which initializes the oscDevice and the listener
      */
-    constructor(entityID){
+    constructor(entityID, devices){
+        this.devices = new Map();
+
         this.bluetoothDevice = undefined;
         this.oscDevice = new OSCDevice();
         //this.xbeeDevice = new XbeeDevice();
@@ -22,7 +26,7 @@ class Device{
     }
 
     /**
-     * The setter of bluetooth, to which we just give a pre-created BluetoothDevice 
+     * The setter of bluetooth, to which we just give a pre-created BluetoothDevice
      * @param options
      * @returns {device|{osc}|*|Device}
      */
@@ -54,14 +58,6 @@ class Device{
      * Tries to enable OSC device and changes the port if it's not the good one.
      */
     enableOSC(){
-        //Enabling OSC device
-        try{
-            OSCManager.addDevice(this.oscDevice);
-        }catch (error){
-            OSCManager.addDevice(OSCManager.changeDevicePort(this.oscDevice));
-        }
-
-        //Then we make the device listening
         this.oscDevice.refresh((buffer) => this.listener.osc(buffer));
         this.oscDevice.connect();
     }
@@ -106,11 +102,7 @@ class Device{
      */
     modify(osc, bluetooth) {
         if(osc){
-            //First we remove
-            OSCManager.removeDevice(this.oscDevice);
-            //Then we modify
             this.oscDevice.modify(osc);
-            //And finally we re-enable it
             this.enableOSC();
         }
         if(bluetooth){
@@ -155,4 +147,9 @@ class Device{
         this.sendToBluetooth(command);
     }
 }
-module.exports = Device;
+
+exports.Device = Device;
+
+var DEVICE_TYPE = { 'bluetooth': 0, 'osc': 1, 'xbee': 2};
+
+exports.type = DEVICE_TYPE;

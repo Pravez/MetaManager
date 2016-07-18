@@ -1,6 +1,6 @@
 "use strict";
 
-var Device = require('../model/devices/Device');
+var Device = require('../model/devices/Device').Device;
 var Robot = require('./robot/Robot');
 var Command = require('./robot/Command');
 var SceneElement = require('../model/scene/SceneElement');
