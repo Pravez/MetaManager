@@ -1,5 +1,5 @@
 var MetaManager = require('../MetaManager');
-var OSCDevice = require('../devices/OSCDevice');
+var Device = require('../devices/Device');
 
 var supervisors_types = new Set();
 
@@ -14,7 +14,7 @@ class Supervisor{
 
         this.updateRobotsList();
 
-        this.device = new OSCDevice();
+        this.device = new Device.Device();
 
     }
 

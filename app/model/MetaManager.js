@@ -1,8 +1,7 @@
 'use strict';
 
-var Entity = require('../model/Entity');
+var SingleEntity = require('../model/SingleEntity');
 
-var auto_incr_key = 0;
 var entities = new Map();
 var Supervisor;
 
@@ -13,10 +12,10 @@ class MetaManager{
      * Then sets up device listeners according to functions to analyze data. Then, passes options for robot and devices
      * to set themselves up. Finally associates the newly created entity to the map of entities.
      * @param options
-     * @returns {Entity}
+     * @returns {SingleEntity}
      */
     static addEntity(options){
-        var ent = new Entity(auto_incr_key);
+        var ent = new SingleEntity();
         ent.setUpDeviceListeners(
             (msg) => {MetaManager.updateFromBluetooth(msg);},
             (msg) => {MetaManager.retrieveOrder(msg)});
@@ -28,8 +27,7 @@ class MetaManager{
             ent.setUpDevice(options.device);
         }
         
-        entities.set(auto_incr_key, ent);
-        auto_incr_key += 1;
+        entities.set(ent.id, ent);
 
         if(Supervisor)
             Supervisor.updateRobotsList();
