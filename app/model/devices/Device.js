@@ -15,51 +15,98 @@ class Device{
     /**
      * Constructor which initializes the oscDevice and the listener
      */
-    constructor(entityID, devices){
-        this.devices = new Map();
-
-        this.bluetoothDevice = undefined;
-        this.oscDevice = new OSCDevice();
-        //this.xbeeDevice = new XbeeDevice();
+    constructor(entityID){
+        this.devices = {};
+        //TODO convert into arrays
+        this.devices.bluetooth = undefined;
+        this.devices.osc = undefined;
+        this.devices.xbee = undefined;
 
         this.listener = new DeviceListener(entityID);
     }
 
-    /**
-     * The setter of bluetooth, to which we just give a pre-created BluetoothDevice
-     * @param options
-     * @returns {device|{osc}|*|Device}
-     */
-    setUpBluetooth(options){
-        if(options.none === false){
-            this.bluetoothDevice = options.bluetoothDevice;
-            this.enableBluetooth();
+    setUp(type, options){
+        switch(type){
+            case DEVICE_TYPE.bluetooth:
+                if(options.none === false){
+                    this.devices.bluetooth = options.bluetoothDevice;
+                    this.enable(DEVICE_TYPE.bluetooth);
+                }else{
+                    this.devices.bluetooth = undefined;
+                }
+                break;
+            case DEVICE_TYPE.osc:
+                this.devices.osc = new OSCDevice();
+                return this.devices.osc.setUp(options);
+            case DEVICE_TYPE.xbee:
+                break;
         }
     }
 
-    /**
-     * Sets up OSC device, need an address and a port to listen
-     * @param options
-     * @returns {*}
-     */
-    setUpOSC(options){
-        return this.oscDevice.setUp(options);
+    enable(type){
+        switch(type){
+            case DEVICE_TYPE.bluetooth:
+                this.devices.bluetooth.available = false;
+                this.devices.bluetooth.setListener((buffer) => this.listener.bluetooth(buffer));
+                break;
+            case DEVICE_TYPE.osc:
+                this.devices.osc.refresh((buffer) => this.listener.osc(buffer));
+                this.devices.osc.connect();
+                break;
+            case DEVICE_TYPE.xbee:
+                break;
+        }
+    }
+
+    modify(options) {
+        if(options.osc){
+            this.devices.osc.modify(options.osc);
+            this.enable(DEVICE_TYPE.osc);
+        }
+        if(options.bluetooth){
+            //First we free last bluetoothDevice used
+            if(this.devices.bluetooth !== undefined){
+                this.devices.bluetooth.available = true;
+            }
+            //Then we link the new one, or remove if none
+            if(options.bluetooth.none === true){
+                this.devices.bluetooth = undefined;
+            }else if(options.bluetooth.bluetoothDevice.available === true){
+                this.devices.bluetooth = options.bluetooth.bluetoothDevice || this.devices.bluetooth;
+                this.enable(DEVICE_TYPE.bluetooth);
+            }
+        }
+        /*if(options.xbee){
+
+        }*/
     }
 
     /**
-     * For later
+     * Disconnects and closes devices
      */
-    setUpXBee(){
-
+    disable(){
+        if(this.bluetoothDevice){
+            this.devices.bluetooth.available = true;
+            this.devices.bluetooth = undefined;
+        }
+        this.devices.osc.disconnect();
     }
 
-    /**
-     * Function to enable an OSCDevice.
-     * Tries to enable OSC device and changes the port if it's not the good one.
-     */
-    enableOSC(){
-        this.oscDevice.refresh((buffer) => this.listener.osc(buffer));
-        this.oscDevice.connect();
+    send(type, data){
+        switch(type){
+            case DEVICE_TYPE.bluetooth:
+                if(this.devices.bluetooth){
+                    this.devices.bluetooth.send(data);
+                }else{
+                    console.log("Error : no bluetoothDevice assignated");
+                }
+                break;
+            case DEVICE_TYPE.osc:
+                this.devices.osc.send(data);
+                break;
+            case DEVICE_TYPE.xbee:
+                break;
+        }
     }
 
     /**
@@ -75,64 +122,6 @@ class Device{
     }
 
     /**
-     * Method to set an attributed BluetoothDevice to this Device as not available for others and
-     * also forcing it to give data received to the listener given in setListener()
-     */
-    enableBluetooth(){
-        //Changing bluetooth's listener
-        this.bluetoothDevice.available = false;
-        this.bluetoothDevice.setListener((buffer) => this.listener.bluetooth(buffer));
-    }
-
-    /**
-     * Disconnects and closes devices
-     */
-    disable(){
-        if(this.bluetoothDevice){
-            this.bluetoothDevice.available = true;
-            this.bluetoothDevice = undefined;
-        }
-        this.oscDevice.disconnect();
-    }
-
-    /**
-     * Modifies osc and bluetooth devices according to optionnal parameters.
-     * @param osc
-     * @param bluetooth
-     */
-    modify(osc, bluetooth) {
-        if(osc){
-            this.oscDevice.modify(osc);
-            this.enableOSC();
-        }
-        if(bluetooth){
-            //First we free last bluetoothDevice used
-            if(this.bluetoothDevice){
-                this.bluetoothDevice.available = true;
-            }
-            //Then we link the new one, or remove if none
-            if(bluetooth.none === true){
-                this.bluetoothDevice = undefined;
-            }else if(bluetooth.bluetoothDevice.available === true){
-                this.bluetoothDevice = bluetooth.bluetoothDevice || this.bluetoothDevice;
-                this.enableBluetooth();
-            }
-        }
-    }
-
-    /**
-     * To send data to BluetoothDevice
-     * @param data
-     */
-    sendToBluetooth(data){
-        if(this.bluetoothDevice){
-            this.bluetoothDevice.send(data);
-        }else{
-            console.log("Error : no bluetoothDevice assignated");
-        }
-    }
-
-    /**
      * To set up the DeviceListener according to functions it must passes the information.
      * @param bluetooth
      * @param osc
@@ -144,7 +133,7 @@ class Device{
     executeCommand(command){
         //Sending to metabot here
         console.log(command);
-        this.sendToBluetooth(command);
+        this.send(DEVICE_TYPE.bluetooth, command);
     }
 }
 

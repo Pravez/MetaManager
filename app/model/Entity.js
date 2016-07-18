@@ -1,6 +1,6 @@
 "use strict";
 
-var Device = require('../model/devices/Device').Device;
+var Device = require('../model/devices/Device');
 var Robot = require('./robot/Robot');
 var Command = require('./robot/Command');
 var SceneElement = require('../model/scene/SceneElement');
@@ -16,7 +16,7 @@ class Entity {
         this.id = id;
 
         this.robot = new Robot();
-        this.device = new Device(this.id);
+        this.device = new Device.Device(this.id);
     }
 
     /**
@@ -35,15 +35,15 @@ class Entity {
      */
     setUpDevice(options) {
         if (options.bluetooth) {
-            this.device.setUpBluetooth(options.bluetooth);
+            this.device.setUp(Device.type.bluetooth, options.bluetooth);
         }
         if (options.osc) {
-            this.device.setUpOSC(options.osc);
-            this.device.enableOSC();
+            this.device.setUp(Device.type.osc, options.osc);
+            this.device.enable(Device.type.osc);
         }
-        if (options.xbee) {
+        /*if (options.xbee) {
             this.device.setUpXBee(options.xbee);
-        }
+        }*/
 
         return this.device;
     }
@@ -90,7 +90,7 @@ class Entity {
             this.robot.modify(options.robot);
         }
         if(options.device.osc || options.device.bluetooth){
-            this.device.modify(options.device.osc, options.device.bluetooth);
+            this.device.modify({osc: options.device.osc, bluetooth: options.device.bluetooth});
         }
         if(options.color){
             this.sceneElement.setColor(options.color);
@@ -102,7 +102,7 @@ class Entity {
      * @param data
      */
     sendBluetoothData(data){
-        this.device.sendToBluetooth(data);
+        this.device.send(Device.type.bluetooth, data);
     }
 
     /**
