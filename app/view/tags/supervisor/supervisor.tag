@@ -19,7 +19,7 @@
                 <input type="text" class="form-control" id="name" name="name">
             </div>
             <div class="row">
-                <label for="ground" class="input-title">Ground size of the scene</label>
+                <label for="ground" class="input-title">Ground size of the scene (in mm)</label>
                 <input type="text" class="form-control" id="ground" name="ground">
             </div>
             <div class="row">
@@ -91,6 +91,13 @@
                     </table>
                 </div>
             </div>
+
+            <div class="col-md-12 separator"></div>
+
+            <div cass="col-md-12">
+                <p if={ Controller.getActiveSupervisorName() === this.selected.name }>This supervisor is the currently used one</p>
+                <button class="btn btn-large btn-default" onclick={ set_active } if={ Controller.getActiveSupervisorName() !== this.selected.name }>Use this supervisor !</button>
+            </div>
         </form>
     </div>
 
@@ -115,6 +122,10 @@
             sup.setUp({address: this.address.value, port: this.port.value});
             Controller.setSupervisor(sup.name);
             this.update();
+        };
+
+        this.set_active = function(e){
+            Controller.setSupervisor(this.selected.name);
         };
         ////////////////////////////////////////////////////////
         //////////////////////Edition///////////////////////////

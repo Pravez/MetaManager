@@ -16,7 +16,7 @@ class Scene{
         this.renderer = new SceneRenderer(canvas);
 
 
-        this.renderer.setCamera(30, canvas.width / canvas.height, 0.5, 10000, new Vec3(100, 50, 100));
+        this.renderer.setCamera(30, canvas.width / canvas.height, 10, 10000000, new Vec3(100, 50, 100));
         this.renderer.addTrackballControls();
         this.renderer.addLight({ type: "ambient", color:0x666666});
         this.renderer.addLight({ type:"directional", color: 0xffffff, intensity:2, x:50, y:50, z:50});
@@ -93,6 +93,7 @@ class Scene{
 
         for(let i = 0;i < this.elements.length;i++) {
             this.elements[i].updatePositions();
+            //this.elements[i].keepVelocity();
         }
 
         //Let the AI analyse things

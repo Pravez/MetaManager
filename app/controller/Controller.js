@@ -33,8 +33,8 @@ class Controller{
                 mass:0,
                 type:"plane",
                 values:{
-                    width:1000,
-                    height:1000
+                    width:1000000,
+                    height:1000000
                 },
                 material: "no_special"
             },

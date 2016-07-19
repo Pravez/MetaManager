@@ -24,11 +24,11 @@
                     <h5>Information about the robot</h5>
                     <div class="col-md-12 separator"></div>
                     <div class="row" style="margin-top:30px;">
-                        <label for="size" class="input-title">Size of the robot (height in cm)</label>
+                        <label for="size" class="input-title">Size of the robot (in mm)</label>
                         <input class="form-control" type="number" id="size" name="size" placeholder="">
                     </div>
                     <div class="row">
-                        <label for="circ" class="input-title">Circumference of the robot</label>
+                        <label for="circ" class="input-title">Circumference of the robot (in mm)</label>
                         <input class="form-control" type="number" id="circ" name="circumference" placeholder="">
                     </div>
                     <div class="row">

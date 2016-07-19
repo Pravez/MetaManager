@@ -52,13 +52,13 @@ class Robot{
             mass:1,
             type: 'box',
             values:{
-                width: 1,
-                height:1,
-                depth:1
+                width: options.size || 450,
+                height:options.size || 450,
+                depth:options.size || 450
             },
             position:{
                 x: 1,
-                y: 1,
+                y: 450,
                 z: 1
             }
         });
@@ -68,9 +68,9 @@ class Robot{
                 color: options.color || 0xffffff
             },
             type: "box",
-            width: 2,
-            height: 2,
-            depth: 2,
+            width: options.size || 450,
+            height: options.size || 450,
+            depth: options.size || 450,
             widthSeg: 10,
             heightSeg: 10,
             castShadow: true,

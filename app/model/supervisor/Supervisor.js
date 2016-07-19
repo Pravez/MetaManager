@@ -14,9 +14,9 @@ class Supervisor extends Entity {
 
         this.name = name;
         this.groundSize = {};
-        this.groundSize.x = groundSize ? groundSize.x || groundSize : 100;
-        this.groundSize.y = groundSize ? groundSize.y || groundSize : 100;
-        this.groundSize.z = groundSize ? groundSize.z || groundSize : 100;
+        this.groundSize.x = groundSize ? groundSize.x || groundSize : 1000;
+        this.groundSize.y = groundSize ? groundSize.y || groundSize : 1000;
+        this.groundSize.z = groundSize ? groundSize.z || groundSize : 1000;
 
         this.robots = this.getAllRobots();
         this.add_new_robot = true;

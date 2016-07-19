@@ -43,6 +43,7 @@ class SceneElement{
         }
 
         this.body = body;
+        this.velocity = {};
     }
 
     setMesh(options){
@@ -90,11 +91,17 @@ class SceneElement{
         this.mesh.quaternion.copy(this.body.quaternion);
     }
 
+    keepVelocity(){
+        this.body.velocity.x = this.velocity.x;
+        this.body.velocity.y = this.velocity.y;
+        this.body.velocity.z = this.velocity.z;
+    }
+
     setVelocity(options){
         if(options){
-            this.body.velocity.x = options.x || options.x === 0 ? options.x : this.body.velocity.x;
-            this.body.velocity.y = options.y || options.y === 0 ? options.y : this.body.velocity.y;
-            this.body.velocity.z = options.z || options.z === 0 ? options.z : this.body.velocity.z;
+            this.body.velocity.x = this.velocity.x = options.x || options.x === 0 ? options.x : this.body.velocity.x;
+            this.body.velocity.y = this.velocity.y = options.y || options.y === 0 ? options.y : this.body.velocity.y;
+            this.body.velocity.z = this.velocity.z = options.z || options.z === 0 ? options.z : this.body.velocity.z;
         }
     }
 

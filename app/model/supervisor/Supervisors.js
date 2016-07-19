@@ -9,17 +9,19 @@ class SimpleSupervisor extends Supervisor{
     }
 
     step() {
-        if (this.robots.size > 0) {
-            var out = this.isOutOfBounds(0);
+        for(let key of this.robots.keys()) {
+            if (this.robots.size > 0) {
+                var out = this.isOutOfBounds(key);
 
-            if(out.x === true){
-                this.setRobotVelocity(0, {x: 0});
-            }
-            if(out.z === true){
-                this.setRobotVelocity(0, {z: 0});
-            }
-            if(out.y === true){
-                this.setRobotVelocity(0, {y: 0});
+                if (out.x === true) {
+                    this.setRobotVelocity(key, {x: -this.robots.get(key).velocity.x});
+                }
+                if (out.z === true) {
+                    this.setRobotVelocity(key, {z: -this.robots.get(key).velocity.z});
+                }
+                if (out.y === true) {
+                    this.setRobotVelocity(key, {y: -this.robots.get(key).velocity.y});
+                }
             }
         }
     }
