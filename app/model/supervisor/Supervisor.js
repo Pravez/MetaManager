@@ -14,11 +14,12 @@ class Supervisor extends Entity {
 
         this.name = name;
         this.groundSize = {};
-        this.groundSize.x = groundSize.x || groundSize;
-        this.groundSize.y = groundSize.y || groundSize;
-        this.groundSize.z = groundSize.z || groundSize;
+        this.groundSize.x = groundSize ? groundSize.x || groundSize : 100;
+        this.groundSize.y = groundSize ? groundSize.y || groundSize : 100;
+        this.groundSize.z = groundSize ? groundSize.z || groundSize : 100;
 
-        this.updateRobotsList();
+        this.robots = this.getAllRobots();
+        this.add_new_robot = true;
     }
 
     setUp(options){
@@ -26,7 +27,7 @@ class Supervisor extends Entity {
         this.setUpDevice({ osc: options });
     }
 
-    getRobots(){
+    getAllRobots(){
         //Map of { entity.id => entity.robot }
         var robots = new Map();
         MetaManager.getEntities().forEach(function(e){
@@ -36,21 +37,13 @@ class Supervisor extends Entity {
         return robots;
     }
 
-    updateRobotsList(){
-        this.robots = this.getRobots();
+    addRobot(entity){
+        if(this.add_new_robot === true)
+            this.robots.set(entity.id, entity.robot);
     }
 
-    sendCommand(entity, command, arg){
-        if(typeof entity === "number")
-            MetaManager.getEntity(entity).executeCommand({command: command, value: arg}, true);
-        else if(typeof entity === "object")
-            entity.forEach(function(e){
-                MetaManager.getEntity(e).executeCommand({command: command, value: arg}, true);
-            });
-    }
-
-    static retransmitMessage(message){
-        MetaManager.getEntity(message.entity).executeCommand({ command: message.cmd, value: message.arg}, true);
+    removeRobot(id){
+        this.robots.delete(id);
     }
 
     step(){
@@ -84,6 +77,27 @@ class Supervisor extends Entity {
         return  { x: (position.x > this.groundSize.x || position.x < -this.groundSize.x),
                   z: (position.z > this.groundSize.z || position.z < -this.groundSize.z),
                   y: (position.y > this.groundSize.y || position.y < -this.groundSize.y) };
+    }
+
+    sendCommand(entity, command, arg){
+        if(typeof entity === "number")
+            MetaManager.getEntity(entity).executeCommand({command: command, value: arg}, true);
+        else if(typeof entity === "object")
+            entity.forEach(function(e){
+                MetaManager.getEntity(e).executeCommand({command: command, value: arg}, true);
+            });
+    }
+
+    toggleAddByDefault(){
+        this.add_new_robot = !this.add_new_robot;
+    }
+
+    has(id){
+        return this.robots.has(id);
+    }
+
+    static retransmitMessage(message){
+        MetaManager.getEntity(message.entity).executeCommand({ command: message.cmd, value: message.arg}, true);
     }
 
     get size(){

@@ -72,6 +72,9 @@ class Controller{
     static addEntity(options){
         var created = MetaManager.addEntity(options);
         metaScene.addElement({ element: created.robot.sceneElement });
+        for(let key of supervisors.keys()){
+            supervisors.get(key).addRobot(created);
+        }
     }
 
     static modifyEntity(options, id){
@@ -160,6 +163,15 @@ class Controller{
 
     static getSupervisorsTypes(){
         return Supervisor.Supervisor.types;
+    }
+
+    static getSupervisors(){
+        let array = [];
+        for(let sup of supervisors.keys()){
+            array.push(supervisors.get(sup));
+        }
+
+        return array;
     }
 
     static isPortAlreadyTaken(port){

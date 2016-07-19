@@ -46,7 +46,7 @@ class PortsManager {
         if (!devices.has(device.port)) {
             devices.set(device.port, device);
         } else {
-            PortsManager.addDevice(changeDevicePort(device));
+            PortsManager.addDevice(PortsManager.changeDevicePort(device));
         }
     }
 
@@ -62,7 +62,7 @@ class PortsManager {
     static changeDevicePort(device, port) {
         var n_port = port ? port : device.port;
 
-        while (devices.enabled.has(n_port)) {
+        while (devices.has(n_port)) {
             n_port += 1;
         }
 
@@ -72,11 +72,11 @@ class PortsManager {
 
     static handleOSCError(address, port) {
         if (devices.has(port)) {
-            let device = removeDevice(devices.get(port));
+            let device = PortsManager.removeDevice(devices.get(port));
             //Set port as already taken (by another application)
             devices.set(port, 'TAKEN_PORT');
             device.connected = false;
-            PortsManager.addDevice(changeDevicePort(device));
+            PortsManager.addDevice(PortsManager.changeDevicePort(device));
         }
     }
 

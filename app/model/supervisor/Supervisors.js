@@ -28,9 +28,9 @@ class SimpleSupervisor extends Supervisor{
         Supervisor.retransmitMessage(message);
     }
 
-    onOSCMessage(){
-
+    onOSCMessage(message){
+        console.log(message);
     }
 }
 
-exports[Types.Simple.name] = SimpleSupervisor;
+exports[Types.Simple] = SimpleSupervisor;

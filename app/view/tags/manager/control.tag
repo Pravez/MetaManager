@@ -1,3 +1,4 @@
+<script src="../../../model/supervisor/Supervisor.js"></script>
 <control class="full">
 
     <div class="col-md-12">
@@ -167,7 +168,9 @@
             text-align:center;
         }
 
-
+        .row input[type=checkbox]{
+            width:auto;
+        }
 
         hr{
             margin:0 auto;

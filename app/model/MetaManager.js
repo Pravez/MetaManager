@@ -29,9 +29,6 @@ class MetaManager{
         
         entities.set(ent.id, ent);
 
-        if(Supervisor)
-            Supervisor.updateRobotsList();
-
         return ent;
     }
 
