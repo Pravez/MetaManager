@@ -24,16 +24,16 @@
                     <h5>Information about the robot</h5>
                     <div class="col-md-12 separator"></div>
                     <div class="row" style="margin-top:30px;">
-                        <label for="size" class="input-title">Size of the robot (in mm)</label>
-                        <input class="form-control" type="number" id="size" name="size" placeholder="">
+                        <label for="rwidth" class="input-title">Width of the robot (cm)</label>
+                        <input class="form-control" type="number" id="rwidth" name="rwidth" placeholder="28 (default for metabot)">
                     </div>
                     <div class="row">
-                        <label for="circ" class="input-title">Circumference of the robot (in mm)</label>
-                        <input class="form-control" type="number" id="circ" name="circumference" placeholder="">
+                        <label for="rheight" class="input-title">Height of the robot (cm)</label>
+                        <input class="form-control" type="number" id="rheight" name="rheight" placeholder="14 (default for metabot)">
                     </div>
                     <div class="row">
                         <label for="legs" class="input-title">Number of legs</label>
-                        <input class="form-control" type="number" id="legs" name="legs" placeholder="">
+                        <input class="form-control" type="number" id="legs" name="legs" placeholder="We absolutely don't care about this">
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -103,9 +103,9 @@
                     var options = {};
                     options.robot = {
                         name: this.name.value,
-                        size: this.size.value,
+                        width: this.rwidth.value,
                         legs: this.legs.value,
-                        circumference: this.circ.value,
+                        height: this.rheight.value,
                         color: this.color.value
                     };
                     options.device = {

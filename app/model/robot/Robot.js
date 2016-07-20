@@ -25,9 +25,9 @@ class Robot{
         if(options){
 
             this.name = options.name;
-            this.circumference = options.circumference || 0;
+            this.width = options.width || 28;
             this.legs = options.legs || 0;
-            this.size = options.size || 0;
+            this.height = options.height || 14;
 
             this.valuesQty = 7;
 
@@ -54,13 +54,13 @@ class Robot{
             mass:1,
             type: 'cube',
             values:{
-                width: options.size || 45,
-                height:options.size || 45,
-                depth:options.size || 45
+                width: this.width,
+                height: this.height,
+                depth: this.width,
             },
             position:{
                 x: 1,
-                y: 46,
+                y: this.height,
                 z: 1
             }
         });
@@ -70,9 +70,9 @@ class Robot{
                 color: options.color || 0xffffff
             },
             type: "box",
-            width: options.size || 45*2,
-            height: options.size || 45*2,
-            depth: options.size || 45*2,
+            width: this.width * 2,
+            height: this.height * 2,
+            depth: this.width * 2,
             widthSeg: 10,
             heightSeg: 10,
             castShadow: true,
@@ -99,9 +99,11 @@ class Robot{
 
     modify(options){
         this.name = options.name || this.name;
-        this.size = options.size || this.size;
-        this.circumference = options.circumference || this.circumference;
+        this.width = options.width || this.width;
+        this.height = options.height || this.height;
         this.legs = options.legs || this.legs;
+
+        //TODO MODIFY MESH
         //this.position.copy(options.position);
     }
 
@@ -134,7 +136,7 @@ class Robot{
     }
 
     get velocity(){
-        return Robot.VectorTimes(this.sceneElement.body.velocity, VELOCITY_FACTOR);
+        return Robot.VectorTimes(this.sceneElement.velocity, VELOCITY_FACTOR);
     }
 
     set velocity(velocity){

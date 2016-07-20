@@ -52,9 +52,9 @@
         <div class="col-xs-6">
             <div class="row" each={ this.control_datas.texts } style="margin-bottom: 20px">
                 <label for={ name } class="input-title">{ description }</label>
-                <input class="form-control" id={ name } name={ name } value={ init_value } type="number" oninput={ onInput }>
+                <input class="form-control" id={ name } name={ name } value={ init_value } type="number" oninput={ onInput } disabled>
             </div>
-            <button class="btn btn-primary btn-large" onclick={ validateSpeed }>Change speed</button>
+            <button class="btn btn-primary btn-large" onclick={ validateSpeed } disabled>Change speed</button>
         </div>
     </div>
 

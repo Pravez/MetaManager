@@ -24,16 +24,16 @@
                     <h5>Information about the robot</h5>
                     <div class="col-md-12 separator"></div>
                     <div class="row" style="margin-top:30px;">
-                        <label for="size" class="input-title">Size of the robot (height in cm)</label>
-                        <input class="form-control" type="number" id="size" name="size">
+                        <label for="rwidth" class="input-title">Width of the robot (in cm)</label>
+                        <input class="form-control" type="number" id="rwidth" name="rwidth">
                     </div>
                     <div class="row">
-                        <label for="circ" class="input-title">Circumference of the robot</label>
-                        <input class="form-control" type="number" id="circ" name="circumference">
+                        <label for="rheight" class="input-title">Height of the robot (in cm)</label>
+                        <input class="form-control" type="number" id="rheight" name="rheight">
                     </div>
                     <div class="row">
                         <label for="legs" class="input-title">Number of legs</label>
-                        <input class="form-control" type="number" id="legs" name="legs">
+                        <input class="form-control" type="number" id="legs" name="legs" placeholder="We really don't care about this ...">
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -139,8 +139,8 @@
 
             if(this.entity){
                 this.name.value = this.entity.robot.name;
-                this.size.value = this.entity.robot.size;
-                this.circ.value = this.entity.robot.circumference;
+                this.rwidth.value = this.entity.robot.width;
+                this.rheight.value = this.entity.robot.height;
                 this.legs.value = this.entity.robot.legs;
                 this.color.value = this.entity.robot.sceneElement.color;
                 this.address.value = this.entity.device.devices.osc.address;

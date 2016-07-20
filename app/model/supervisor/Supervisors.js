@@ -36,3 +36,21 @@ class SimpleSupervisor extends Supervisor{
 }
 
 exports[Types.Simple] = SimpleSupervisor;
+
+class BoidSupervisor extends Supervisor{
+    constructor(name, groundSize){
+        super(name, groundSize);
+    }
+
+    step(){
+
+    }
+
+    onEntityOrder(message){
+
+    }
+
+    onOSCMessage(message){
+
+    }
+}
