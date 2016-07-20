@@ -182,8 +182,6 @@ class Controller{
 function animate(){
     animationId = requestAnimationFrame(animate);
     metaScene.play();
-    /*metaScene.elements[1].setVelocity(1, 0, 0);
-    console.log(metaScene.elements[1].body.position);*/
 }
 
 window.addEventListener('resize', Controller.resizeCanvas, false );

@@ -43,7 +43,7 @@ class SceneElement{
         }
 
         this.body = body;
-        this.velocity = {};
+        this.velocity = {x:0, y:0, z:0};
     }
 
     setMesh(options){
@@ -92,9 +92,11 @@ class SceneElement{
     }
 
     keepVelocity(){
-        this.body.velocity.x = this.velocity.x;
-        this.body.velocity.y = this.velocity.y;
-        this.body.velocity.z = this.velocity.z;
+        if(this.velocity) {
+            this.body.velocity.x = this.velocity.x;
+            this.body.velocity.y = this.velocity.y;
+            this.body.velocity.z = this.velocity.z;
+        }
     }
 
     setVelocity(options){

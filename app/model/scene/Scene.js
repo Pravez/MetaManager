@@ -93,7 +93,7 @@ class Scene{
 
         for(let i = 0;i < this.elements.length;i++) {
             this.elements[i].updatePositions();
-            //this.elements[i].keepVelocity();
+            this.elements[i].keepVelocity();
         }
 
         //Let the AI analyse things

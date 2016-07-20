@@ -85,6 +85,8 @@
     <script>
         var Controller = require('../../../controller/Controller');
         var BluetoothManager = require('../../../model/devices/BluetoothManager');
+        const {dialog} = require('electron').remote;
+
         var self = this;
 
         ////////Modify, reset and cancel///////
@@ -97,8 +99,8 @@
         };
 
         this.modify = function(e){
-            if(this.port.value <= 1024 || Controller.isPortAlreadyTaken(this.port.value)){
-                dialog.showMessageBox({type: 'info', buttons:['Ok'], title:'Cannot create entity', message:'Port invalid (> 1024 or already taken), please choose another...'});
+            if((this.port.value <= 1024 || Controller.isPortAlreadyTaken(this.port.value)) && this.port.value !== ''){
+                dialog.showMessageBox({type: 'info', buttons:['Ok'], title:'Cannot edit entity', message:'Port invalid (> 1024 or already taken), please choose another...'});
                 this.port.focus();
             } else {
                 if (this.name.validity.valid && this.name.value !== "") {

@@ -5,6 +5,8 @@ var Command = require('./Command');
 var Vector = require('../utility/Vector');
 var SceneElement = require('../scene/SceneElement');
 
+var VELOCITY_FACTOR = 10;
+
 class Robot{
 
     constructor(){
@@ -50,15 +52,15 @@ class Robot{
     setUpSceneElement(options){
         this.sceneElement.setBody({
             mass:1,
-            type: 'box',
+            type: 'cube',
             values:{
-                width: options.size || 450,
-                height:options.size || 450,
-                depth:options.size || 450
+                width: options.size || 45,
+                height:options.size || 45,
+                depth:options.size || 45
             },
             position:{
                 x: 1,
-                y: 450,
+                y: 46,
                 z: 1
             }
         });
@@ -68,9 +70,9 @@ class Robot{
                 color: options.color || 0xffffff
             },
             type: "box",
-            width: options.size || 450,
-            height: options.size || 450,
-            depth: options.size || 450,
+            width: options.size || 45*2,
+            height: options.size || 45*2,
+            depth: options.size || 45*2,
             widthSeg: 10,
             heightSeg: 10,
             castShadow: true,
@@ -119,10 +121,10 @@ class Robot{
         this.addExecutedCommand(cmd);
         switch(cmd._command.cmd){
             case "dx":
-                this.velocity = { x: cmd._args };
+                this.velocity = { x: cmd._args / VELOCITY_FACTOR };
                 break;
             case "dy":
-                this.velocity = { z: cmd._args };
+                this.velocity = { z: cmd._args / VELOCITY_FACTOR };
                 break;
         }
     }
@@ -131,20 +133,22 @@ class Robot{
         return this.sceneElement.body.position;
     }
 
-    set position(position){
-        if(position){
-            this.sceneElement.bodyCopyPosition(position);
-        }
-    }
-
     get velocity(){
-        return this.sceneElement.body.velocity;
+        return Robot.VectorTimes(this.sceneElement.body.velocity, VELOCITY_FACTOR);
     }
 
     set velocity(velocity){
         if(velocity){
             this.sceneElement.setVelocity(velocity);
         }
+    }
+
+    static VectorTimes(vector, times){
+        let vec = vector;
+        vec.x *= times;
+        vec.y *= times;
+        vec.z *= times;
+        return vec;
     }
 }
 module.exports = Robot;
