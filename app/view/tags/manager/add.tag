@@ -48,7 +48,7 @@
             <div class="col-md-6">
                 <div class="col-md-12">
                     <h5>OSC communication (i-score)</h5>
-                    <div class="col-md-12 separator" style="height:40px;"></div>
+                    <div class="col-md-12 separator"></div>
                     <div class="row" style="margin-top:30px;">
                         <label for="address" class="input-title">Address to listen for the OSC listener</label>
                         <input class="form-control" type="text" id="address" name="address" value="127.0.0.1">
@@ -111,7 +111,7 @@
                     options.device = {
                         osc: {
                             address: this.address.value,
-                            port: undefined
+                            port: this.port.value
                         },
                         bluetooth: {
                             none: this.device_select.value === "None",

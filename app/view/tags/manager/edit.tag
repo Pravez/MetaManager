@@ -48,7 +48,7 @@
             <div class="col-md-6">
                 <div class="col-md-12">
                     <h5>OSC communication (i-score)</h5>
-                    <div class="col-md-12 separator" style="height:40px;"></div>
+                    <div class="col-md-12 separator"></div>
                     <div class="row" style="margin-top:30px;">
                         <label for="address" class="input-title">Address to listen for the OSC listener</label>
                         <input class="form-control" type="text" id="address" name="address">
@@ -141,10 +141,11 @@
                 this.name.value = this.entity.robot.name;
                 this.size.value = this.entity.robot.size;
                 this.circ.value = this.entity.robot.circumference;
+                this.legs.value = this.entity.robot.legs;
                 this.color.value = this.entity.robot.sceneElement.color;
-                this.address.value = this.entity.device.oscDevice.address;
-                this.port.value = this.entity.device.oscDevice.port;
-                this.device_select.value = this.entity.device.bluetoothDevice ? this.entity.device.bluetoothDevice.name : 'None';
+                this.address.value = this.entity.device.devices.osc.address;
+                this.port.value = this.entity.device.devices.osc.port;
+                this.device_select.value = this.entity.device.devices.bluetooth ? this.entity.device.devices.bluetooth.name : 'None';
             }
         });
     </script>

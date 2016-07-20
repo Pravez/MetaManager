@@ -66,6 +66,14 @@
                     <input class="form-control" type="text" id="selected_name" name="selected_name" value={ this.selected.name }>
                 </div>
                 <div class="row">
+                    <label for="selected_port" class="input-title">OSC Port listening</label>
+                    <input class="form-control" type="text" id="selected_port" name="selected_port" value={ this.selected }>
+                </div>
+                <div class="row">
+                    <label for="selected_address" class="input-title">OSC Address listening</label>
+                    <input class="form-control" type="text" id="selected_address" name="selected_address" value={ this.selected.name }>
+                </div>
+                <div class="row">
                     <h6>Controlled entities</h6>
                     <div class="col-md-12">
                         <label for="default_add">Automatically add to control newly created entities ?
