@@ -54,3 +54,5 @@ class BoidSupervisor extends Supervisor{
 
     }
 }
+
+exports[Types.Boids] = BoidSupervisor;

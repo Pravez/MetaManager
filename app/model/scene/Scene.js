@@ -3,7 +3,7 @@ var MetaManager = require('../MetaManager');
 var SceneRenderer = require('./SceneRenderer');
 var Physics = require('./Physics');
 var SceneElement = require('./SceneElement');
-var Vec3 = require('../utility/Vector');
+var Vec3 = require('../Utility').Vector;
 
 
 

@@ -1,6 +1,6 @@
 "use strict";
 
-var CommandType = require('../utility/CommandType');
+var CommandType = require('../Utility').CommandTypes;
 
 class Command{
     constructor(commandType, args){

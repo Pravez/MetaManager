@@ -1,5 +1,17 @@
-var Types = require('./Types');
+"use strict";
 
+var exports = module.exports = {};
+
+var Types = {
+    NUMBER: "number",
+    STRING: "string",
+    BOOL: "boolean",
+    SINGLE_VALUE: "number",
+    NO_TYPE: "NO TYPE",
+    UNDEFINED: "undefined"
+};
+
+exports.Types = Types;
 
 var CommandTypes = {
     PRESCALER: {cmd:'prescaler', args: 1, type:Types.NUMBER, description: 'Prescaler'},
@@ -47,4 +59,82 @@ for(var key in CommandTypes){
     }
 }
 
-module.exports = commandsMap;
+exports.CommandTypes = CommandTypes;
+
+
+class Vector{
+    constructor(x, y, z){
+        this.x = x ? typeof x == "string" ? parseInt(x) : x : 0;
+        this.y = y ? typeof y == "string" ? parseInt(y) : y : 0;
+        this.z = z ? typeof z == "string" ? parseInt(z) : z : 0;
+    }
+
+    copy(position){
+        if(position){
+            this.x = position.x ? typeof position.x == "string" ? parseInt(position.x) : position.x : this.x;
+            this.y = position.y ? typeof position.y == "string" ? parseInt(position.y) : position.y : this.y;
+            this.z = position.z ? typeof position.z == "string" ? parseInt(position.z) : position.z : this.z;
+        }
+    }
+
+    toPosition(){
+        return {
+            x:this.x,
+            y:this.y,
+            z:this.z
+        }
+    }
+
+}
+
+exports.Vector = Vector;
+
+class StackNode{
+
+    constructor(value, after){
+        this._value = value;
+        this._before = undefined;
+        if(after)
+            after._before = this;
+    }
+}
+
+class LimitedStack{
+
+    constructor(size, firstValue){
+        this._size = size;
+        this._elements = 1;
+
+        this._head = new StackNode(firstValue, undefined);
+        this._tail = this._head;
+    }
+
+    add(value){
+        if(this._elements >= this._size){
+            this._tail = this._tail._before;
+        }else{
+            this._elements += 1;
+        }
+
+        this._head = new StackNode(value, this._head);
+    }
+
+    head(){
+        return this._head._value;
+    }
+
+    get(position){
+        if(position < this._size) {
+            var current = this._tail;
+            for (let i = 0; i < (this._size - position); i++) {
+                current = current._before;
+            }
+
+            return current._value;
+        }else{
+            throw "Not in array";
+        }
+    }
+}
+
+exports.LimitedStack = LimitedStack;

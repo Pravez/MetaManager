@@ -2,7 +2,8 @@ var MetaManager = require('../MetaManager');
 var Entity = require('../Entity');
 
 var SupervisorTypes = {
-    Simple: "Simple"
+    Simple: "Simple",
+    Boids: "Boids"
 };
 
 var exports = module.exports = {};

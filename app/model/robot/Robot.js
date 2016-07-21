@@ -1,12 +1,16 @@
 "use strict";
 
-var LimitedStack = require('../utility/LimitedStack');
+var LimitedStack = require('../Utility').LimitedStack;
 var Command = require('./Command');
-var Vector = require('../utility/Vector');
+var Vector = require('../Utility').Vector;
 var SceneElement = require('../scene/SceneElement');
 
 var VELOCITY_FACTOR = 10;
 
+/**
+ * Class concerning datas of the physical robot. Its name, values like height ... and is also used
+ * as transitional for communication with the scene element.
+ */
 class Robot{
 
     constructor(){
@@ -21,6 +25,12 @@ class Robot{
 
     }
 
+    /**
+     * To set up a robot, it needs a name, and optionally a width, height and number of legs.
+     * Also it requires a color for the scene element.
+     * @param options
+     * @returns {*}
+     */
     setUp(options){
         if(options){
 
@@ -49,6 +59,11 @@ class Robot{
         }
     }
 
+    /**
+     * To set up the scene element of a robot. Parameters used are dependent of the robot properties, and also
+     * standardized.
+     * @param options
+     */
     setUpSceneElement(options){
         this.sceneElement.setBody({
             mass:1,
@@ -80,6 +95,10 @@ class Robot{
         })
     }
 
+    /**
+     * (Needs to be updated) Way to verify if each value of the set of values has been updated.
+     * @returns {boolean}
+     */
     hasBeenUpdated(){
         if(this.valuesQty === 0){
             this.valuesQty = 7;
@@ -89,6 +108,11 @@ class Robot{
         }
     }
 
+    /**
+     * To modify a single value with its name as a string
+     * @param name
+     * @param value
+     */
     modifyValue(name, value){
         if(name === 'version')
             this._version = value;
@@ -97,6 +121,10 @@ class Robot{
         this.valuesQty -= 1;
     }
 
+    /**
+     * To modify the robot. Takes the same parameters in options as to set up.
+     * @param options
+     */
     modify(options){
         this.name = options.name || this.name;
         this.width = options.width || this.width;
@@ -107,18 +135,35 @@ class Robot{
         //this.position.copy(options.position);
     }
 
+    /**
+     * Add a command to the list of commands
+     * @param command
+     */
     addExecutedCommand(command){
         this.commands.add(command);
     }
 
+    /**
+     * Function to get executed commands
+     * @returns {LimitedStack}
+     */
     getExecutedCommands(){
         return this.commands;
     }
-    
+
+    /**
+     * Function to get last executed command
+     * @returns {*}
+     */
     getLastCommand(){
         return this.commands.head();
     }
 
+    /**
+     * Function to execute command, meaning adding it to the stack, and applying the translation
+     * vector to the scene element.
+     * @param cmd
+     */
     executeCommand(cmd) {
         this.addExecutedCommand(cmd);
         switch(cmd._command.cmd){
@@ -145,11 +190,18 @@ class Robot{
         }
     }
 
-    static VectorTimes(vector, times){
+    /**
+     * To multiply a vector by a scalar.
+     * @param vector
+     * @param scalar
+     * @returns {*}
+     * @constructor
+     */
+    static VectorTimes(vector, scalar){
         let vec = vector;
-        vec.x *= times;
-        vec.y *= times;
-        vec.z *= times;
+        vec.x *= scalar;
+        vec.y *= scalar;
+        vec.z *= scalar;
         return vec;
     }
 }
