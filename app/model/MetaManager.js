@@ -105,6 +105,9 @@ class MetaManager{
         Supervisor = supervisor;
     }
 
+    /**
+     * Function used at each world.step of the scene. It permits the supervisor to analyze the scene.
+     */
     static stepSupervisor() {
         if(Supervisor){
             Supervisor.step();

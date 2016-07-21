@@ -6,7 +6,10 @@ var Command = require('./robot/Command');
 var SceneElement = require('../model/scene/SceneElement');
 var Entity = require('./Entity');
 
-
+/**
+ * This class is characterized by the robot. It contains a robot and permits communication through device from the robot
+ * to the real robot, and through the osc inputs. It also manages commands sent to the robot (a single robot).
+ */
 class SingleEntity extends Entity{
 
     /**

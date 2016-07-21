@@ -5,6 +5,10 @@ var DeviceElement = require('./DeviceElement');
 
 var MAX_CONNECTION_TRIES = 3;
 
+/**
+ * Device to manage communication with bluetooth. Each BluetoothDevice is an independant entity, which can be
+ * after being created, associated to a real device.
+ */
 class BluetoothDevice extends DeviceElement.Device{
     constructor(){
         super();
@@ -17,6 +21,11 @@ class BluetoothDevice extends DeviceElement.Device{
         this.last_connection = undefined;
     }
 
+    /**
+     * To set up, only needs an address and optionally a name.
+     * @param options
+     * @returns {BluetoothDevice}
+     */
     setUp(options){
         if(options){
             super.setUp(options);
@@ -38,10 +47,18 @@ class BluetoothDevice extends DeviceElement.Device{
         }
     }
 
+    /**
+     * Specific listener for bluetooth
+     * @param listener
+     */
     setListener(listener){
         super.setListener('data', listener);
     }
 
+    /**
+     * Tries to connect to the real bluetooth device. First it tries to find a channel to connect.
+     * If it succeeds, tries to finalize the connection.
+     */
     connect(){
         this.tries += 1;
         this.connecting = true;
@@ -58,6 +75,9 @@ class BluetoothDevice extends DeviceElement.Device{
         });
     }
 
+    /**
+     * Function which will try every 2 seconds for 6 seconds to connect to a bluetooth device.
+     */
     finalizeConnection(){
         var self = this;
 
@@ -93,6 +113,9 @@ class BluetoothDevice extends DeviceElement.Device{
         }
     }
 
+    /**
+     * Function to disconnect. Closes the device and reinits every field.
+     */
     disconnect(){
         this.device.close();
         this.connected = false;
@@ -101,10 +124,19 @@ class BluetoothDevice extends DeviceElement.Device{
         this.tries_connect = 0;
     }
 
+    /**
+     * Send data to the device. Each message is sent in utf-8 and with an \n at the end. There is no need for
+     * the data message to have the \n, it will be added at the moment when message is sent.
+     * @param data
+     */
     send(data){
         this.device.write(new Buffer(data + "\n", 'utf-8'), (err) => { if(err) console.log(err); });
     }
 
+    /**
+     * To modify. Needs the same options as to setUp.
+     * @param options
+     */
     modify(options){
         if(options) {
             this.disconnect();

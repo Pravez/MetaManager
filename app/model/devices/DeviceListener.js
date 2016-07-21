@@ -79,6 +79,10 @@ class DeviceListener{
         return {cmdSent, response};
     }
 
+    /**
+     * Cuts a bluetooth message in parts and prepares it to be analyzed. Packages.
+     * @returns {{entity: *, cmd: string, arg: *}}
+     */
     buildOSCMessage(){
         return {
             entity: this.entityID,

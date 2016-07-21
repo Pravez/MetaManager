@@ -4,14 +4,25 @@ var Device = require('./devices/Device');
 
 var id_key = 0;
 
+/**
+ * Entity is an abstract class containing a device. The idea is that it is the base of a communication
+ * using bluetooth, xbee or osc.
+ */
 class Entity{
 
+    /**
+     * A simple constructor ...?
+     */
     constructor(){
         this.id = id_key++;
 
         this.device = new Device.Device(this.id);
     }
 
+    /**
+     * To modify, give fields device, and in this one osc and/or bluetooth, xbee.
+     * @param options
+     */
     modify(options){
         if(options.device.osc || options.device.bluetooth){
             this.device.modify({osc: options.device.osc, bluetooth: options.device.bluetooth});
@@ -52,6 +63,10 @@ class Entity{
         this.device.disable();
     }
 
+    /**
+     * To toggle a robot state, meaning on/off (start/stop). Needs to be confirmed by analyzing of bluetooth
+     * resoponse [improvement].
+     */
     toggleRobotState(){
         if(this.robot.started === false){
             this.executeCommand({command: 'start'}, false);
@@ -79,6 +94,12 @@ class Entity{
         this.device.send(Device.type.bluetooth, data);
     }
 
+    /**
+     * Abstract method to execute a command. According to the entity, command can be sent to one or many different
+     * other entities (not the class).
+     * @param command
+     * @param verify
+     */
     executeCommand(command, verify){}
 
 }

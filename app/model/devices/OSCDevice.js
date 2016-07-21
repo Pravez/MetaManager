@@ -2,7 +2,10 @@
 var OSC = require('osc');
 var DeviceElement = require('./DeviceElement');
 
-
+/**
+ * The OSCDevice inherited from the DeviceElement. It is used for the communication through OSC. Sending datas needs to
+ * be tested and better handled.
+ */
 class OSCDevice extends DeviceElement.Device{
     constructor(){
         super();
@@ -15,6 +18,11 @@ class OSCDevice extends DeviceElement.Device{
         DeviceElement.PortsManager.changeDevicePort(this, 10000);
     }
 
+    /**
+     * To set up, give in options the address and the port
+     * @param options
+     * @returns {OSCDevice}
+     */
     setUp(options){
         if(options){
             super.setUp(options);
@@ -34,16 +42,26 @@ class OSCDevice extends DeviceElement.Device{
         }
     }
 
+    /**
+     * To set the listener (give a function).
+     * @param listener
+     */
     setListener(listener){
         super.setListener('message', listener);
     }
 
+    /**
+     * Connects the device. First verifies the port is free, then launches the server.
+     */
     connect(){
         DeviceElement.PortsManager.addDevice(this);
         this.device.open();
         this.connected = true;
     }
 
+    /**
+     * Disconnects
+     */
     disconnect(){
         this.device.close();
         this.connected = false;
@@ -53,6 +71,10 @@ class OSCDevice extends DeviceElement.Device{
         this.device.send({address: data.address, args: data.args}, this.dest_address, this.dest_port);
     }
 
+    /**
+     * To modify, give the same options as to setUp.
+     * @param options
+     */
     modify(options){
         if(options){
             DeviceElement.PortsManager.removeDevice(this);
@@ -62,6 +84,10 @@ class OSCDevice extends DeviceElement.Device{
         }
     }
 
+    /**
+     * To refresh after stopping a server. Needs to have the listener function.
+     * @param listener
+     */
     refresh(listener){
         if(this.connected === true)
             this.disconnect();

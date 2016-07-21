@@ -2,6 +2,10 @@
 
 var exports = module.exports = {};
 
+/**
+ * Base class for devices (xbee, osc, bluetooth). It provides a name, and address and information on the connected
+ * state. Also used to set listeners.
+ */
 class DeviceElement{
     constructor(){
         this.address = undefined;
@@ -11,15 +15,29 @@ class DeviceElement{
         this.connected = false;
     }
 
+    /**
+     * Set up with address and name
+     * @param options
+     */
     setUp(options){
         this.address = options.address;
         this.name = options.name;
     }
 
+    /**
+     * Function to add event listeners to the device.
+     * @param event
+     * @param func
+     */
     on(event, func){
         this.device.on(event, func);
     }
 
+    /**
+     * Function to reference one specific listener and add it to events listening
+     * @param event
+     * @param listener
+     */
     setListener(event, listener){
         if(listener)
             this.listener = listener;
@@ -41,6 +59,9 @@ exports.Device = DeviceElement;
 ////////////////OSC MANAGER (PORTS)///////////////////
 var devices = new Map();
 
+/**
+ * Old OSCManager, used to manage internally osc devices (with ports etc...). Used to manage conflicts.
+ */
 class PortsManager {
     static addDevice(device) {
         if (!devices.has(device.port)) {

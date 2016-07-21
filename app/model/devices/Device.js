@@ -9,7 +9,11 @@ BluetoothManager.setupBluetooth();
 
 var exports = module.exports = {};
 
-
+/**
+ * Main class containing everything to communicate : bluetooth, osc and xbee devices. For now there is only one
+ * device per type, but maybe it would be a good idea to convert into arrays. Messages received by the device are sent
+ * to the DeviceListener class. A Device is directly affiliated to an entity.
+ */
 class Device{
 
     /**
@@ -25,6 +29,13 @@ class Device{
         this.listener = new DeviceListener(entityID);
     }
 
+    /**
+     * Give the type of the device you want to set up, and give adequate options.
+     * For bluetooth : give the bluetoothDevice reference, or none if none, and for osc give port and address.
+     * @param type
+     * @param options
+     * @returns {*}
+     */
     setUp(type, options){
         switch(type){
             case DEVICE_TYPE.bluetooth:
@@ -43,6 +54,11 @@ class Device{
         }
     }
 
+    /**
+     * Enable (activate) a device of the type given. Consists in setting the listener to the DeviceListener
+     * associated and launching the listening.
+     * @param type
+     */
     enable(type){
         switch(type){
             case DEVICE_TYPE.bluetooth:
@@ -58,6 +74,10 @@ class Device{
         }
     }
 
+    /**
+     * To modify, give osc field and address, port, give bluetooth field with none, or bluetoothDevice.
+     * @param options
+     */
     modify(options) {
         if(options.osc){
             this.devices.osc.modify(options.osc);
@@ -92,6 +112,11 @@ class Device{
         this.devices.osc.disconnect();
     }
 
+    /**
+     * Send data to a certain type of device.
+     * @param type
+     * @param data
+     */
     send(type, data){
         switch(type){
             case DEVICE_TYPE.bluetooth:
@@ -129,7 +154,11 @@ class Device{
     setUpListeners(bluetooth, osc){
         this.listener.setMainAnalyzers(bluetooth, osc);
     }
-    
+
+    /**
+     * To execute a sent command (consists in sending the command (string in reality) to the bluetooth device).
+     * @param command
+     */
     executeCommand(command){
         //Sending to metabot here
         console.log(command);
