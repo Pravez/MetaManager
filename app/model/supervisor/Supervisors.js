@@ -31,7 +31,10 @@ class SimpleSupervisor extends Supervisor{
     }
 
     onOSCMessage(message){
-        console.log(message);
+        //Retransmits the message to every single robot
+        for(let key of this.robots.keys()){
+            this.sendCommand(key, message.cmd, message.arg);
+        }
     }
 }
 

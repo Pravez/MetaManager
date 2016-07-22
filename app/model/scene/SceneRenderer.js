@@ -1,6 +1,6 @@
 "use strict";
 var Three = require('three');
-require('./TrackballControls');
+require('./dependencies');
 
 var self;
 
@@ -98,9 +98,45 @@ class SceneRenderer{
             this.scene.remove(mesh);
     }
 
+    initPostprocessing(){
+        // Setup render pass
+        this.renderPass = new Three.RenderPass( this.scene, this.camera );
+
+        // Setup depth pass
+        this.depthMaterial = new Three.MeshDepthMaterial();
+        this.depthMaterial.depthPacking = Three.RGBADepthPacking;
+        this.depthMaterial.blending = Three.NoBlending;
+
+        //this.depthRenderTarget = new Three.WebGLRenderTarget( this.canvas.width, this.canvas.height);
+
+        // Setup SSAO pass
+        this.ssaoPass = new Three.ShaderPass( Three.SSAOShader );
+        this.ssaoPass.renderToScreen = true;
+        //ssaoPass.uniforms[ "tDiffuse" ].value will be set by ShaderPass
+        //this.ssaoPass.uniforms[ "tDepth" ].value = this.depthRenderTarget.texture;
+        this.ssaoPass.uniforms[ 'size' ].value.set( this.canvas.width, this.canvas.height );
+        this.ssaoPass.uniforms[ 'cameraNear' ].value = this.camera.near;
+        this.ssaoPass.uniforms[ 'cameraFar' ].value = this.camera.far;
+        this.ssaoPass.uniforms[ 'onlyAO' ].value = true;
+        this.ssaoPass.uniforms[ 'aoClamp' ].value = 0.3;
+        this.ssaoPass.uniforms[ 'lumInfluence' ].value = 0.5;
+
+        // Add pass to effect composer
+        this.effectComposer = new Three.EffectComposer( this.renderer );
+        this.effectComposer.addPass( this.renderPass );
+        this.effectComposer.addPass( this.ssaoPass );
+    }
+
     render(){
         this.controls.update();
-        this.renderer.render(this.scene, this.camera);
+
+        // Render depth into depthRenderTarget
+        scene.overrideMaterial = this.depthMaterial;
+        this.renderer.render( this.scene, this.camera, this.depthRenderTarget, true );
+
+        // Render renderPass and SSAO shaderPass
+        scene.overrideMaterial = null;
+        this.effectComposer.render();
     }
     
 }

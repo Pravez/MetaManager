@@ -5,7 +5,16 @@
     </div>
 
     <hr >
-    <div class="col-md-12 separator" style="height:50px;"></div>
+    <div class="col-md-12 separator"></div>
+
+    <div class="col-md-8 col-md-offset-2">
+        <button class="btn btn-large btn-primary" onclick={ discover }>Start discovery</button>
+        <p>
+            <span class="icon icon-attention" style="margin-left:10px;"></span> During discovery, the application may not respond for approximately 20 seconds.
+        </p>
+    </div>
+
+    <div class="col-md-12 separator"></div>
 
     <div class="col-md-3 col-md-offset-2 bt-list no-padding">
         <ul class="list-group">
@@ -74,7 +83,7 @@
 
         this.select = function(e){
             setActive(e.currentTarget);
-            this.selected = this._item;
+            this.parent.selected = this._item;
             this.update();
         };
 
@@ -84,10 +93,11 @@
         };
 
         this.disconnect = function(e){
-
+            BluetoothManager.disconnectDevice(this.selected.address);
+            this.update();
         };
 
-        this.startInquiry = function(e){
+        this.discover = function(e){
             BluetoothManager.startDiscovery();
         };
 
@@ -105,14 +115,14 @@
         });
 
         this.on('mount', function(){
-            if(!this.selected){
+            /*if(!this.selected && this.devices.length > 0){
                 document.getElementsByClassName('bt-list-item')[0].classList.add('active');
                 this.selected = this.devices[0];
                 this.update();
-            }
+            }*/
         });
 
-        document.addEventListener('devicesUpdate', function(){ self.update(); })
+        document.addEventListener('devicesUpdate', function(){  })
 
 
     </script>

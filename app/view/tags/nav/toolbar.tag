@@ -20,8 +20,6 @@
         const remote = require('electron').remote;
         var Renderer = require('./../Renderer').Renderer;
         var Controller = require('../../../controller/Controller');
-        var BluetoothManager = require('../../../model/devices/BluetoothManager');
-        var Creation = require('../../js/Creation');
 
         //options
         this.active = opts.active;
@@ -58,28 +56,8 @@
             else Controller.pauseWorldAndAnimations();
         };
 
-        this.showbt = function(e){
-            self.update({devices: Array.from(BluetoothManager.getDevices())});
-            document.getElementById("bt-dropdown").classList.toggle("show");
-            document.getElementById("scanning").classList.toggle("show");
-        };
-
-        this.searchBT = function(e){
-            BluetoothManager.startDiscovery();
-        };
-
         document.addEventListener('devicesUpdate', function(e){
             self.update({devices: Array.from(BluetoothManager.getDevices())});
         });
-
-        this.select = function(e){
-            var address = e.currentTarget.children[1].innerHTML;
-            if(BluetoothManager.getFromNameOrAddress(address).connected === true){
-                BluetoothManager.disconnectDevice(address);
-            }else{
-                BluetoothManager.connectDevice(address);
-            }
-            self.update({devices: Array.from(BluetoothManager.getDevices())});
-        };
     </script>
 </toolbar>

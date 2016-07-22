@@ -59,6 +59,7 @@ class SceneElement{
                 break;
             case "phong":
                 material = new Three.MeshPhongMaterial( { color: options.material.color } );
+
                 break;
         }
 

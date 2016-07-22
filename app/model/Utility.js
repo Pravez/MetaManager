@@ -59,7 +59,7 @@ for(var key in CommandTypes){
     }
 }
 
-exports.CommandTypes = CommandTypes;
+exports.CommandTypes = commandsMap;
 
 
 class Vector{
