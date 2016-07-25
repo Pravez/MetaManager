@@ -101,6 +101,7 @@ class Entity{
      * @param verify
      */
     executeCommand(command, verify){}
+    adjustVelocity(){}
 
 }
 module.exports = Entity;

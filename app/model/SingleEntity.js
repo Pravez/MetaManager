@@ -126,6 +126,13 @@ class SingleEntity extends Entity{
         this.robot.modifyValue(name, value);
         this.executeCommand({command: name, value: value});
     }
+
+
+    adjustVelocity(){
+        this.executeCommand({command:'dx', value:this.robot.velocity.x}, true);
+        this.executeCommand({command:'dy', value:this.robot.velocity.y}, true);
+    }
 }
+
 
 module.exports = SingleEntity;

@@ -44,6 +44,10 @@ class SceneElement{
 
         this.body = body;
         this.velocity = {x:0, y:0, z:0};
+
+        this.body.parent = this;
+
+        this.body.addEventListener("collide" , this.onCollide);
     }
 
     setMesh(options){
@@ -84,6 +88,14 @@ class SceneElement{
             this.mesh.receiveShadow = true;
 
         this.color = options.material.color;
+    }
+
+    onCollide(e){
+        //Do what ya want here with the ContactEquation
+        this.parent.setVelocity({x: Math.trunc(this.parent.velocity.x), y:Math.trunc(this.parent.velocity.y)
+            , z:Math.trunc(this.parent.velocity.z)});
+
+        document.dispatchEvent(new Event('contact_update'));
     }
 
     updatePositions(){

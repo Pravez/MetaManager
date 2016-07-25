@@ -122,7 +122,7 @@
             }*/
         });
 
-        document.addEventListener('devicesUpdate', function(){  })
+        document.addEventListener('devicesUpdate', function(){ self.update(); })
 
 
     </script>

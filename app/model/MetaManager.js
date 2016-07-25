@@ -113,5 +113,14 @@ class MetaManager{
             Supervisor.step();
         }
     }
+
+    static updateEntitiesVelocities(){
+        for(let key of entities.keys()){
+            entities.get(key).adjustVelocity();
+        }
+    }
 }
+
+document.addEventListener('contact_update', MetaManager.updateEntitiesVelocities);
+
 module.exports = MetaManager;

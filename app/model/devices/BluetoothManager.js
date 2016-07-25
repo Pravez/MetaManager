@@ -176,4 +176,4 @@ module.exports = BluetoothManager;
 
 
 //FOR DEBUG
-devices.add(new BluetoothDevice().setUp({address:"B8:63:BC:00:46:ED", name:"ROBOTIS BT-210"}));
+//devices.add(new BluetoothDevice().setUp({address:"B8:63:BC:00:46:ED", name:"ROBOTIS BT-210"}));

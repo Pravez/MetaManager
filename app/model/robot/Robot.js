@@ -10,6 +10,8 @@ var VELOCITY_FACTOR = 10;
 /**
  * Class concerning datas of the physical robot. Its name, values like height ... and is also used
  * as transitional for communication with the scene element.
+ * Later it would be nice to make this class an abstract, and create 2 new classes extending this one : metabot and
+ * drone.
  */
 class Robot{
 
