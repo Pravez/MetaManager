@@ -131,12 +131,18 @@ class SceneRenderer{
         this.controls.update();
 
         // Render depth into depthRenderTarget
-        scene.overrideMaterial = this.depthMaterial;
-        this.renderer.render( this.scene, this.camera, this.depthRenderTarget, true );
+        if(this.depthMaterial) {
+            scene.overrideMaterial = this.depthMaterial;
+            this.renderer.render(this.scene, this.camera, this.depthRenderTarget, true);
+        }else{
+            this.renderer.render(this.scene, this.camera);
+        }
 
         // Render renderPass and SSAO shaderPass
-        scene.overrideMaterial = null;
-        this.effectComposer.render();
+        if(this.effectComposer){
+            scene.overrideMaterial = null;
+            this.effectComposer.render();
+        }
     }
     
 }

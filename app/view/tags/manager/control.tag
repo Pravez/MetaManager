@@ -50,11 +50,16 @@
             </div>
         </div>
         <div class="col-xs-6">
-            <div class="row" each={ this.control_datas.texts } style="margin-bottom: 20px">
-                <label for={ name } class="input-title">{ description }</label>
-                <input class="form-control" id={ name } name={ name } value={ init_value } type="number" oninput={ onInput } disabled>
+            <div class="row">
+                <label class="input-title">Position (x, y, z)</label>
+                <div class="col-md-12 position-inputs">
+                    <input class="form-control" name="x" type="number" placeholder="x" value={ this.entity.robot.position.x }>
+                    <input class="form-control" name="y" type="number" placeholder="y" value={ this.entity.robot.position.y }>
+                    <input class="form-control" name="z" type="number" placeholder="z" value={ this.entity.robot.position.z }>
+                </div>
             </div>
-            <button class="btn btn-primary btn-large" onclick={ validateSpeed } disabled>Change speed</button>
+            <button class="btn btn-primary btn-large" style="margin-top:20px;" onclick={ changePosition }>Change position</button>
+
         </div>
     </div>
 
@@ -72,8 +77,8 @@
             this.entity.modifyRobotBasicValue(this.name, parseInt(this[this.name].value));
         };
 
-        this.validateSpeed = function(e){
-
+        this.changePosition = function(e){
+            this.entity.robot.position = {x: parseInt(this.x.value), y: parseInt(this.y.value), z:parseInt(this.z.value) };
         };
 
         this.toggleRobotState = function(e){
@@ -154,6 +159,8 @@
 
     <style>
 
+
+
         .input-values{
             width:65%;
             margin:0 auto;
@@ -178,6 +185,11 @@
             border: 0;
             height: 1px;
             background-color: #bfbfbf;
+        }
+
+        .position-inputs input{
+            width:25%;
+            margin-right:10px;
         }
 
     </style>

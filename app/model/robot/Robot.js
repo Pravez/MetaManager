@@ -182,6 +182,10 @@ class Robot{
         return this.sceneElement.body.position;
     }
 
+    set position(options){
+        this.sceneElement.setPosition(options);
+    }
+
     get velocity(){
         return Robot.VectorTimes(this.sceneElement.velocity, VELOCITY_FACTOR);
     }
