@@ -50,7 +50,7 @@ class BoidSupervisor extends Supervisor{
 
     step(){
         //Move boids to new position
-        let v1, v2, v3, v4;
+        var v1, v2, v3, v4;
 
         for(let key of this.robots.keys()){
             v1 = this.flyTowardCenterRule(key);
@@ -58,7 +58,9 @@ class BoidSupervisor extends Supervisor{
             v3 = this.matchVelocityRule(key);
             v4 = this.boundingPositionRule(key);
 
-            this.robots.get(key).velocity = Vector.VectorAdd(this.robots.get(key).velocity, v1, v2, v3, v4);
+            console.log("Robot : " + this.robots.get(key).position + " : " + Vector.VectorAdd(this.robots.get(key).velocity, v1, v2, v3, v4).toString());
+            this.robots.get(key).velocity = Vector.VectorAdd(this.robots.get(key).velocity, v1, v3, v4);
+            console.log("Robot velocity : " + this.robots.get(key).velocity.x+","+this.robots.get(key).velocity.z);
         }
     }
 
@@ -71,26 +73,26 @@ class BoidSupervisor extends Supervisor{
     }
 
     flyTowardCenterRule(boid){
-        let vec = new Vector();
+        var vec = new Vector();
 
         for(let key of this.robots.keys()){
             if(key !== boid){
-                Vector.VectorAdd(vec, this.robots.get(key).position);
+                vec = Vector.VectorAdd(vec, this.robots.get(key).position);
             }
         }
 
-        vec = Vector.VectorDiv(vec, this.robots.keys().length - 1 );
+        vec = Vector.VectorDiv(vec, this.robots.size - 1 );
 
-        return vec;
+        return Vector.VectorDiv(Vector.VectorSub(vec, this.robots.get(boid).position), 10);
     }
 
     keepSmallDistanceRule(boid){
-        let vec = new Vector();
+        var vec = new Vector();
 
         for(let key of this.robots.keys()){
             if(key !== boid){
                 let distance = Vector.VectorSub(this.robots.get(key).position, this.robots.get(boid).position);
-                if(Vector.VectorInferiorTo(distance, 100)){
+                if(Vector.VectorInferiorTo(distance, 100) && Vector.VectorSuperiorTo(distance, -100)){
                     vec = Vector.VectorSub(vec, (Vector.VectorSub(this.robots.get(key).position, this.robots.get(boid).position)));
                 }
             }
@@ -100,7 +102,7 @@ class BoidSupervisor extends Supervisor{
     }
 
     matchVelocityRule(boid){
-        let vec = new Vector();
+        var vec = new Vector();
 
         for(let key of this.robots.keys()){
             if(key !== boid){
@@ -108,15 +110,15 @@ class BoidSupervisor extends Supervisor{
             }
         }
 
-        vec = Vector.VectorDiv(vec, this.robots.keys().length - 1 );
+        vec = Vector.VectorDiv(vec, this.robots.size - 1 );
 
         return Vector.VectorDiv(Vector.VectorSub(vec, this.robots.get(boid).velocity), 8);
     }
 
     boundingPositionRule(boid) {
-        let bounds = Vector.VectorSub(this.groundSize, new Vector(25, 25, 25));
-        let vec = new Vector();
-        let rposition = this.robots.get(boid).position;
+        var bounds = Vector.VectorSub(this.groundSize, new Vector(25, 25, 25));
+        var vec = new Vector();
+        var rposition = this.robots.get(boid).position;
 
         if (rposition.x < -bounds.x)
             vec.x = 10;

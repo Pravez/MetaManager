@@ -20,7 +20,7 @@ class Scene{
         this.renderer.addTrackballControls();
         this.renderer.addLight({ type: "ambient", color:0x666666});
         //this.renderer.addLight({ type:"directional", color: 0xffffff, intensity:2, x:-50, y:0, z:0});
-        this.renderer.addLight({type: "spot", color: 0xffffff, intensity:3, x:50, y:200, z:50, tx:50, ty:0, tz:50});
+        this.renderer.addLight({type: "spot", color: 0xffffff, intensity:1, x:50, y:1000, z:50, tx:50, ty:0, tz:50});
 
         //this.renderer.initPostprocessing();
 

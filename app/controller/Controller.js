@@ -48,6 +48,29 @@ class Controller{
                 receiveShadow: true
             }
         });
+
+        for(let i = 0;i<10;i++){
+            var created = Controller.addEntity({
+                robot:{
+                name: "qfd",
+                width: 1,
+                legs: 4,
+                height: 1,
+                color: "#FFFFFF"
+            },
+            device :{
+                osc: {
+                    address: "127.0.0.1",
+                    port: undefined
+                },
+                bluetooth: {
+                    none: true
+                }
+            }});
+
+            created.robot.position = {x: i*10, y:1, z:i*10};
+
+        }
     }
 
     static animateScene(){
@@ -75,6 +98,7 @@ class Controller{
         for(let key of supervisors.keys()){
             supervisors.get(key).addRobot(created);
         }
+        return created;
     }
 
     static modifyEntity(options, id){

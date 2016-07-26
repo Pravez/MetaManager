@@ -187,7 +187,7 @@ class Robot{
     }
 
     get velocity(){
-        return Robot.VectorTimes(this.sceneElement.velocity, VELOCITY_FACTOR);
+        return this.sceneElement.velocity;
     }
 
     set velocity(velocity){
@@ -196,19 +196,13 @@ class Robot{
         }
     }
 
-    /**
-     * To multiply a vector by a scalar.
-     * @param vector
-     * @param scalar
-     * @returns {*}
-     * @constructor
-     */
-    static VectorTimes(vector, scalar){
-        let vec = vector;
-        vec.x *= scalar;
-        vec.y *= scalar;
-        vec.z *= scalar;
-        return vec;
+    checkExecution(cmd) {
+        if(cmd._command.cmd === "dx")
+            return cmd._args === (this.velocity.x * VELOCITY_FACTOR);
+        if(cmd._command.cmd === "dy")
+            return cmd._args === (this.velocity.x * VELOCITY_FACTOR);
+        else
+            return this.getLastCommand().equals(cmd);
     }
 }
 module.exports = Robot;

@@ -55,7 +55,7 @@ class SingleEntity extends Entity{
         var cmd = new Command(command.command, command.value);
         try {
             if(verify === true){
-                if(this.robot.getLastCommand().equals(cmd) === false) {
+                if(this.robot.checkExecution(cmd) === false) {
                     this.device.executeCommand(cmd.execute());
                     this.robot.executeCommand(cmd);
                 }

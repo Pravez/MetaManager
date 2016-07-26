@@ -63,6 +63,7 @@ exports.CommandTypes = commandsMap;
 
 
 class Vector{
+
     constructor(x, y, z){
         this.x = x ? typeof x == "string" ? parseInt(x) : x : 0;
         this.y = y ? typeof y == "string" ? parseInt(y) : y : 0;
@@ -90,7 +91,7 @@ class Vector{
 
         for(let i = 0;i<arguments.length;i++){
             vec.x += arguments[i].x;
-            vec.y += arguments[i].y;
+            //vec.y += arguments[i].y;
             vec.z += arguments[i].z;
         }
 
@@ -100,19 +101,19 @@ class Vector{
     static VectorDiv(vector, scalar){
         let v = new Vector();
 
-        v.x = vector.x / scalar;
-        v.y = vector.y / scalar;
-        v.z = vector.z / scalar;
+        v.x = Math.floor(vector.x / scalar);
+        //v.y = vector.y / scalar;
+        v.z = Math.floor(vector.z / scalar);
 
         return v;
     }
 
     static VectorSub(){
-        let vec = arguments[0];
+        let vec = new Vector(arguments[0].x, arguments[0].y , arguments[0].z);
 
         for(let i = 1;i<arguments.length;i++){
             vec.x -= arguments[i].x;
-            vec.y -= arguments[i].y;
+            //vec.y -= arguments[i].y;
             vec.z -= arguments[i].z;
         }
 
@@ -131,6 +132,10 @@ class Vector{
      */
     static VectorInferiorTo(vector, scalar){
         return vector.x < scalar && vector.y < scalar && vector.z < scalar;
+    }
+
+    toString(){
+        return this.x+","+this.y+","+this.z;
     }
 }
 

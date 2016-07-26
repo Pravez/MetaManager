@@ -1,3 +1,4 @@
+<script src="../../../model/Utility.js"></script>
 <script src="../../../model/supervisor/Supervisor.js"></script>
 <control class="full">
 
@@ -141,7 +142,9 @@
 
 
         this.on('update', function(){
-            if(!this.control_datas && this.entity){
+            if(this.entity){
+                if(this.control_datas)
+                    this.control_datas = undefined;
                 var temp_datas = Controller.packageRangeControlDatas(this.entity.id);
                 this.control_datas = {ranges: [], texts: []};
                 for(let val of temp_datas){
