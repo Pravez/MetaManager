@@ -57,7 +57,10 @@ class Supervisor extends Entity {
     }
 
     onOSCMessage(message){
-        //Nothing ?
+        //Retransmits the message to every single robot
+        for(let key of this.robots.keys()){
+            this.sendCommand(key, message.cmd, message.arg);
+        }
     }
 
     setRobotVelocity(id, options){
@@ -112,6 +115,16 @@ class Supervisor extends Entity {
                 array.push({name : sup});
             }
         }
+        return array;
+    }
+
+    get robotsArray(){
+        let array = [];
+
+        for(let key of this.robots.keys()){
+            array.push(this.robots.get(key));
+        }
+
         return array;
     }
 }

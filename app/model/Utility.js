@@ -85,6 +85,53 @@ class Vector{
         }
     }
 
+    static VectorAdd(){
+        let vec = new Vector();
+
+        for(let i = 0;i<arguments.length;i++){
+            vec.x += arguments[i].x;
+            vec.y += arguments[i].y;
+            vec.z += arguments[i].z;
+        }
+
+        return vec;
+    }
+
+    static VectorDiv(vector, scalar){
+        let v = new Vector();
+
+        v.x = vector.x / scalar;
+        v.y = vector.y / scalar;
+        v.z = vector.z / scalar;
+
+        return v;
+    }
+
+    static VectorSub(){
+        let vec = arguments[0];
+
+        for(let i = 1;i<arguments.length;i++){
+            vec.x -= arguments[i].x;
+            vec.y -= arguments[i].y;
+            vec.z -= arguments[i].z;
+        }
+
+        return vec;
+    }
+
+    /**
+     * @return {boolean}
+     */
+    static VectorSuperiorTo(vector, scalar){
+        return vector.x > scalar && vector.y > scalar && vector.z > scalar;
+    }
+
+    /**
+     * @return {boolean}
+     */
+    static VectorInferiorTo(vector, scalar){
+        return vector.x < scalar && vector.y < scalar && vector.z < scalar;
+    }
 }
 
 exports.Vector = Vector;
