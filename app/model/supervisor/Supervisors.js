@@ -1,3 +1,21 @@
+/**
+ * THE SUPERVISORS
+ *
+ * A supervisor is a unity able to analyse a set of robot it has, and to modify their velocities in order to control
+ * them.
+ *
+ * A supervisor is inherited from the main abstract class which gives 3 main functions : step(), onEntityOrder() and
+ * onOSCMessage(). The first is called at each tick of the theorical 3D world. The second is called when one of
+ * the robots it controls receives a message. It is a way to filter them. Finally lasts onOSCMessage which is received
+ * by the supervisor in itself. A supervisor has an OSCListener so it is able to communicate through OSC as a full entity.
+ *
+ * To create a supervisor, create your class and extend the Supervisor. Then to register it you need to add it in
+ * the Supervisor.js file array, and finally in this file export it with the name you gave in the array. See already made
+ * supervisors to have an example. See Supervisor.js to see already implemented functions.
+ *
+ */
+
+"use strict";
 var Supervisor = require('./Supervisor').Supervisor;
 var Types = require('./Supervisor').Types;
 
@@ -5,6 +23,9 @@ var Vector = require('../Utility').Vector;
 
 var exports = module.exports = {};
 
+/**
+ * SimpleSupervisor is simple ... It just inverts robot's velocity when it touches the bounds of the defined zone.
+ */
 class SimpleSupervisor extends Supervisor{
     constructor(name, groundSize){
         super(name, groundSize);
@@ -42,6 +63,7 @@ exports[Types.Simple] = SimpleSupervisor;
 
 /**
  * From http://www.kfish.org/boids/pseudocode.html
+ * Trying to implement boids algorithm for metabots and drones.
  */
 class BoidSupervisor extends Supervisor{
     constructor(name, groundSize){
@@ -78,6 +100,11 @@ class BoidSupervisor extends Supervisor{
         this.freeBoids = true;
     }
 
+    /**
+     * First rule for boids, we try to make all of them moving towards the center position of each boid's position
+     * @param boid
+     * @returns {*}
+     */
     moveTowardsCenter(boid){
         var vec = new Vector();
 
@@ -92,6 +119,11 @@ class BoidSupervisor extends Supervisor{
         return Vector.VectorDiv(Vector.VectorSub(vec, this.robots.get(boid).position), 10);
     }
 
+    /**
+     * Second rule, we try to keep a small distance between each boid (doesn't seem to work correctly)
+     * @param boid
+     * @returns {*|Vector}
+     */
     keepSmallDistanceRule(boid){
         var vec = new Vector();
 
@@ -107,6 +139,11 @@ class BoidSupervisor extends Supervisor{
         return vec;
     }
 
+    /**
+     * Third main rule, We try to make that each boid has approximately the same velocity
+     * @param boid
+     * @returns {*}
+     */
     matchVelocityRule(boid){
         var vec = new Vector();
 
@@ -121,6 +158,11 @@ class BoidSupervisor extends Supervisor{
         return Vector.VectorDiv(Vector.VectorSub(vec, this.robots.get(boid).velocity), 8);
     }
 
+    /**
+     * Bonus rule, to be sure that boids won't go outside of the bounds
+     * @param boid
+     * @returns {*|Vector}
+     */
     boundingPositionRule(boid) {
         var bounds = Vector.VectorSub(this.groundSize, new Vector(25, 25, 25));
         var vec = new Vector();
@@ -142,6 +184,12 @@ class BoidSupervisor extends Supervisor{
         return vec;
     }
 
+    /**
+     * Bonus rule, to make boids moving towards a certain point
+     * @param boid
+     * @param place
+     * @returns {*}
+     */
     tendToPlaceRule(boid, place){
         return Vector.VectorDiv(Vector.VectorSub(place, this.robots.get(boid).position), 100);
     }
