@@ -33,8 +33,8 @@ class Controller{
                 mass:0,
                 type:"plane",
                 values:{
-                    width:1000000,
-                    height:1000000
+                    width:1e6,
+                    height:1e6
                 },
                 material: "no_special"
             },
@@ -68,7 +68,7 @@ class Controller{
                 }
             }});
 
-            created.robot.position = {x: i*10, y:1, z:i*10};
+            created.robot.position = {x: i*10%75, y:1, z:i*10%75};
 
         }
     }

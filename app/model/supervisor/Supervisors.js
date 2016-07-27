@@ -53,7 +53,7 @@ class BoidSupervisor extends Supervisor{
         var v1, v2, v3, v4;
 
         for(let key of this.robots.keys()){
-            v1 = this.flyTowardCenterRule(key);
+            v1 = this.moveTowardsCenter(key);
             v2 = this.keepSmallDistanceRule(key);
             v3 = this.matchVelocityRule(key);
             v4 = this.boundingPositionRule(key);
@@ -72,7 +72,7 @@ class BoidSupervisor extends Supervisor{
         super.onOSCMessage(message);
     }
 
-    flyTowardCenterRule(boid){
+    moveTowardsCenter(boid){
         var vec = new Vector();
 
         for(let key of this.robots.keys()){
@@ -92,7 +92,7 @@ class BoidSupervisor extends Supervisor{
         for(let key of this.robots.keys()){
             if(key !== boid){
                 let distance = Vector.VectorSub(this.robots.get(key).position, this.robots.get(boid).position);
-                if(Vector.VectorInferiorTo(distance, 100) && Vector.VectorSuperiorTo(distance, -100)){
+                if(Vector.VectorInferiorTo(distance, 50) && Vector.VectorSuperiorTo(distance, -50)){
                     vec = Vector.VectorSub(vec, (Vector.VectorSub(this.robots.get(key).position, this.robots.get(boid).position)));
                 }
             }
@@ -134,6 +134,10 @@ class BoidSupervisor extends Supervisor{
             vec.z = -10;
 
         return vec;
+    }
+
+    tendToPlaceRule(boid, place){
+        return Vector.VectorDiv(Vector.VectorSub(place, this.robots.get(boid).position), 100);
     }
 }
 

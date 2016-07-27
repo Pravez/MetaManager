@@ -137,6 +137,13 @@ class Vector{
     toString(){
         return this.x+","+this.y+","+this.z;
     }
+
+    invert(){
+        this.x = -this.x;
+        this.y = -this.y;
+        this.z = -this.z;
+        return this;
+    }
 }
 
 exports.Vector = Vector;
