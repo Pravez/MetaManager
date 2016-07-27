@@ -46,21 +46,25 @@ exports[Types.Simple] = SimpleSupervisor;
 class BoidSupervisor extends Supervisor{
     constructor(name, groundSize){
         super(name, groundSize);
+
+        this.freeBoids = false;
     }
 
     step(){
-        //Move boids to new position
-        var v1, v2, v3, v4;
+        if(this.freeBoids === true) {
+            //Move boids to new position
+            var v1, v2, v3, v4;
 
-        for(let key of this.robots.keys()){
-            v1 = this.moveTowardsCenter(key);
-            v2 = this.keepSmallDistanceRule(key);
-            v3 = this.matchVelocityRule(key);
-            v4 = this.boundingPositionRule(key);
+            for (let key of this.robots.keys()) {
+                v1 = this.moveTowardsCenter(key);
+                //v2 = this.keepSmallDistanceRule(key).invert();
+                v3 = this.matchVelocityRule(key);
+                v4 = this.boundingPositionRule(key);
 
-            console.log("Robot : " + this.robots.get(key).position + " : " + Vector.VectorAdd(this.robots.get(key).velocity, v1, v2, v3, v4).toString());
-            this.robots.get(key).velocity = Vector.VectorAdd(this.robots.get(key).velocity, v1, v3, v4);
-            console.log("Robot velocity : " + this.robots.get(key).velocity.x+","+this.robots.get(key).velocity.z);
+                console.log("Robot : " + this.robots.get(key).position + " : " + Vector.VectorAdd(this.robots.get(key).velocity, v1, v3, v4).toString());
+                this.robots.get(key).velocity = Vector.VectorAdd(this.robots.get(key).velocity, v1, v3, v4);
+                console.log("Robot velocity : " + this.robots.get(key).velocity.x + "," + this.robots.get(key).velocity.z);
+            }
         }
     }
 
@@ -69,7 +73,9 @@ class BoidSupervisor extends Supervisor{
     }
 
     onOSCMessage(message){
-        super.onOSCMessage(message);
+        //super.onOSCMessage(message);
+
+        this.freeBoids = true;
     }
 
     moveTowardsCenter(boid){
@@ -92,7 +98,7 @@ class BoidSupervisor extends Supervisor{
         for(let key of this.robots.keys()){
             if(key !== boid){
                 let distance = Vector.VectorSub(this.robots.get(key).position, this.robots.get(boid).position);
-                if(Vector.VectorInferiorTo(distance, 50) && Vector.VectorSuperiorTo(distance, -50)){
+                if(Vector.VectorInferiorTo(distance, 100)){
                     vec = Vector.VectorSub(vec, (Vector.VectorSub(this.robots.get(key).position, this.robots.get(boid).position)));
                 }
             }

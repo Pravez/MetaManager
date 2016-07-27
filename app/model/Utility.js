@@ -131,7 +131,7 @@ class Vector{
      * @return {boolean}
      */
     static VectorInferiorTo(vector, scalar){
-        return vector.x < scalar && vector.y < scalar && vector.z < scalar;
+        return Math.abs(vector.x) < scalar && Math.abs(vector.y) < scalar && Math.abs(vector.z) < scalar;
     }
 
     toString(){
