@@ -12,10 +12,6 @@ var Entity = require('./Entity');
  */
 class SingleEntity extends Entity{
 
-    /**
-     * Function to initialize by default an entity, with an id
-     * @param id
-     */
     constructor() {
         super();
 
