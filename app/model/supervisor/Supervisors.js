@@ -69,7 +69,7 @@ class BoidSupervisor extends Supervisor{
     constructor(name, groundSize){
         super(name, groundSize);
 
-        this.freeBoids = false;
+        this.freeBoids = true;
     }
 
     step(){
@@ -79,7 +79,7 @@ class BoidSupervisor extends Supervisor{
 
             for (let key of this.robots.keys()) {
                 v1 = this.moveTowardsCenter(key);
-                //v2 = this.keepSmallDistanceRule(key).invert();
+                v2 = this.keepSmallDistanceRule(key).invert();
                 v3 = this.matchVelocityRule(key);
                 v4 = this.boundingPositionRule(key);
 

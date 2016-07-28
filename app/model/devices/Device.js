@@ -156,7 +156,7 @@ class Device{
     }
 
     /**
-     * To execute a sent command (consists in sending the command (string in reality) to the bluetooth device).
+     * To execute a sent command (consists in sending the command (string in reality)   to the bluetooth device).
      * @param command
      */
     executeCommand(command){

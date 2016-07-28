@@ -5,7 +5,7 @@
   "main": "app/main.js",
   "scripts": {
     "start": "electron app/main.js",
-    "package": "electron-packager ./ MetaManager --platform=linux --arch=x64 --out ./dist/MetaManager --overwrite"
+    "package": "electron-packager ./ MetaManager --platform=all --arch=x64 --out ./dist/MetaManager --overwrite"
   },
   "author": "Pravez",
   "devDependencies": {

@@ -15,8 +15,15 @@ var resizeNeeded = false;
 var supervisors = new Map();
 var activeSupervisor;
 
+/**
+ * Here controller is essentially used as way to communicate between model and view. It doesn't compute any real things,
+ * but is useful to make adjustments when transmitting the information.
+ */
 class Controller{
 
+    /**
+     * function called when the window is resized, in order to resize the canvas and also the 3D scene.
+     */
     static resizeCanvas(){
         if(Renderer.currentContainsCanvas()){
             metaScene.renderer.resize();
@@ -24,7 +31,11 @@ class Controller{
             resizeNeeded = true;
         }
     }
-    
+
+    /**
+     * Function to create the unique scene according to a given canvas present in the DOM.
+     * @param canvas
+     */
     static setScene(canvas){
         metaScene = new Scene(canvas);
         //Adding ground
@@ -49,7 +60,7 @@ class Controller{
             }
         });
 
-        for(let i = 0;i<10;i++){
+        /*for(let i = 0;i<10;i++){
             var created = Controller.addEntity({
                 robot:{
                 name: "qfd",
@@ -70,13 +81,19 @@ class Controller{
 
             created.robot.position = {x: i*10%75, y:1, z:i*10%75};
 
-        }
+        }*/
     }
 
+    /**
+     * To animate scene
+     */
     static animateScene(){
         animate();
     }
 
+    /**
+     * To pause (stop animating) scene
+     */
     static pauseWorldAndAnimations(){
         if(animationId !== -1) {
             cancelAnimationFrame(animationId);
@@ -84,6 +101,9 @@ class Controller{
         }
     }
 
+    /**
+     * To restart after pausing animations.
+     */
     static unpauseWorldAndAnimations(){
         if(animationId === -1){
             //Restore controls, probably temporary solution
@@ -91,7 +111,12 @@ class Controller{
             animate();
         }
     }
-    
+
+    /**
+     * To add an entity. It will also ask each supervisor if it wants to add it.
+     * @param options
+     * @returns {SingleEntity}
+     */
     static addEntity(options){
         var created = MetaManager.addEntity(options);
         metaScene.addElement({ element: created.robot.sceneElement });
@@ -101,33 +126,65 @@ class Controller{
         return created;
     }
 
+    /**
+     * To modify an entity
+     * @param options
+     * @param id
+     */
     static modifyEntity(options, id){
         Controller.getEntity(id).modify(options);
     }
 
+    /**
+     * To remove an entity (removes from the model and from the scene)
+     * @param id
+     */
     static removeEntity(id){
         var ent = MetaManager.removeEntity(id);
         if(ent.robot.sceneElement)
             metaScene.removeElement(ent.robot.sceneElement);
     }
-    
+
+    /**
+     * Function to get an array of entities
+     * @returns {Array}
+     */
     static getEntities(){
         return MetaManager.getEntities();
     }
 
+    /**
+     * Function to get a special entity
+     * @param id
+     * @returns {V}
+     */
     static getEntity(id){
         return MetaManager.getEntity(id);
     }
 
+    /**
+     * Function to toggle osc listening of an entity
+     * @param id
+     */
     static switchEntityOSCListening(id){
         var ent = MetaManager.getEntity(id);
         ent.switchOSCState();
     }
-    
+
+    /**
+     * Function to launch information request to a robot
+     * @param id
+     * @returns {*}
+     */
     static requestRobotInfo(id){
         return MetaManager.getRobotInformationsFromDevice(id);
     }
 
+    /**
+     * Function to find an entity according to its name in an array, and with a regexp.
+     * @param regexp
+     * @returns {Array.<*>}
+     */
     static findDevicesByRegexp(regexp){
         var entities = MetaManager.getEntities();
         var found = [];
@@ -140,6 +197,12 @@ class Controller{
         return found.sort();
     }
 
+    /**
+     * Nice function to create automatically views. This one is used for range inputs in the control.tag. It should be
+     * used for other views.
+     * @param id
+     * @returns {*}
+     */
     static packageRangeControlDatas(id){
         if(id > -1) {
             var robot = Controller.getEntity(id).robot;
@@ -157,6 +220,11 @@ class Controller{
         return null;
     }
 
+
+    /**
+     * Same as precedent
+     * @returns {Array}
+     */
     static packageDefaultRangeControlDatas(){
         var data = [];
         data.push({name: 'h', type: 'range', min: -150, max: 50, description: "Height"});
@@ -167,28 +235,55 @@ class Controller{
         return data;
     }
 
+    /**
+     * Function to add a supervisor to Supervisor's main map.
+     * @param supervisorType
+     * @param name
+     * @param groundSize
+     * @returns {V}
+     */
     static addSupervisor(supervisorType, name, groundSize){
         supervisors.set(name, new Supervisors[supervisorType](name, groundSize));
         return supervisors.get(name);
     }
 
+    /**
+     * Function to remove a supervisor
+     * @param name
+     */
     static removeSupervisor(name){
         supervisors.delete(name);
     }
 
+    /**
+     * Function to get current activated supervisor
+     * @returns {*}
+     */
     static getActiveSupervisorName(){
         return activeSupervisor;
     }
-    
+
+    /**
+     * Function to set a supervisor active
+     * @param name
+     */
     static setSupervisor(name){
         MetaManager.setSupervisor(supervisors.get(name));
         metaScene.createLimits(supervisors.get(name).groundSize);
     }
 
+    /**
+     * Function to get every possible type of supervisor implemented
+     * @returns {*}
+     */
     static getSupervisorsTypes(){
         return Supervisor.Supervisor.types;
     }
 
+    /**
+     * Function to get created supervisors
+     * @returns {Array}
+     */
     static getSupervisors(){
         let array = [];
         for(let sup of supervisors.keys()){
@@ -198,6 +293,11 @@ class Controller{
         return array;
     }
 
+    /**
+     * Function to verify if a port for a device has already been taken
+     * @param port
+     * @returns {*}
+     */
     static isPortAlreadyTaken(port){
         return DeviceElement.PortsManager.has(port);
     }

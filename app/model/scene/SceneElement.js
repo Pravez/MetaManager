@@ -2,11 +2,19 @@
 var Three = require('three');
 var Cannon = require('cannon');
 
+/**
+ * Class to gather physics and graphics. A scene element is a body and a mesh.
+ */
 class SceneElement{
     constructor(){
 
     }
 
+    /**
+     * Function to create a body for a scene element. Needs a position, a mass, and accordingly to a type, a radius or
+     * a width and height.
+     * @param options
+     */
     setBody(options){
         var body = new Cannon.Body({
             mass: options.mass,
@@ -50,6 +58,11 @@ class SceneElement{
         this.body.addEventListener("collide" , this.onCollide);
     }
 
+    /**
+     * Function to set the mesh of an element. Needs a material type and a color. Also accordingly to a type, a height,
+     * width.
+     * @param options
+     */
     setMesh(options){
         var geometry, material;
 
@@ -90,6 +103,10 @@ class SceneElement{
         this.color = options.material.color;
     }
 
+    /**
+     * Function called when two bodies will collide.
+     * @param e
+     */
     onCollide(e){
         //Do what ya want here with the ContactEquation
         this.parent.setVelocity({x: Math.trunc(this.parent.velocity.x), y:Math.trunc(this.parent.velocity.y)
@@ -98,12 +115,18 @@ class SceneElement{
         document.dispatchEvent(new Event('contact_update'));
     }
 
+    /**
+     * Function to match physics positions to 3D scene positions
+     */
     updatePositions(){
         //Update mesh positions
         this.mesh.position.copy(this.body.position);
         this.mesh.quaternion.copy(this.body.quaternion);
     }
 
+    /**
+     * Function to keep velocity relatively to the one of the physics element.
+     */
     keepVelocity(){
         if(this.velocity) {
             this.body.velocity.x = this.velocity.x;
@@ -112,6 +135,10 @@ class SceneElement{
         }
     }
 
+    /**
+     * Setter of velocity
+     * @param options
+     */
     setVelocity(options){
         if(options){
             this.body.velocity.x = this.velocity.x = options.x || options.x === 0 ? options.x : this.body.velocity.x;
@@ -137,7 +164,13 @@ class SceneElement{
         }
     }
 
-    static createLimits(size){
+    /**
+     * Function to create bounds on a scene.
+     * @param size
+     * @param shape
+     * @returns {THREE.Line}
+     */
+    static createLimits(size, shape){
         var material = new Three.LineBasicMaterial({
             color: 0x0000ff
         });

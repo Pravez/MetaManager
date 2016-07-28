@@ -204,5 +204,9 @@ class Robot{
         else
             return this.getLastCommand().equals(cmd);
     }
+
+    checkVelocityExecution(axis, value){
+
+    }
 }
 module.exports = Robot;

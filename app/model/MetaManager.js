@@ -114,6 +114,9 @@ class MetaManager{
         }
     }
 
+    /**
+     * Function called when need to
+     */
     static updateEntitiesVelocities(){
         for(let key of entities.keys()){
             entities.get(key).adjustVelocity();
