@@ -57,6 +57,7 @@
         <form class="form-group col-md-12">
             <div class="row">
                 <select class="form-control" id="selected_sup" name="selected_sup" onchange={ select }>
+                    <option>none</option>
                     <option each={ this.supervisors }>{ name }</option>
                 </select>
             </div>
@@ -67,11 +68,11 @@
                 </div>
                 <div class="row">
                     <label for="selected_port" class="input-title">OSC Port listening</label>
-                    <input class="form-control" type="text" id="selected_port" name="selected_port" value={ this.selected }>
+                    <input class="form-control" type="text" id="selected_port" name="selected_port" value={ this.selected.device.devices.osc.port }>
                 </div>
                 <div class="row">
                     <label for="selected_address" class="input-title">OSC Address listening</label>
-                    <input class="form-control" type="text" id="selected_address" name="selected_address" value={ this.selected.name }>
+                    <input class="form-control" type="text" id="selected_address" name="selected_address" value={ this.selected.device.devices.osc.address }>
                 </div>
                 <div class="row">
                     <h6>Controlled entities</h6>
@@ -99,13 +100,6 @@
                     </table>
                 </div>
             </div>
-
-            <div class="col-md-12 separator"></div>
-
-            <div cass="col-md-12">
-                <p if={ Controller.getActiveSupervisorName() === this.selected.name }>This supervisor is the currently used one</p>
-                <button class="btn btn-large btn-default" onclick={ set_active } if={ Controller.getActiveSupervisorName() !== this.selected.name }>Use this supervisor !</button>
-            </div>
         </form>
     </div>
 
@@ -118,22 +112,26 @@
 
         //////////////////////Creation and selection//////////////
         this.select = function(e){
-            for(let item of this.supervisors) {
-                if (item.name === e.currentTarget.value)
-                    this.selected = item;
+            if(e.currentTarget.value !== "none") {
+                for (let item of this.supervisors) {
+                    if (item.name === e.currentTarget.value) {
+                        this.selected = item;
+                        Controller.setSupervisor(this.selected.name);
+                    }
+                }
+                this.update();
+            }else{
+                this.selected = undefined;
+                Controller.setSupervisor(undefined);
+                this.update();
             }
-            this.update();
         };
 
         this.add = function(e){
             let sup = Controller.addSupervisor(this.type.value, this.name.value, parseInt(this.ground.value));
             sup.setUp({address: this.address.value, port: this.port.value});
-            Controller.setSupervisor(sup.name);
+            //Controller.setSupervisor(sup.name);
             this.update();
-        };
-
-        this.set_active = function(e){
-            Controller.setSupervisor(this.selected.name);
         };
         ////////////////////////////////////////////////////////
         //////////////////////Edition///////////////////////////
@@ -161,7 +159,7 @@
         this.on('update', function(){
             this.types = Controller.getSupervisorsTypes();
             this.supervisors = Controller.getSupervisors();
-            if(this.supervisors.length === 1) this.selected = this.supervisors[0];
+            //if(this.supervisors.length === 1) this.selected = this.supervisors[0];
             if(this.selected){
                 this.entities = Controller.getEntities();
                 for(let ent of this.entities){

@@ -268,8 +268,13 @@ class Controller{
      * @param name
      */
     static setSupervisor(name){
-        MetaManager.setSupervisor(supervisors.get(name));
-        metaScene.createLimits(supervisors.get(name).groundSize);
+        if(name) {
+            MetaManager.setSupervisor(supervisors.get(name));
+            metaScene.createLimits(supervisors.get(name).groundSize);
+        }else{
+            MetaManager.setSupervisor(undefined);
+            metaScene.createLimits(undefined);
+        }
     }
 
     /**

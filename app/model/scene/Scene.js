@@ -23,11 +23,12 @@ class Scene{
         //this.renderer.addLight({ type:"directional", color: 0xffffff, intensity:2, x:-50, y:0, z:0});
         this.renderer.addLight({type: "spot", color: 0xffffff, intensity:1, x:50, y:50, z:50, tx:50, ty:0, tz:50});
 
+        //Here to improve view, but don't know why it removes colors and shapes bounds are strange.
         //this.renderer.initPostprocessing();
 
         this.elements = [];
 
-        //Adjusting the scene limits
+        //Adjusting the scene limits (meaning the box of the supervisor)
         this.createLimits(500);
 
         this.physics.addMaterial("no_special");
@@ -46,8 +47,10 @@ class Scene{
         if(this.limits){
             this.renderer.removeMesh(this.limits);
         }
-        this.limits = SceneElement.createLimits(size.x, shape);
-        this.renderer.addMesh(this.limits);
+        if(size) {
+            this.limits = SceneElement.createLimits(size.x, shape);
+            this.renderer.addMesh(this.limits);
+        }
     }
 
     /**
